@@ -7,6 +7,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Briefcase } from "lucide-react";
 
 export const metadata = { title: "Вакансии в Актау — Jumys" };
+export const dynamic = "force-dynamic";
 
 const PAGE_SIZE = 12;
 

@@ -13,6 +13,7 @@ import { ContactDialog } from "./contact-dialog";
 import type { ApplicationStatus } from "@/lib/types";
 
 export const metadata = { title: "Отклики — Jumys" };
+export const dynamic = "force-dynamic";
 
 export default async function ApplicationsPage() {
     const data = await getCurrentFullProfile();

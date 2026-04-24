@@ -6,6 +6,7 @@ import { getCurrentFullProfile } from "@/lib/profile";
 import { createSSRClient } from "@/lib/supabase/server";
 
 export const metadata = { title: "Обзор — Jumys" };
+export const dynamic = "force-dynamic";
 
 export default async function DashboardHome() {
     const data = await getCurrentFullProfile();

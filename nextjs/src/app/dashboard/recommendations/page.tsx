@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { JobCard } from "@/components/JobCard";
 
 export const metadata = { title: "Подборка вакансий — Jumys" };
+export const dynamic = "force-dynamic";
 
 export default async function RecommendationsPage() {
     const data = await getCurrentFullProfile();

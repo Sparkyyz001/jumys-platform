@@ -6,6 +6,8 @@ import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { DashboardNav } from "@/components/DashboardNav";
 import { ThemeToggle } from "@/components/theme-toggle";
 
+export const dynamic = "force-dynamic";
+
 export default async function JobsLayout({ children }: { children: React.ReactNode }) {
     const supabase = await createSSRClient();
     const { data: { user } } = await supabase.auth.getUser();

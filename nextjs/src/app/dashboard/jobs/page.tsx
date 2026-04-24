@@ -10,6 +10,7 @@ import { formatSalary, labelForEmployment } from "@/lib/constants";
 import { JobActions } from "./actions";
 
 export const metadata = { title: "Мои вакансии — Jumys" };
+export const dynamic = "force-dynamic";
 
 export default async function EmployerJobsPage() {
     const data = await getCurrentFullProfile();

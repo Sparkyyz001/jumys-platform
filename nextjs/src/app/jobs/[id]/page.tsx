@@ -10,6 +10,8 @@ import {
 } from "@/lib/constants";
 import { ApplyDialog } from "./apply-dialog";
 
+export const dynamic = "force-dynamic";
+
 export default async function JobDetailPage({
     params,
 }: {

@@ -10,6 +10,8 @@ import { MatchScoreBadge } from "@/components/MatchScoreBadge";
 import { ExplainMatchButton } from "@/components/ExplainMatchButton";
 import { labelForEmployment } from "@/lib/constants";
 
+export const dynamic = "force-dynamic";
+
 export default async function CandidatesPage({
     params,
 }: {

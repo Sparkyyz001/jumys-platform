@@ -2,6 +2,8 @@ import { redirect } from "next/navigation";
 import { DashboardNav } from "@/components/DashboardNav";
 import { getCurrentFullProfile } from "@/lib/profile";
 
+export const dynamic = "force-dynamic";
+
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
     const data = await getCurrentFullProfile();
     if (!data) redirect("/auth/login");

@@ -1,17 +1,16 @@
 import {createServerClient} from '@supabase/ssr'
 import {cookies} from 'next/headers'
 import {ClientType, SassClient} from "@/lib/supabase/unified";
-import { isSupabaseBrowserConfigured } from "@/lib/supabase/public-env";
 
 export async function createSSRClient() {
-    if (!isSupabaseBrowserConfigured()) {
-        throw new Error("Supabase env missing: set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY on Vercel");
-    }
     const cookieStore = await cookies()
 
+    const url = process.env.NEXT_PUBLIC_SUPABASE_URL || "https://placeholder.supabase.co";
+    const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "placeholder-anon-key";
+
     return createServerClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+        url,
+        anon,
         {
             cookies: {
                 getAll() {
