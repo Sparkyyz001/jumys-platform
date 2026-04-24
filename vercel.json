@@ -1,5 +1,6 @@
 {
-  "installCommand": "npm install --prefix nextjs",
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "installCommand": "npm install && npm install --prefix nextjs",
   "buildCommand": "npm run build --prefix nextjs",
   "devCommand": "npm run dev --prefix nextjs"
 }
