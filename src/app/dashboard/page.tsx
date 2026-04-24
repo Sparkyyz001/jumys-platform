@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Briefcase, FileText, Sparkles, Users, Plus } from "lucide-react";
+import { Briefcase, FileText, Sparkles, Users, Plus, MessageCircle, CheckCircle2 } from "lucide-react";
 import { getCurrentFullProfile } from "@/lib/profile";
 import { createSSRClient } from "@/lib/supabase/server";
 
@@ -112,14 +112,14 @@ export default async function DashboardHome() {
                     </Card>
                 </div>
             ) : (
-                <div className="grid gap-4 md:grid-cols-2">
+                <div className="grid gap-4 md:grid-cols-3">
                     <Card>
                         <CardHeader>
                             <div className="flex items-center gap-3">
                                 <Sparkles className="h-5 w-5 text-primary-700" />
-                                <CardTitle>Рекомендации</CardTitle>
+                                <CardTitle>AI Рекомендации</CardTitle>
                             </div>
-                            <CardDescription>Персональная подборка вакансий по вашему профилю</CardDescription>
+                            <CardDescription>Подборка вакансий по вашему профилю</CardDescription>
                         </CardHeader>
                         <CardContent>
                             <Link href="/dashboard/recommendations">
@@ -138,6 +138,23 @@ export default async function DashboardHome() {
                         <CardContent>
                             <Link href="/dashboard/applications">
                                 <Button variant="outline">Посмотреть</Button>
+                            </Link>
+                        </CardContent>
+                    </Card>
+                    <Card>
+                        <CardHeader>
+                            <div className="flex items-center gap-3">
+                                <MessageCircle className="h-5 w-5 text-emerald-600" />
+                                <CardTitle>Telegram</CardTitle>
+                            </div>
+                            <CardDescription className="flex items-center gap-1.5">
+                                <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600" />
+                                Уведомления подключены
+                            </CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                            <Link href="/dashboard/settings">
+                                <Button variant="outline" size="sm">Управлять</Button>
                             </Link>
                         </CardContent>
                     </Card>

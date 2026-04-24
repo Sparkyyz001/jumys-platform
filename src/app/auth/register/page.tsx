@@ -35,7 +35,7 @@ export default function RegisterPage() {
         setLoading(true);
         try {
             const client = await createSPASassClient();
-            const redirectTo = `${window.location.origin}/api/auth/callback?next=/onboarding/telegram`;
+            const redirectTo = `${window.location.origin}/api/auth/callback?next=/dashboard`;
             const { error: signUpError } = await client.registerEmail(
                 email,
                 password,

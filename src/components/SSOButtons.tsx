@@ -14,7 +14,7 @@ export default function SSOButtons({ onError }: { onError: (message: string) => 
             const { error } = await client.getSupabaseClient().auth.signInWithOAuth({
                 provider,
                 options: {
-                    redirectTo: `${window.location.origin}/api/auth/callback?next=/onboarding/telegram`,
+                    redirectTo: `${window.location.origin}/api/auth/callback?next=/dashboard`,
                 },
             });
             if (error) throw error;

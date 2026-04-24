@@ -27,7 +27,7 @@ export default function VerifyEmailPage() {
             const client = await createSPASassClient();
             const { data } = await client.getSupabaseClient().auth.getSession();
             if (data.session?.user?.email_confirmed_at) {
-                router.push("/onboarding/telegram");
+                router.push("/dashboard");
                 router.refresh();
             }
         }, 2500);
@@ -62,7 +62,7 @@ export default function VerifyEmailPage() {
                     Мы отправили письмо со ссылкой для подтверждения. Перейдите по ней, чтобы активировать аккаунт.
                 </p>
                 <p className="text-xs text-gray-500 mb-4">
-                    Эта страница обновится автоматически после подтверждения и переведет вас на подключение Telegram.
+                    Эта страница обновится автоматически после подтверждения и переведёт вас в личный кабинет.
                 </p>
 
                 <div className="border-t border-gray-200 pt-6 space-y-3 text-left">
