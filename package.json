@@ -1,0 +1,14 @@
+{
+  "name": "jumys-platform",
+  "private": true,
+  "description": "Monorepo root — Next.js app lives in /nextjs. This file exists so Vercel detects Next.js when the repo root is the project root.",
+  "scripts": {
+    "dev": "npm run dev --prefix nextjs",
+    "build": "npm run build --prefix nextjs",
+    "start": "npm run start --prefix nextjs",
+    "lint": "npm run lint --prefix nextjs"
+  },
+  "dependencies": {
+    "next": "^15.4.8"
+  }
+}
