@@ -1,0 +1,6 @@
+.expo
+nextjs/node_modules/
+nextjs/.next/
+nextjs/.env*
+nextjs/coverage/
+nextjs/out/
