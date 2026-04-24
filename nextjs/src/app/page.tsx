@@ -6,6 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { HeroMeshBackground } from "@/components/HeroMeshBackground";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { isSupabaseBrowserConfigured } from "@/lib/supabase/public-env";
 
 export const metadata = {
     title: "Jumys — AI-поиск работы в Актау",
@@ -14,8 +15,16 @@ export const metadata = {
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-    const supabase = await createSSRClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    let user: { id: string; email?: string | null } | null = null;
+    if (isSupabaseBrowserConfigured()) {
+        try {
+            const supabase = await createSSRClient();
+            const { data: { user: u } } = await supabase.auth.getUser();
+            user = u;
+        } catch (e) {
+            console.error("home getUser", e);
+        }
+    }
 
     return (
         <div className="min-h-screen bg-gradient-to-b from-violet-50 via-white to-slate-100">
