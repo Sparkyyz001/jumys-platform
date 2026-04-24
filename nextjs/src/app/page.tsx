@@ -11,6 +11,7 @@ export const metadata = {
     title: "Jumys — AI-поиск работы в Актау",
     description: "Найдите работу или сотрудников в Актау с помощью AI-подбора"
 };
+export const dynamic = "force-dynamic";
 
 export default async function Home() {
     const supabase = await createSSRClient();

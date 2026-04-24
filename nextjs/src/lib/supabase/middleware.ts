@@ -1,7 +1,7 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
-const PROTECTED_PREFIXES = ['/dashboard', '/onboarding']
+const PROTECTED_PREFIXES = ['/dashboard', '/onboarding', '/jobs']
 
 export async function updateSession(request: NextRequest) {
     let supabaseResponse = NextResponse.next({
@@ -38,6 +38,23 @@ export async function updateSession(request: NextRequest) {
         url.pathname = '/auth/login'
         url.searchParams.set('next', pathname)
         return NextResponse.redirect(url)
+    }
+
+    if (userData?.user && (pathname.startsWith('/dashboard') || pathname.startsWith('/jobs'))) {
+        const { data: profile } = await supabase
+            .from("profiles")
+            .select("telegram_chat_id, role")
+            .eq("id", userData.user.id)
+            .maybeSingle();
+
+        const profileRow = profile as { telegram_chat_id: number | null; role: "employer" | "seeker" | null } | null;
+        const mustConnectTelegram = profileRow?.role && !profileRow.telegram_chat_id;
+        const isTelegramOnboarding = pathname.startsWith('/onboarding/telegram');
+        if (mustConnectTelegram && !isTelegramOnboarding) {
+            const url = request.nextUrl.clone();
+            url.pathname = "/onboarding/telegram";
+            return NextResponse.redirect(url);
+        }
     }
 
     return supabaseResponse

@@ -26,8 +26,13 @@ export default function LoginPage() {
             : "/dashboard";
         try {
             const client = await createSPASassClient();
-            const { error: signInError } = await client.loginEmail(email, password);
+            const { data, error: signInError } = await client.loginEmail(email, password);
             if (signInError) throw signInError;
+            if (!data.user?.email_confirmed_at) {
+                await client.logout();
+                router.push(`/auth/verify-email?email=${encodeURIComponent(email)}`);
+                return;
+            }
             router.push(next);
             router.refresh();
         } catch (err) {
