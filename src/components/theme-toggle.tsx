@@ -6,13 +6,21 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 
 export function ThemeToggle() {
-    const { theme, setTheme } = useTheme();
+    const { resolvedTheme, setTheme } = useTheme();
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => setMounted(true), []);
-    if (!mounted) return null;
 
-    const isDark = theme === "dark";
+    if (!mounted) {
+        return (
+            <div
+                aria-hidden="true"
+                className="h-9 w-9 rounded-md border border-input bg-transparent"
+            />
+        );
+    }
+
+    const isDark = resolvedTheme === "dark";
 
     return (
         <Button

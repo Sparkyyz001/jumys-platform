@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { AvatarUploader } from "@/components/AvatarUploader";
 import { createTelegramLinkAction, updatePasswordAction, updateSettingsAction } from "@/lib/actions/settings";
 
 interface SettingsFormProps {
@@ -54,6 +55,13 @@ export function SettingsForm(props: SettingsFormProps) {
                 }}
             >
                 <div>
+                    <Label>Фото профиля</Label>
+                    <div className="mt-2">
+                        <AvatarUploader initialUrl={props.avatarUrl} fullName={props.fullName} />
+                    </div>
+                </div>
+
+                <div>
                     <Label htmlFor="full_name">Имя</Label>
                     <Input id="full_name" name="full_name" defaultValue={props.fullName} required />
                 </div>
@@ -61,11 +69,6 @@ export function SettingsForm(props: SettingsFormProps) {
                 <div>
                     <Label htmlFor="about">Описание профиля</Label>
                     <Textarea id="about" name="about" defaultValue={props.about} rows={4} />
-                </div>
-
-                <div>
-                    <Label htmlFor="avatar_url">Фото профиля (ссылка)</Label>
-                    <Input id="avatar_url" name="avatar_url" defaultValue={props.avatarUrl} placeholder="https://..." />
                 </div>
 
                 <div>

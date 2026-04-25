@@ -7,6 +7,9 @@ import { createSSRClient } from "@/lib/supabase/server";
 import { createServerAdminClient } from "@/lib/supabase/serverAdminClient";
 import { buildSeekerEmbeddingInput, generateEmbedding } from "@/lib/ai/embeddings";
 
+const ALLOWED_AVATAR_TYPES = ["image/png", "image/jpeg", "image/jpg", "image/webp", "image/gif"];
+const MAX_AVATAR_SIZE = 5 * 1024 * 1024;
+
 const settingsSchema = z.object({
     full_name: z.string().min(2, "Укажите имя"),
     avatar_url: z.string().url("Некорректная ссылка на фото").optional().or(z.literal("")).default(""),
@@ -108,6 +111,47 @@ export async function updatePasswordAction(input: z.infer<typeof passwordSchema>
     const supabase = await createSSRClient();
     const { error } = await supabase.auth.updateUser({ password: parsed.password });
     if (error) throw new Error(error.message);
+}
+
+export async function uploadAvatarAction(formData: FormData): Promise<{ url: string }> {
+    const supabase = await createSSRClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) throw new Error("Требуется авторизация");
+
+    const file = formData.get("file");
+    if (!(file instanceof File)) throw new Error("Файл не выбран");
+    if (file.size === 0) throw new Error("Файл пустой");
+    if (file.size > MAX_AVATAR_SIZE) throw new Error("Файл больше 5 МБ");
+    if (!ALLOWED_AVATAR_TYPES.includes(file.type)) {
+        throw new Error("Поддерживаются только PNG, JPG, WebP, GIF");
+    }
+
+    const ext = (file.name.split(".").pop() ?? "jpg").toLowerCase().replace(/[^a-z0-9]/g, "") || "jpg";
+    const path = `${user.id}/${Date.now()}-${randomBytes(4).toString("hex")}.${ext}`;
+    const arrayBuffer = await file.arrayBuffer();
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const admin = createServerAdminClient() as any;
+    const { error: uploadError } = await admin.storage
+        .from("avatars")
+        .upload(path, Buffer.from(arrayBuffer), {
+            contentType: file.type,
+            upsert: false,
+            cacheControl: "3600",
+        });
+    if (uploadError) {
+        throw new Error(uploadError.message ?? "Ошибка загрузки в хранилище");
+    }
+
+    const { data: urlData } = admin.storage.from("avatars").getPublicUrl(path);
+    const publicUrl: string = urlData?.publicUrl ?? "";
+    if (!publicUrl) throw new Error("Не удалось получить публичный URL");
+
+    await supabase.auth.updateUser({ data: { avatar_url: publicUrl } });
+
+    revalidatePath("/dashboard/settings");
+    revalidatePath("/dashboard");
+    return { url: publicUrl };
 }
 
 export async function createTelegramLinkAction(): Promise<{ url: string }> {
