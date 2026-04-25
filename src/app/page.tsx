@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, Briefcase, Sparkles, MessageCircle, MapPin, Users, ShieldCheck } from "lucide-react";
+import { ArrowRight, Briefcase, MapPin, Users, ShieldCheck } from "lucide-react";
 import { createSSRClient } from "@/lib/supabase/server";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -7,7 +7,39 @@ import { HeroMeshBackground } from "@/components/HeroMeshBackground";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { JobCard } from "@/components/JobCard";
+import { ProjectShowcase, type ProjectShowcaseItem } from "@/components/ui/project-showcase";
 import { isSupabaseBrowserConfigured } from "@/lib/supabase/public-env";
+
+const ROADMAP_ITEMS: ProjectShowcaseItem[] = [
+    {
+        title: "AI-подбор вакансий",
+        description: "Embedding-модель ранжирует вакансии под ваш профиль и навыки — без ручного поиска.",
+        badge: "01",
+        link: "/jobs",
+        image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1200&auto=format&fit=crop",
+    },
+    {
+        title: "Telegram-бот для откликов",
+        description: "Уведомления о новых вакансиях и отклики в один клик прямо в Telegram.",
+        badge: "02",
+        link: "/auth/register",
+        image: "https://images.unsplash.com/photo-1611605698335-8b1569810432?q=80&w=1200&auto=format&fit=crop",
+    },
+    {
+        title: "Только Актау",
+        description: "Фильтры по микрорайонам Актау: 1, 3А, 4А, Приморский, Koktem и другие.",
+        badge: "03",
+        link: "/jobs",
+        image: "https://images.unsplash.com/photo-1502920917128-1aa500764cbd?q=80&w=1200&auto=format&fit=crop",
+    },
+    {
+        title: "Проверенные компании",
+        description: "Верификация работодателей по BIN/IIN и значок Verified Business в карточке вакансии.",
+        badge: "04",
+        link: "/auth/register",
+        image: "https://images.unsplash.com/photo-1573164713988-8665fc963095?q=80&w=1200&auto=format&fit=crop",
+    },
+];
 
 export const metadata = {
     title: "Jumys — AI-поиск работы в Актау",
@@ -146,46 +178,8 @@ export default async function Home() {
                 </div>
             </section>
 
-            <section className="py-16 px-4">
-                <div className="max-w-6xl mx-auto">
-                    <div className="grid md:grid-cols-3 gap-6">
-                        <Card className="border border-white/45 bg-white/65 backdrop-blur-xl hover:shadow-[0_18px_45px_rgba(124,58,237,0.16)] hover:-translate-y-1 transition-all duration-200">
-                            <CardContent className="p-6">
-                                <div className="w-12 h-12 rounded-full bg-primary-100 flex items-center justify-center mb-4">
-                                    <Sparkles className="h-6 w-6 text-primary-700" />
-                                </div>
-                                <h3 className="font-semibold text-lg mb-2">AI-подбор</h3>
-                                <p className="text-gray-600 text-sm">
-                                    Вакансии ранжируются по соответствию вашим навыкам и району
-                                </p>
-                            </CardContent>
-                        </Card>
-
-                        <Card className="border border-white/45 bg-white/65 backdrop-blur-xl hover:shadow-[0_18px_45px_rgba(124,58,237,0.16)] hover:-translate-y-1 transition-all duration-200">
-                            <CardContent className="p-6">
-                                <div className="w-12 h-12 rounded-full bg-primary-100 flex items-center justify-center mb-4">
-                                    <MessageCircle className="h-6 w-6 text-primary-700" />
-                                </div>
-                                <h3 className="font-semibold text-lg mb-2">Telegram-бот</h3>
-                                <p className="text-gray-600 text-sm">
-                                    Получайте уведомления и откликайтесь в один клик из Telegram
-                                </p>
-                            </CardContent>
-                        </Card>
-
-                        <Card className="border border-white/45 bg-white/65 backdrop-blur-xl hover:shadow-[0_18px_45px_rgba(124,58,237,0.16)] hover:-translate-y-1 transition-all duration-200">
-                            <CardContent className="p-6">
-                                <div className="w-12 h-12 rounded-full bg-primary-100 flex items-center justify-center mb-4">
-                                    <MapPin className="h-6 w-6 text-primary-700" />
-                                </div>
-                                <h3 className="font-semibold text-lg mb-2">Только Актау</h3>
-                                <p className="text-gray-600 text-sm">
-                                    Фильтруйте по микрорайонам: 1, 3А, 4А, Приморский, Koktem и другим
-                                </p>
-                            </CardContent>
-                        </Card>
-                    </div>
-                </div>
+            <section className="py-10 px-4">
+                <ProjectShowcase items={ROADMAP_ITEMS} heading="Как Jumys работает" />
             </section>
 
             <section className="py-12 px-4">
