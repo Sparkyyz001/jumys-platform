@@ -3,11 +3,8 @@
 import { useState } from "react";
 import { createSPASassClient } from "@/lib/supabase/client";
 import Link from "next/link";
-import { CheckCircle } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { ArrowRight, CheckCircle } from "lucide-react";
+import { motion } from "framer-motion";
 
 export default function ForgotPasswordPage() {
     const [email, setEmail] = useState("");
@@ -35,56 +32,75 @@ export default function ForgotPasswordPage() {
 
     if (success) {
         return (
-            <Card>
-                <CardContent className="pt-6 text-center">
-                    <CheckCircle className="h-12 w-12 text-green-500 mx-auto mb-4" />
-                    <h2 className="text-xl font-semibold mb-2">Проверьте почту</h2>
-                    <p className="text-sm text-gray-600 mb-6">
-                        Мы отправили ссылку для восстановления пароля на ваш email.
-                    </p>
-                    <Link href="/auth/login" className="text-sm text-primary-700 font-medium hover:underline">
-                        Вернуться ко входу
-                    </Link>
-                </CardContent>
-            </Card>
+            <motion.div
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4 }}
+                className="text-center"
+            >
+                <CheckCircle className="h-12 w-12 text-emerald-500 mx-auto mb-4" />
+                <h2 className="text-xl font-semibold mb-2 text-white">Проверьте почту</h2>
+                <p className="text-sm text-gray-400 mb-6">
+                    Мы отправили ссылку для восстановления пароля на ваш email.
+                </p>
+                <Link
+                    href="/auth/login"
+                    className="text-sm text-blue-400 hover:text-blue-300 font-medium transition-colors"
+                >
+                    Вернуться ко входу
+                </Link>
+            </motion.div>
         );
     }
 
     return (
-        <Card>
-            <CardHeader>
-                <CardTitle>Восстановление пароля</CardTitle>
-            </CardHeader>
-            <CardContent>
-                {error && (
-                    <div className="mb-4 p-3 text-sm text-red-700 bg-red-50 rounded-md">
-                        {error}
-                    </div>
-                )}
-                <form onSubmit={handleSubmit} className="space-y-4">
-                    <div>
-                        <Label htmlFor="email">Email</Label>
-                        <Input
-                            id="email"
-                            type="email"
-                            required
-                            value={email}
-                            onChange={e => setEmail(e.target.value)}
-                        />
-                        <p className="mt-2 text-xs text-gray-500">
-                            Мы отправим ссылку для сброса пароля на указанный email
-                        </p>
-                    </div>
-                    <Button type="submit" disabled={loading} className="w-full">
-                        {loading ? "Отправка..." : "Отправить ссылку"}
-                    </Button>
-                </form>
-                <p className="mt-5 text-center text-sm text-gray-600">
-                    <Link href="/auth/login" className="text-primary-700 font-medium hover:underline">
-                        Вернуться ко входу
-                    </Link>
-                </p>
-            </CardContent>
-        </Card>
+        <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4 }}
+        >
+            <h1 className="text-2xl md:text-3xl font-bold mb-1 text-white">Восстановление пароля</h1>
+            <p className="text-gray-400 text-sm mb-6">Введите email и мы пришлём ссылку для сброса</p>
+
+            {error && (
+                <div className="mb-4 rounded-md border border-red-500/30 bg-red-500/10 p-3 text-sm text-red-300">
+                    {error}
+                </div>
+            )}
+
+            <form onSubmit={handleSubmit} className="space-y-4">
+                <div>
+                    <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-1">
+                        Email <span className="text-blue-500">*</span>
+                    </label>
+                    <input
+                        id="email"
+                        type="email"
+                        required
+                        value={email}
+                        onChange={e => setEmail(e.target.value)}
+                        placeholder="you@example.com"
+                        className="flex h-10 w-full rounded-md border border-[#2a2d3a] bg-[#13151f] px-3 py-2 text-sm text-gray-200 placeholder:text-gray-500 focus:border-blue-500 focus:outline-none transition-colors"
+                    />
+                </div>
+
+                <motion.button
+                    whileHover={{ scale: 1.01 }}
+                    whileTap={{ scale: 0.98 }}
+                    type="submit"
+                    disabled={loading}
+                    className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white py-2.5 text-sm font-medium transition-all duration-300 shadow-lg shadow-blue-500/20 disabled:opacity-60"
+                >
+                    {loading ? "Отправка..." : "Отправить ссылку"}
+                    {!loading && <ArrowRight className="h-4 w-4" />}
+                </motion.button>
+            </form>
+
+            <p className="mt-6 text-center text-sm text-gray-400">
+                <Link href="/auth/login" className="text-blue-400 hover:text-blue-300 font-medium transition-colors">
+                    Вернуться ко входу
+                </Link>
+            </p>
+        </motion.div>
     );
 }

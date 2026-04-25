@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, Briefcase, MapPin, Users, ShieldCheck } from "lucide-react";
+import { ArrowRight, Briefcase, Users, ShieldCheck } from "lucide-react";
 import { createSSRClient } from "@/lib/supabase/server";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -7,6 +7,7 @@ import { HeroMeshBackground } from "@/components/HeroMeshBackground";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { JobCard } from "@/components/JobCard";
+import { LocationTag } from "@/components/ui/location-tag";
 import { ProjectShowcase, type ProjectShowcaseItem } from "@/components/ui/project-showcase";
 import { isSupabaseBrowserConfigured } from "@/lib/supabase/public-env";
 
@@ -151,9 +152,8 @@ export default async function Home() {
             <section className="relative pt-32 pb-20 px-4 overflow-hidden">
                 <HeroMeshBackground />
                 <div className="max-w-5xl mx-auto text-center">
-                    <div className="inline-flex items-center gap-1.5 border border-white/50 bg-white/60 text-primary-700 px-3 py-1 rounded-full text-sm font-medium mb-6 shadow-sm backdrop-blur-md">
-                        <MapPin className="h-3.5 w-3.5" />
-                        Актау, Казахстан
+                    <div className="flex justify-center mb-6">
+                        <LocationTag city="Актау" country="Казахстан" timezone="+05" timeZoneIana="Asia/Aqtau" />
                     </div>
                     <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-gray-900">
                         {user ? "Работа в Актау" : "Jumys Platform: Работа в Актау для молодежи"} <br />

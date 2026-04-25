@@ -5,9 +5,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createSPASassClient } from "@/lib/supabase/client";
-import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { motion } from "framer-motion";
 
 export default function VerifyEmailPage() {
     const router = useRouter();
@@ -54,46 +52,57 @@ export default function VerifyEmailPage() {
     };
 
     return (
-        <Card>
-            <CardContent className="pt-6 text-center">
-                <CheckCircle className="h-12 w-12 text-green-500 mx-auto mb-4" />
-                <h2 className="text-xl font-semibold mb-2">Проверьте почту</h2>
-                <p className="text-sm text-gray-600 mb-6">
-                    Мы отправили письмо со ссылкой для подтверждения. Перейдите по ней, чтобы активировать аккаунт.
-                </p>
-                <p className="text-xs text-gray-500 mb-4">
-                    Эта страница обновится автоматически после подтверждения и переведёт вас в личный кабинет.
-                </p>
+        <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4 }}
+            className="text-center"
+        >
+            <CheckCircle className="h-12 w-12 text-emerald-500 mx-auto mb-4" />
+            <h2 className="text-2xl font-semibold mb-2 text-white">Проверьте почту</h2>
+            <p className="text-sm text-gray-400 mb-2">
+                Мы отправили письмо со ссылкой для подтверждения. Перейдите по ней, чтобы активировать аккаунт.
+            </p>
+            <p className="text-xs text-gray-500 mb-6">
+                Эта страница обновится автоматически после подтверждения и переведёт вас в личный кабинет.
+            </p>
 
-                <div className="border-t border-gray-200 pt-6 space-y-3 text-left">
-                    <p className="text-xs text-gray-500 text-center">
-                        Не пришло письмо? Проверьте спам или отправьте повторно:
-                    </p>
-                    {error && (
-                        <div className="text-xs text-red-700 bg-red-50 rounded-md p-2">{error}</div>
-                    )}
-                    {success && (
-                        <div className="text-xs text-green-700 bg-green-50 rounded-md p-2">
-                            Письмо отправлено повторно
-                        </div>
-                    )}
-                    <Input
-                        type="email"
-                        value={email}
-                        onChange={e => setEmail(e.target.value)}
-                        placeholder="Ваш email"
-                    />
-                    <Button onClick={resend} disabled={loading} variant="outline" className="w-full">
-                        {loading ? "Отправка..." : "Отправить повторно"}
-                    </Button>
-                </div>
+            <div className="border-t border-[#2a2d3a] pt-6 space-y-3 text-left">
+                <p className="text-xs text-gray-400 text-center">
+                    Не пришло письмо? Проверьте спам или отправьте повторно:
+                </p>
+                {error && (
+                    <div className="rounded-md border border-red-500/30 bg-red-500/10 p-2 text-xs text-red-300">
+                        {error}
+                    </div>
+                )}
+                {success && (
+                    <div className="rounded-md border border-emerald-500/30 bg-emerald-500/10 p-2 text-xs text-emerald-300">
+                        Письмо отправлено повторно
+                    </div>
+                )}
+                <input
+                    type="email"
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
+                    placeholder="Ваш email"
+                    className="flex h-10 w-full rounded-md border border-[#2a2d3a] bg-[#13151f] px-3 py-2 text-sm text-gray-200 placeholder:text-gray-500 focus:border-blue-500 focus:outline-none transition-colors"
+                />
+                <button
+                    type="button"
+                    onClick={resend}
+                    disabled={loading}
+                    className="w-full inline-flex h-10 items-center justify-center gap-2 rounded-lg border border-[#2a2d3a] bg-[#13151f] hover:bg-[#1a1d2b] text-sm font-medium text-gray-200 transition-all disabled:opacity-50"
+                >
+                    {loading ? "Отправка..." : "Отправить повторно"}
+                </button>
+            </div>
 
-                <div className="mt-6 pt-4 border-t border-gray-200">
-                    <Link href="/auth/login" className="text-sm text-primary-700 font-medium hover:underline">
-                        Вернуться ко входу
-                    </Link>
-                </div>
-            </CardContent>
-        </Card>
+            <div className="mt-6 pt-4 border-t border-[#2a2d3a]">
+                <Link href="/auth/login" className="text-sm text-blue-400 hover:text-blue-300 font-medium transition-colors">
+                    Вернуться ко входу
+                </Link>
+            </div>
+        </motion.div>
     );
 }
