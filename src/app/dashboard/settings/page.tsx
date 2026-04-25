@@ -4,6 +4,7 @@ import { ArrowRight, Check, Crown, ShieldCheck, Sparkles, User } from "lucide-re
 import { getCurrentFullProfile } from "@/lib/profile";
 import { createSSRClient } from "@/lib/supabase/server";
 import { SettingsForm } from "./form";
+import { EmojiRating } from "@/components/ui/emoji-rating";
 
 export const metadata = { title: "Настройки — Jumys" };
 export const dynamic = "force-dynamic";
@@ -223,14 +224,19 @@ export default async function SettingsPage({
                         </div>
                     </div>
 
-                    <div className="rounded-xl border border-white/10 bg-white/5 backdrop-blur-xl p-5 text-sm text-gray-400">
-                        <p className="font-semibold text-white mb-2">Как работает «выход в ТОП»</p>
-                        <ul className="space-y-1.5 list-disc list-inside marker:text-blue-400">
-                            <li>Ваша вакансия закрепляется первой в списке /jobs.</li>
-                            <li>AI-рекомендации поднимают её в выдаче.</li>
-                            <li>Бейдж ⚡ повышает CTR ~1.8×.</li>
-                            <li>Push в Telegram-боте по подходящим соискателям.</li>
-                        </ul>
+                    <div className="grid md:grid-cols-2 gap-4">
+                        <div className="rounded-xl glass-card-strong p-5 text-sm text-gray-400">
+                            <p className="font-semibold text-white mb-2">Как работает «выход в ТОП»</p>
+                            <ul className="space-y-1.5 list-disc list-inside marker:text-blue-400">
+                                <li>Ваша вакансия закрепляется первой в списке /jobs.</li>
+                                <li>AI-рекомендации поднимают её в выдаче.</li>
+                                <li>Бейдж ⚡ повышает CTR ~1.8×.</li>
+                                <li>Push в Telegram-боте по подходящим соискателям.</li>
+                            </ul>
+                        </div>
+                        <div className="rounded-xl glass-card-strong p-5">
+                            <EmojiRating label="Оцените Jumys — мы читаем каждый отзыв" />
+                        </div>
                     </div>
                 </div>
             )}

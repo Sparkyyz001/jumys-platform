@@ -56,7 +56,7 @@ export function DashboardNav({ role, email, name }: DashboardNavProps) {
     return (
         <>
             {/* Mobile header */}
-            <div className="lg:hidden sticky top-0 z-40 border-b border-white/10 bg-[#0b1326]/80 backdrop-blur-xl">
+            <div className="lg:hidden sticky top-0 z-40 border-b border-white/10 bg-[#020617]/70 backdrop-blur-xl">
                 <div className="px-4 py-3 flex items-center justify-between">
                     <Link
                         href="/"
@@ -92,7 +92,7 @@ export function DashboardNav({ role, email, name }: DashboardNavProps) {
             </div>
 
             {/* Desktop sidebar - sticky on scroll */}
-            <aside className="hidden lg:flex w-64 shrink-0 border-r border-white/10 bg-[#0a1224]/80 backdrop-blur-xl flex-col sticky top-0 h-screen">
+            <aside className="hidden lg:flex w-64 shrink-0 border-r border-white/10 bg-[#020617]/55 backdrop-blur-xl flex-col sticky top-0 h-screen">
                 <div className="h-16 flex items-center px-6 border-b border-white/10">
                     <Link
                         href="/"

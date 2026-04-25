@@ -16,7 +16,7 @@ const Section = ({ title, children }: { title: string; children: React.ReactNode
 
 export default function TermsPage() {
     return (
-        <div className="dark min-h-screen bg-gradient-to-br from-[#0b1326] via-[#0d172e] to-[#101e3a] text-white">
+        <div className="dark min-h-screen relative text-white isolate">
             <div className="max-w-3xl mx-auto px-4 py-12">
                 <Link
                     href="/"
