@@ -3,6 +3,7 @@ import { JobCard } from "@/components/JobCard";
 import { ProjectShowcase, type ProjectShowcaseItem } from "@/components/ui/project-showcase";
 import { LandingNav } from "@/components/LandingNav";
 import { LandingHero } from "@/components/LandingHero";
+import { LandingFooter } from "@/components/LandingFooter";
 import {
     LandingFeatures,
     LandingFinalCTA,
@@ -166,40 +167,7 @@ export default async function Home() {
             )}
 
             <LandingFinalCTA />
-
-            <footer className="py-10 text-sm text-gray-500 border-t border-white/10 bg-white/[0.02]">
-                <div className="max-w-7xl mx-auto px-4 grid gap-6 md:grid-cols-3">
-                    <div>
-                        <p className="font-semibold text-white">Jumys Platform</p>
-                        <p className="mt-2">© {new Date().getFullYear()} AI-поиск работы в Актау</p>
-                    </div>
-                    <div>
-                        <p className="font-semibold text-white">Our Team</p>
-                        <p className="mt-2">Product Lead - Hackathon Strategy</p>
-                        <p>Full-stack Dev - Platform &amp; AI Matching</p>
-                        <p>UX Engineer - Mobile-first Interface</p>
-                    </div>
-                    <div>
-                        <p className="font-semibold text-white">Support Contacts</p>
-                        <a
-                            href="https://t.me/jumys_support"
-                            target="_blank"
-                            rel="noreferrer"
-                            className="block mt-2 text-blue-400 hover:underline"
-                        >
-                            Telegram: @jumys_support
-                        </a>
-                        <a
-                            href="https://wa.me/"
-                            target="_blank"
-                            rel="noreferrer"
-                            className="block text-emerald-400 hover:underline"
-                        >
-                            WhatsApp Support
-                        </a>
-                    </div>
-                </div>
-            </footer>
+            <LandingFooter />
         </div>
     );
 }

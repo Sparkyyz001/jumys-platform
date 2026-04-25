@@ -61,7 +61,7 @@ export default async function DashboardHome() {
                 <h1 className="text-3xl font-bold">
                     Привет, {data.profile.full_name?.split(" ")[0] ?? "друг"}!
                 </h1>
-                <p className="text-gray-600 mt-1">
+                <p className="text-muted-foreground mt-1">
                     {isEmployer
                         ? "Управляйте вакансиями и откликами"
                         : "Откликайтесь на вакансии в Актау"}

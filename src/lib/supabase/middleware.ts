@@ -50,11 +50,21 @@ export async function updateSession(request: NextRequest) {
         }
 
         const isProtected = PROTECTED_PREFIXES.some((p) => pathname.startsWith(p))
+        const isAuthPage =
+            pathname === '/auth/login' ||
+            pathname === '/auth/register' ||
+            pathname === '/auth/forgot-password'
 
         if (!userData?.user && isProtected) {
             const url = request.nextUrl.clone()
             url.pathname = '/auth/login'
             url.searchParams.set('next', pathname)
+            return NextResponse.redirect(url)
+        }
+
+        if (userData?.user && isAuthPage) {
+            const url = request.nextUrl.clone()
+            url.pathname = '/dashboard'
             return NextResponse.redirect(url)
         }
 

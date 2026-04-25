@@ -7,6 +7,9 @@ export const dynamic = "force-dynamic";
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
     const data = await getCurrentFullProfile();
     if (!data) redirect("/auth/login");
+    if (!data.user.email_confirmed) {
+        redirect("/auth/verify-email");
+    }
 
     if (!data.profile || !data.profile.role) {
         redirect("/onboarding/role");
@@ -22,13 +25,13 @@ export default async function DashboardLayout({ children }: { children: React.Re
     }
 
     return (
-        <div className="min-h-screen bg-gray-50 flex w-full overflow-x-hidden">
+        <div className="dark min-h-screen bg-gradient-to-br from-[#060818] via-[#0a0d20] to-[#0d1023] text-white flex w-full overflow-x-hidden">
             <DashboardNav
                 role={data.profile.role}
                 email={data.user.email}
                 name={data.profile.full_name}
             />
-            <main className="flex-1 min-w-0">
+            <main className="flex-1 min-w-0 lg:h-screen lg:overflow-y-auto">
                 <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                     {children}
                 </div>

@@ -26,6 +26,12 @@ export function LandingNav({ signedIn }: LandingNavProps) {
                         Jumys
                     </Link>
                     <div className="flex items-center gap-2 sm:gap-3">
+                        <Link
+                            href="/pricing"
+                            className="hidden md:inline-flex items-center text-sm text-gray-300 hover:text-white px-3 py-1.5 rounded-md hover:bg-white/10 transition-colors"
+                        >
+                            {t("pricing")}
+                        </Link>
                         <ThemeToggle />
                         <LanguageSwitcher />
                         {signedIn ? (

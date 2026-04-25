@@ -134,6 +134,3 @@ nextjs/scripts/seed.ts
 
 **Очередь уведомлений.** При публикации вакансии `enqueueJobMatchNotifications` сохраняет в `notifications` топ-N соискателей с similarity ≥ 0.6. Крон-эндпоинт раз в минуту рассылает pending-уведомления батчами. Это защищает от рейт-лимитов Telegram и даёт retry out of the box.
 
-## Credits
-
-Форк шаблона [Razikus/supabase-nextjs-template](https://github.com/Razikus/supabase-nextjs-template) (Apache 2.0). Большая часть боилерплейта Supabase + Next.js Auth взята оттуда; домен job-board, AI-матчинг и Telegram-бот — Jumys.

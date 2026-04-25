@@ -2,7 +2,7 @@ import { createSSRClient } from "@/lib/supabase/server";
 import type { Profile, EmployerProfile, SeekerProfile } from "@/lib/types";
 
 export interface FullProfile {
-    user: { id: string; email: string | null };
+    user: { id: string; email: string | null; email_confirmed: boolean };
     profile: Profile | null;
     employer: EmployerProfile | null;
     seeker: SeekerProfile | null;
@@ -40,7 +40,11 @@ export async function getCurrentFullProfile(): Promise<FullProfile | null> {
     }
 
     return {
-        user: { id: user.id, email: user.email ?? null },
+        user: {
+            id: user.id,
+            email: user.email ?? null,
+            email_confirmed: Boolean(user.email_confirmed_at ?? user.confirmed_at),
+        },
         profile: profileRow ?? null,
         employer,
         seeker,

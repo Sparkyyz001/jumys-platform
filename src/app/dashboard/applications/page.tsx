@@ -75,7 +75,7 @@ export default async function ApplicationsPage() {
                     <Card>
                         <CardContent className="p-0 overflow-x-auto">
                             <table className="w-full text-sm">
-                                <thead className="border-b bg-gray-50 text-gray-700">
+                                <thead className="border-b border-border bg-muted/50 text-muted-foreground">
                                     <tr>
                                         <th className="text-left px-4 py-3 font-medium">Кандидат</th>
                                         <th className="text-left px-4 py-3 font-medium">Вакансия</th>
@@ -89,7 +89,7 @@ export default async function ApplicationsPage() {
                                     {applications.map(a => {
                                         const seeker = seekerById.get(a.seeker_id);
                                         return (
-                                            <tr key={a.id} className="border-b hover:bg-gray-50">
+                                            <tr key={a.id} className="border-b border-border hover:bg-muted/30">
                                                 <td className="px-4 py-3">
                                                     <div className="font-medium">
                                                         {seeker?.full_name ?? "Без имени"}

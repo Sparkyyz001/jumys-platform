@@ -4,7 +4,7 @@ import { createSSRClient } from "@/lib/supabase/server";
 import { JOB_CATEGORIES, EMPLOYMENT_TYPES } from "@/lib/constants";
 import { JobCard } from "@/components/JobCard";
 import { Card, CardContent } from "@/components/ui/card";
-import { Briefcase } from "lucide-react";
+import { Briefcase, Map as MapIcon } from "lucide-react";
 
 export const metadata = { title: "Вакансии в Актау — Jumys" };
 export const dynamic = "force-dynamic";
@@ -95,9 +95,18 @@ export default async function JobsListPage({
 
     return (
         <div className="max-w-7xl mx-auto px-4 py-8">
-            <div className="mb-6">
-                <h1 className="text-3xl font-bold">Вакансии в Актау</h1>
-                <p className="text-gray-600 mt-1">Найдено: {total}</p>
+            <div className="mb-6 flex items-end justify-between flex-wrap gap-3">
+                <div>
+                    <h1 className="text-3xl font-bold">Вакансии в Актау</h1>
+                    <p className="text-gray-600 mt-1">Найдено: {total}</p>
+                </div>
+                <Link
+                    href="/jobs/map"
+                    className="inline-flex items-center gap-2 rounded-md border border-primary-200 bg-primary-50 px-3 py-2 text-sm font-medium text-primary-700 hover:bg-primary-100 transition-colors"
+                >
+                    <MapIcon className="h-4 w-4" />
+                    На карте
+                </Link>
             </div>
 
             {topRows.length > 0 && (

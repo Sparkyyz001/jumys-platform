@@ -29,7 +29,23 @@ type I18nKey =
     | "ctaReady"
     | "ctaReadyDesc"
     | "createAccount"
-    | "howItWorks";
+    | "howItWorks"
+    | "navOverview"
+    | "navMyJobs"
+    | "navApplications"
+    | "navMatches"
+    | "navMyApps"
+    | "navSupport"
+    | "logout"
+    | "employer"
+    | "seeker"
+    | "user"
+    | "mapView"
+    | "listView"
+    | "pricing"
+    | "boostJob"
+    | "privacy"
+    | "terms";
 
 const translations: Record<Lang, Record<I18nKey, string>> = {
     kk: {
@@ -60,6 +76,22 @@ const translations: Record<Lang, Record<I18nKey, string>> = {
         ctaReadyDesc: "Тіркелу тегін, профиль толтырылғаннан кейін бірден алғашқы ұсыныс пайда болады",
         createAccount: "Аккаунт құру",
         howItWorks: "Jumys қалай жұмыс істейді",
+        navOverview: "Шолу",
+        navMyJobs: "Менің вакансияларым",
+        navApplications: "Өтінімдер",
+        navMatches: "Ұсыныс",
+        navMyApps: "Менің өтінімдерім",
+        navSupport: "Қолдау",
+        logout: "Шығу",
+        employer: "Жұмыс беруші",
+        seeker: "Үміткер",
+        user: "Қолданушы",
+        mapView: "Картада көру",
+        listView: "Тізіммен",
+        pricing: "Тарифтер",
+        boostJob: "Топқа шығару",
+        privacy: "Құпиялылық саясаты",
+        terms: "Пайдалану шарттары",
     },
     ru: {
         findJob: "Найти работу",
@@ -89,6 +121,22 @@ const translations: Record<Lang, Record<I18nKey, string>> = {
         ctaReadyDesc: "Регистрация бесплатна, первая подборка появится сразу после заполнения профиля",
         createAccount: "Создать аккаунт",
         howItWorks: "Как Jumys работает",
+        navOverview: "Обзор",
+        navMyJobs: "Мои вакансии",
+        navApplications: "Отклики",
+        navMatches: "Подборка",
+        navMyApps: "Мои отклики",
+        navSupport: "Поддержка",
+        logout: "Выйти",
+        employer: "Работодатель",
+        seeker: "Соискатель",
+        user: "Пользователь",
+        mapView: "На карте",
+        listView: "Списком",
+        pricing: "Тарифы",
+        boostJob: "Поднять в топ",
+        privacy: "Политика конфиденциальности",
+        terms: "Условия использования",
     },
     en: {
         findJob: "Find Job",
@@ -118,6 +166,22 @@ const translations: Record<Lang, Record<I18nKey, string>> = {
         ctaReadyDesc: "Registration is free, the first match appears right after you fill in your profile",
         createAccount: "Create account",
         howItWorks: "How Jumys works",
+        navOverview: "Overview",
+        navMyJobs: "My jobs",
+        navApplications: "Applications",
+        navMatches: "Matches",
+        navMyApps: "My applications",
+        navSupport: "Support",
+        logout: "Sign out",
+        employer: "Employer",
+        seeker: "Seeker",
+        user: "User",
+        mapView: "Map view",
+        listView: "List view",
+        pricing: "Pricing",
+        boostJob: "Boost to top",
+        privacy: "Privacy policy",
+        terms: "Terms of use",
     },
 };
 
