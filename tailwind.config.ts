@@ -78,27 +78,6 @@ const config: Config = {
   		},
   		fontFamily: {
   			sans: ['var(--font-sans)', 'system-ui', 'sans-serif']
-  		},
-  		keyframes: {
-  			'grid-drift': {
-  				'0%': { backgroundPosition: '0px 0px' },
-  				'100%': { backgroundPosition: '40px 40px' }
-  			},
-  			'shine': {
-  				'0%': { backgroundPosition: '200% 0' },
-  				'100%': { backgroundPosition: '-200% 0' }
-  			},
-  			'aurora': {
-  				'0%': { transform: 'translate(0%, 0%) scale(1)' },
-  				'33%': { transform: 'translate(15%, -10%) scale(1.1)' },
-  				'66%': { transform: 'translate(-10%, 8%) scale(0.95)' },
-  				'100%': { transform: 'translate(0%, 0%) scale(1)' }
-  			}
-  		},
-  		animation: {
-  			'grid-drift': 'grid-drift 60s linear infinite',
-  			'shine': 'shine 8s linear infinite',
-  			'aurora': 'aurora 18s ease-in-out infinite'
   		}
   	}
   },

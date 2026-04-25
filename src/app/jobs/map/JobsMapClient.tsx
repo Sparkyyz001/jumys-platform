@@ -2,7 +2,6 @@
 
 import { useState, useMemo, useCallback, memo, useEffect } from "react";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
 import {
     Map,
     MapMarker,
@@ -168,11 +167,7 @@ export function JobsMapClient({ items }: JobsMapClientProps) {
     return (
         <div className="space-y-3">
             {/* District filter panel - glassmorphism */}
-            <motion.div
-                initial={{ opacity: 0, y: -8 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="rounded-xl glass-card-strong p-3"
-            >
+            <div className="rounded-xl glass-card-strong p-3">
                 <div className="flex items-center justify-between gap-3 mb-2 flex-wrap">
                     <div className="flex items-center gap-2 text-sm font-semibold">
                         <MapPin className="h-4 w-4 text-blue-400" />
@@ -205,7 +200,7 @@ export function JobsMapClient({ items }: JobsMapClientProps) {
                         onSelect={handleSelectDistrict}
                     />
                 </div>
-            </motion.div>
+            </div>
 
             <div className="relative h-[calc(100vh-260px)] min-h-[480px] w-full rounded-xl overflow-hidden border border-white/10 bg-[#0a0d20]">
                 <Map
@@ -234,12 +229,9 @@ export function JobsMapClient({ items }: JobsMapClientProps) {
                                                 : j.verified
                                                     ? "h-4 w-4 bg-emerald-500 ring-2 ring-emerald-500/30"
                                                     : "h-4 w-4 bg-blue-500 ring-2 ring-blue-500/20"
-                                        } shadow-lg transition-all`}
+                                        } shadow-md`}
                                     >
                                         <span className="absolute inset-0 rounded-full border-2 border-white" />
-                                        {j.verified && !isSelected && (
-                                            <span className="absolute inset-0 rounded-full animate-ping bg-emerald-500/40" />
-                                        )}
                                     </div>
                                 </MarkerContent>
                                 <MarkerTooltip>{j.title}</MarkerTooltip>
@@ -326,21 +318,16 @@ export function JobsMapClient({ items }: JobsMapClientProps) {
                     </CardContent>
                 </Card>
 
-                <AnimatePresence>
-                    {districtFilter && (
-                        <motion.button
-                            type="button"
-                            initial={{ opacity: 0, y: -10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: -10 }}
-                            onClick={() => setDistrictFilter(null)}
-                            className="absolute top-3 right-3 z-10 inline-flex items-center gap-1.5 rounded-md bg-blue-500/90 hover:bg-blue-500 text-white text-xs font-medium px-3 py-2 backdrop-blur-md shadow-lg shadow-blue-500/30 transition-colors"
-                        >
-                            <X className="h-3.5 w-3.5" />
-                            Сбросить фильтр
-                        </motion.button>
-                    )}
-                </AnimatePresence>
+                {districtFilter && (
+                    <button
+                        type="button"
+                        onClick={() => setDistrictFilter(null)}
+                        className="absolute top-3 right-3 z-10 inline-flex items-center gap-1.5 rounded-md bg-blue-500/90 hover:bg-blue-500 text-white text-xs font-medium px-3 py-2 shadow-lg shadow-blue-500/30 transition-colors"
+                    >
+                        <X className="h-3.5 w-3.5" />
+                        Сбросить фильтр
+                    </button>
+                )}
             </div>
         </div>
     );

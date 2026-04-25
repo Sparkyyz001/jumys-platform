@@ -5,9 +5,9 @@ import { MeshGridBackground } from "@/components/ui/mesh-grid-bg";
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
     return (
-        <div className="min-h-screen w-full relative flex items-center justify-center p-4 isolate overflow-hidden">
+        <div className="min-h-screen w-full relative flex items-center justify-center p-4 overflow-hidden">
             <MeshGridBackground intensity="default" />
-            <div className="relative z-10 w-full max-w-5xl rounded-2xl overflow-hidden flex bg-[#090b13]/90 backdrop-blur-xl text-white shadow-2xl ring-1 ring-white/10">
+            <div className="relative z-0 w-full max-w-5xl rounded-2xl overflow-hidden flex bg-[#090b13] text-white shadow-2xl ring-1 ring-white/10">
                 <div className="hidden md:block md:w-1/2 relative overflow-hidden border-r border-[#1f2130] min-h-[640px]">
                     <div className="absolute inset-0 bg-gradient-to-br from-[#0f1120] to-[#151929]">
                         <DotMapBackground />

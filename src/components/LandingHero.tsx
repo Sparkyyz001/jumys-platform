@@ -19,37 +19,32 @@ export function LandingHero({ signedIn }: LandingHeroProps) {
     return (
         <section className="relative pt-32 pb-20 px-4 overflow-hidden isolate">
             <AnimatedGridLayer />
-            <div className="pointer-events-none absolute inset-0 -z-10 opacity-30">
+            <div className="pointer-events-none absolute inset-0 -z-10 opacity-25">
                 <DotMapBackground />
             </div>
             <div
                 aria-hidden
-                className="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 h-[560px] w-[820px] rounded-full bg-gradient-to-r from-blue-600/35 via-indigo-500/30 to-purple-500/25 blur-[120px] -z-10 animate-aurora"
+                className="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 h-[480px] w-[680px] rounded-full bg-gradient-to-r from-blue-600/25 via-indigo-500/20 to-purple-500/15 blur-[80px] -z-10"
             />
 
             <motion.div
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
                 className="max-w-5xl mx-auto text-center"
             >
                 <div className="flex justify-center mb-6">
                     <LocationTag city="Актау" country="Казахстан" timezone="+05" timeZoneIana="Asia/Aqtau" />
                 </div>
 
-                <motion.span
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.1, duration: 0.4 }}
-                    className="inline-flex items-center gap-1.5 mb-5 px-3 py-1 rounded-full text-[11px] font-medium glass-card-strong text-blue-300"
-                >
+                <span className="inline-flex items-center gap-1.5 mb-5 px-3 py-1 rounded-full text-[11px] font-medium glass-card-strong text-blue-300">
                     <Sparkles className="h-3 w-3" />
                     AI-матчинг · Telegram · 39 микрорайонов Актау
-                </motion.span>
+                </span>
 
                 <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-white leading-[1.05]">
                     {t("heroTitle")} <br />
-                    <span className="bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400 bg-clip-text text-transparent bg-[length:200%_auto] animate-shine">
+                    <span className="bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400 bg-clip-text text-transparent">
                         {t("heroTitleAccent")}
                     </span>
                 </h1>
@@ -72,7 +67,7 @@ export function LandingHero({ signedIn }: LandingHeroProps) {
                         <Button
                             variant="outline"
                             size="lg"
-                            className="bg-white/5 border-white/15 text-white hover:bg-white/10 hover:text-white backdrop-blur-md"
+                            className="bg-white/5 border-white/15 text-white hover:bg-white/10 hover:text-white"
                         >
                             {t("ctaBrowseJobs")}
                         </Button>

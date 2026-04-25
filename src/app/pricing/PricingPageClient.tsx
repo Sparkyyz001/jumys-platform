@@ -73,8 +73,8 @@ export function PricingPageClient({ signedIn }: { signedIn: boolean }) {
     };
 
     return (
-        <div className="dark min-h-screen relative text-white isolate">
-            <div className="max-w-6xl mx-auto px-4 py-10 relative z-10">
+        <div className="dark min-h-screen relative text-white">
+            <div className="max-w-6xl mx-auto px-4 py-10">
                 <Link
                     href="/"
                     className="inline-flex items-center text-xs text-gray-400 hover:text-white transition-colors mb-4"

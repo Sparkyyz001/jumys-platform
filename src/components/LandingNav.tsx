@@ -14,7 +14,7 @@ export function LandingNav({ signedIn }: LandingNavProps) {
     const { t } = useI18n();
 
     return (
-        <nav className="fixed top-0 w-full bg-[#020617]/60 backdrop-blur-xl z-50 border-b border-white/10 shadow-[0_1px_0_rgba(255,255,255,0.04)_inset]">
+        <nav className="fixed top-0 w-full bg-[#020617]/85 backdrop-blur-md z-50 border-b border-white/10">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between h-16 items-center">
                     <Link

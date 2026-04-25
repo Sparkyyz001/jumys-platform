@@ -58,8 +58,8 @@ export default async function JobsMapPage() {
     }));
 
     return (
-        <div className="dark min-h-screen relative text-white isolate">
-            <div className="max-w-7xl mx-auto px-4 py-6 relative z-10">
+        <div className="dark min-h-screen relative text-white">
+            <div className="max-w-7xl mx-auto px-4 py-6">
                 <div className="flex items-end justify-between flex-wrap gap-3 mb-4">
                     <div>
                         <Link

@@ -342,55 +342,37 @@
     }
 }
 
-/* === Premium dark mesh background applied globally to .dark scopes === */
+/* === Solid dark base. Mesh blobs are rendered ONCE via <MeshGridBackground/>
+       so we don't trigger expensive repaints with attachment:fixed. === */
 .dark body,
-.dark.min-h-screen,
-.dark .has-mesh,
 body.dark-mesh-root {
     background-color: #020617;
-    background-image:
-        radial-gradient(at 18% 22%, rgba(56, 189, 248, 0.18) 0px, transparent 55%),
-        radial-gradient(at 82% 80%, rgba(99, 102, 241, 0.22) 0px, transparent 55%),
-        radial-gradient(at 78% 12%, rgba(168, 85, 247, 0.16) 0px, transparent 55%),
-        radial-gradient(at 12% 78%, rgba(34, 211, 238, 0.10) 0px, transparent 55%);
-    background-attachment: fixed;
 }
 
-/* Subtle grid pattern overlay reused via .grid-pattern class */
+/* Static grid pattern (no animation -> no lag) */
 .grid-pattern {
     background-image:
-        linear-gradient(rgba(148, 163, 184, 0.06) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(148, 163, 184, 0.06) 1px, transparent 1px);
-    background-size: 40px 40px;
+        linear-gradient(rgba(148, 163, 184, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(148, 163, 184, 0.05) 1px, transparent 1px);
+    background-size: 44px 44px;
     background-position: -1px -1px;
 }
 
-/* Subtle grain on hero blocks for depth */
-.noise-texture::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
-    background-size: 3px 3px;
-    opacity: 0.6;
-}
-
-/* Glassmorphism utility */
+/* Glassmorphism utility — moderate blur (not blur(20px)+) to keep it cheap */
 .glass-card {
-    background: rgba(255, 255, 255, 0.03);
-    backdrop-filter: blur(20px) saturate(140%);
-    -webkit-backdrop-filter: blur(20px) saturate(140%);
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(10px) saturate(130%);
+    -webkit-backdrop-filter: blur(10px) saturate(130%);
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 1rem;
 }
 .glass-card-strong {
     background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
-    backdrop-filter: blur(24px) saturate(160%);
-    -webkit-backdrop-filter: blur(24px) saturate(160%);
+    backdrop-filter: blur(12px) saturate(140%);
+    -webkit-backdrop-filter: blur(12px) saturate(140%);
     border: 1px solid rgba(255, 255, 255, 0.12);
     border-radius: 1rem;
-    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06) inset, 0 30px 60px -20px rgba(2, 6, 23, 0.6);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06) inset, 0 20px 40px -20px rgba(2, 6, 23, 0.5);
 }
 
 /* Smooth scrollbar in dark areas */
@@ -402,7 +384,13 @@ body.dark-mesh-root {
 }
 .dark *::-webkit-scrollbar-thumb:hover { background: rgba(148, 163, 184, 0.32); }
 
-/* Reduce motion for users who prefer it */
+/* Force GPU layer for mesh blobs to avoid scroll repaints */
+.gpu-layer {
+    transform: translate3d(0, 0, 0);
+    will-change: auto;
+}
+
+/* Respect reduced-motion globally */
 @media (prefers-reduced-motion: reduce) {
-    * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    * { animation: none !important; transition: none !important; }
 }

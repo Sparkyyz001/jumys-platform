@@ -118,9 +118,8 @@ export default async function Home() {
     const signedIn = Boolean(user);
 
     return (
-        <div className="dark min-h-screen relative text-white isolate overflow-x-hidden">
+        <div className="dark min-h-screen relative text-white overflow-x-hidden">
             <MeshGridBackground intensity="default" />
-            <div className="relative z-10">
             <LandingNav signedIn={signedIn} />
 
             <LandingHero signedIn={signedIn} />
@@ -171,7 +170,6 @@ export default async function Home() {
 
             <LandingFinalCTA />
             <LandingFooter />
-            </div>
         </div>
     );
 }

@@ -16,7 +16,7 @@ const Section = ({ title, children }: { title: string; children: React.ReactNode
 
 export default function PrivacyPage() {
     return (
-        <div className="dark min-h-screen relative text-white isolate">
+        <div className="dark min-h-screen relative text-white">
             <div className="max-w-3xl mx-auto px-4 py-12">
                 <Link
                     href="/"
