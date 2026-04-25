@@ -66,6 +66,16 @@ if (bot) {
                 return;
             }
 
+            // Сначала отвязываем chatId от любого другого профиля (UNIQUE constraint)
+            const { error: clearError } = await admin
+                .from("profiles")
+                .update({ telegram_chat_id: null })
+                .eq("telegram_chat_id", chatId)
+                .neq("id", profile.id);
+            if (clearError) {
+                console.error("clear previous telegram_chat_id failed", clearError);
+            }
+
             const { error } = await admin
                 .from("profiles")
                 .update({
@@ -77,7 +87,11 @@ if (bot) {
 
             if (error) {
                 console.error("link by token failed", error);
-                await ctx.reply("Не удалось завершить привязку Telegram. Попробуйте снова.");
+                const detail = (error as { message?: string }).message ?? "";
+                await ctx.reply(
+                    `Не удалось завершить привязку Telegram: ${detail || "DB error"}. ` +
+                    "Попробуйте сгенерировать новую ссылку в настройках профиля."
+                );
                 return;
             }
 
@@ -120,6 +134,15 @@ if (bot) {
         }
 
         const admin = adminClient();
+        const { error: clearError } = await admin
+            .from("profiles")
+            .update({ telegram_chat_id: null })
+            .eq("telegram_chat_id", chatId)
+            .neq("id", profileId);
+        if (clearError) {
+            console.error("clear previous telegram_chat_id failed", clearError);
+        }
+
         const { error } = await admin
             .from("profiles")
             .update({ telegram_chat_id: chatId })
@@ -127,7 +150,11 @@ if (bot) {
 
         if (error) {
             console.error("link telegram failed", error);
-            await ctx.reply("Не удалось привязать Telegram. Попробуйте ещё раз позже.");
+            const detail = (error as { message?: string }).message ?? "";
+            await ctx.reply(
+                `Не удалось привязать Telegram: ${detail || "DB error"}. ` +
+                "Если ошибка повторяется — напишите в /support."
+            );
             return;
         }
 
