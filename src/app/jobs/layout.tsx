@@ -4,7 +4,6 @@ import { createSSRClient } from "@/lib/supabase/server";
 import { Button } from "@/components/ui/button";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { DashboardNav } from "@/components/DashboardNav";
-import { ThemeToggle } from "@/components/theme-toggle";
 
 export const dynamic = "force-dynamic";
 
@@ -25,7 +24,6 @@ export default async function JobsLayout({ children }: { children: React.ReactNo
                         Jumys
                     </Link>
                     <nav className="flex items-center gap-4">
-                        <ThemeToggle />
                         <LanguageSwitcher />
                         {user ? (
                             <>

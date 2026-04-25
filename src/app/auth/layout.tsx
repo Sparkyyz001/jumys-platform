@@ -4,7 +4,7 @@ import { DotMapBackground } from "@/components/ui/dot-map-background";
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
     return (
-        <div className="min-h-screen w-full flex items-center justify-center bg-gradient-to-br from-[#060818] to-[#0d1023] p-4">
+        <div className="min-h-screen w-full flex items-center justify-center bg-gradient-to-br from-[#0b1326] to-[#101e3a] p-4">
             <div className="w-full max-w-5xl rounded-2xl overflow-hidden flex bg-[#090b13] text-white shadow-2xl ring-1 ring-white/10">
                 <div className="hidden md:block md:w-1/2 relative overflow-hidden border-r border-[#1f2130] min-h-[640px]">
                     <div className="absolute inset-0 bg-gradient-to-br from-[#0f1120] to-[#151929]">

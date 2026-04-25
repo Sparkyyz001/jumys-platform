@@ -25,7 +25,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
     }
 
     return (
-        <div className="dark min-h-screen bg-gradient-to-br from-[#060818] via-[#0a0d20] to-[#0d1023] text-white flex w-full overflow-x-hidden">
+        <div className="dark min-h-screen bg-gradient-to-br from-[#0b1326] via-[#0d172e] to-[#101e3a] text-white flex w-full overflow-x-hidden">
             <DashboardNav
                 role={data.profile.role}
                 email={data.user.email}

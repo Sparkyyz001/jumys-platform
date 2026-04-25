@@ -1,12 +1,51 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ArrowRight, Check, Crown, ShieldCheck, Sparkles, User } from "lucide-react";
 import { getCurrentFullProfile } from "@/lib/profile";
 import { createSSRClient } from "@/lib/supabase/server";
 import { SettingsForm } from "./form";
 
 export const metadata = { title: "Настройки — Jumys" };
 export const dynamic = "force-dynamic";
+
+type Tab = "profile" | "verification" | "subscription";
+
+const PLAN_FEATURES: Record<"free" | "boost" | "pro", { label: string; price: string; features: string[]; badge?: string; accent: string; }> = {
+    free: {
+        label: "Free",
+        price: "0 ₸/мес",
+        accent: "from-slate-500/20 to-slate-700/20",
+        features: [
+            "До 3 активных вакансий",
+            "AI-рекомендации",
+            "Telegram-уведомления",
+        ],
+    },
+    boost: {
+        label: "Boost",
+        price: "4 990 ₸/мес",
+        badge: "Топ",
+        accent: "from-blue-500/30 to-indigo-600/30",
+        features: [
+            "1 вакансия в ТОПе на 7 дней",
+            "Приоритет в AI-выдаче",
+            "Бейдж ⚡ в карточке",
+            "До 6× больше откликов",
+        ],
+    },
+    pro: {
+        label: "Pro",
+        price: "14 990 ₸/мес",
+        badge: "Лучшее",
+        accent: "from-amber-500/30 to-rose-500/30",
+        features: [
+            "Безлимит вакансий",
+            "Все вакансии в ТОПе",
+            "Verified Business",
+            "Расширенная аналитика",
+        ],
+    },
+};
 
 export default async function SettingsPage({
     searchParams,
@@ -26,37 +65,50 @@ export default async function SettingsPage({
     const companyDescription = companyType.replace(/\s*\|\s*BIN\/IIN:[A-Za-z0-9-]+/i, "").trim();
     const params = await searchParams;
     const tabRaw = params.tab;
-    const tab = (tabRaw === "verification" || tabRaw === "subscription" ? tabRaw : "profile") as "profile" | "verification" | "subscription";
+    const tab: Tab = (tabRaw === "verification" || tabRaw === "subscription" ? tabRaw : "profile") as Tab;
     const seekerIin = typeof metadata.seeker_iin === "string" ? metadata.seeker_iin : "";
     const isEmployerVerified = normalizeDigits(companyBin).length === 12;
     const isSeekerVerified = normalizeDigits(seekerIin).length === 12;
 
-    const tabLink = (value: "profile" | "verification" | "subscription") => `/dashboard/settings?tab=${value}`;
+    const tabLink = (value: Tab) => `/dashboard/settings?tab=${value}`;
+
+    const tabs: { id: Tab; label: string; icon: typeof User }[] = [
+        { id: "profile", label: "Профиль", icon: User },
+        { id: "verification", label: "Верификация", icon: ShieldCheck },
+        { id: "subscription", label: "Подписка", icon: Crown },
+    ];
 
     return (
-        <div className="max-w-7xl mx-auto space-y-6">
+        <div className="max-w-6xl mx-auto space-y-6">
             <div>
-                <h1 className="text-3xl font-bold">Настройки профиля</h1>
-                <p className="text-sm text-gray-600 mt-1">Измените личные данные, пароль и контакты для Telegram</p>
+                <h1 className="text-3xl font-bold text-white">Настройки профиля</h1>
+                <p className="text-sm text-gray-400 mt-1">Личные данные, верификация, подписка и продвижение</p>
             </div>
 
             <div className="flex flex-wrap gap-2">
-                <Link href={tabLink("profile")} className={`rounded-full px-4 py-2 text-sm border ${tab === "profile" ? "bg-primary-600 text-white border-primary-600" : "bg-white text-gray-700"}`}>
-                    Профиль
-                </Link>
-                <Link href={tabLink("verification")} className={`rounded-full px-4 py-2 text-sm border ${tab === "verification" ? "bg-primary-600 text-white border-primary-600" : "bg-white text-gray-700"}`}>
-                    Проверка личности
-                </Link>
-                <Link href={tabLink("subscription")} className={`rounded-full px-4 py-2 text-sm border ${tab === "subscription" ? "bg-primary-600 text-white border-primary-600" : "bg-white text-gray-700"}`}>
-                    Подписка и продвижение
-                </Link>
+                {tabs.map(({ id, label, icon: Icon }) => {
+                    const active = tab === id;
+                    return (
+                        <Link
+                            key={id}
+                            href={tabLink(id)}
+                            className={[
+                                "inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium border transition-colors",
+                                active
+                                    ? "bg-gradient-to-r from-blue-600/30 to-indigo-600/30 border-blue-500/40 text-white"
+                                    : "bg-white/5 border-white/10 text-gray-300 hover:text-white hover:bg-white/10",
+                            ].join(" ")}
+                        >
+                            <Icon className="h-3.5 w-3.5" />
+                            {label}
+                        </Link>
+                    );
+                })}
             </div>
 
-            {tab === "profile" && <Card>
-                <CardHeader>
-                    <CardTitle>Профиль и интеграции</CardTitle>
-                </CardHeader>
-                <CardContent>
+            {tab === "profile" && (
+                <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-6">
+                    <h2 className="text-lg font-semibold text-white mb-4">Профиль и интеграции</h2>
                     <SettingsForm
                         role={data.profile.role}
                         fullName={data.profile.full_name ?? ""}
@@ -69,45 +121,119 @@ export default async function SettingsPage({
                         seekerIin={seekerIin}
                         telegramConnected={Boolean(data.profile.telegram_chat_id)}
                     />
-                </CardContent>
-            </Card>}
+                </div>
+            )}
 
-            {tab === "verification" && <Card id="trust-safety">
-                <CardHeader>
-                    <CardTitle>Проверка личности</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3 text-sm text-gray-600">
+            {tab === "verification" && (
+                <div id="trust-safety" className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-6 space-y-3 text-sm text-gray-300">
+                    <h2 className="text-lg font-semibold text-white">Проверка личности</h2>
                     <p>Заполните IIN/BIN, чтобы получить доверие пользователей и снизить риск фейковых откликов.</p>
-                    <div className="rounded-md border p-3 bg-gray-50">
-                        <p className="font-medium text-gray-800">Статус работодателя: {isEmployerVerified ? "Проверен" : "Не проверен"}</p>
-                        <p className="text-xs mt-1">Требование: BIN/IIN из 12 цифр в профиле компании.</p>
+                    <div className={`rounded-xl border p-4 ${isEmployerVerified ? "border-emerald-500/30 bg-emerald-500/10" : "border-white/10 bg-white/5"}`}>
+                        <p className="font-medium text-white flex items-center gap-2">
+                            <ShieldCheck className={`h-4 w-4 ${isEmployerVerified ? "text-emerald-400" : "text-gray-500"}`} />
+                            Статус работодателя: {isEmployerVerified ? "Проверен" : "Не проверен"}
+                        </p>
+                        <p className="text-xs mt-1 text-gray-400">Требование: BIN/IIN из 12 цифр в профиле компании.</p>
                     </div>
-                    <div className="rounded-md border p-3 bg-gray-50">
-                        <p className="font-medium text-gray-800">Статус соискателя: {isSeekerVerified ? "Проверен" : "Не проверен"}</p>
-                        <p className="text-xs mt-1">Требование: IIN из 12 цифр в профиле соискателя.</p>
+                    <div className={`rounded-xl border p-4 ${isSeekerVerified ? "border-emerald-500/30 bg-emerald-500/10" : "border-white/10 bg-white/5"}`}>
+                        <p className="font-medium text-white flex items-center gap-2">
+                            <ShieldCheck className={`h-4 w-4 ${isSeekerVerified ? "text-emerald-400" : "text-gray-500"}`} />
+                            Статус соискателя: {isSeekerVerified ? "Проверен" : "Не проверен"}
+                        </p>
+                        <p className="text-xs mt-1 text-gray-400">Требование: IIN из 12 цифр в профиле соискателя.</p>
                     </div>
-                    <p className="text-xs">Данные меняются в вкладке «Профиль».</p>
-                </CardContent>
-            </Card>}
+                    <p className="text-xs text-gray-500">Данные меняются на вкладке «Профиль».</p>
+                </div>
+            )}
 
-            {tab === "subscription" && <Card>
-                <CardHeader>
-                    <CardTitle>Подписка и продвижение</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4 text-sm">
-                    <p className="text-gray-600">Как в маркетплейсах: можно поднять вакансии выше в выдаче.</p>
-                    <div className="grid md:grid-cols-2 gap-3">
-                        <div className="rounded-md border p-4">
-                            <p className="font-semibold">Free</p>
-                            <p className="text-gray-600 mt-1">Обычное размещение вакансий</p>
-                        </div>
-                        <div className="rounded-md border border-primary-300 bg-primary-50 p-4">
-                            <p className="font-semibold text-primary-800">Top (скоро)</p>
-                            <p className="text-gray-700 mt-1">Приоритет в поиске и значок «TOP» в карточке</p>
+            {tab === "subscription" && (
+                <div className="space-y-6">
+                    <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-blue-600/15 via-indigo-600/10 to-blue-600/5 p-6 backdrop-blur-xl">
+                        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                            <div>
+                                <p className="text-xs uppercase tracking-wide text-blue-300/80 font-medium mb-1">Текущий тариф</p>
+                                <div className="flex items-center gap-2">
+                                    <h2 className="text-3xl font-bold text-white">{PLAN_FEATURES.free.label}</h2>
+                                    <span className="px-2 py-0.5 rounded-md bg-white/10 text-xs text-gray-300">{PLAN_FEATURES.free.price}</span>
+                                </div>
+                                <p className="text-sm text-gray-400 mt-1">Базовый план активен по умолчанию. Без оплаты — без ТОПа.</p>
+                            </div>
+                            <Link
+                                href="/pricing"
+                                className="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white px-4 py-2.5 text-sm font-medium shadow-lg shadow-blue-500/20 transition-all whitespace-nowrap"
+                            >
+                                <Sparkles className="h-4 w-4" />
+                                Поднять в ТОП
+                                <ArrowRight className="h-4 w-4" />
+                            </Link>
                         </div>
                     </div>
-                </CardContent>
-            </Card>}
+
+                    <div>
+                        <h3 className="text-base font-semibold text-white mb-3">Планы и продвижение</h3>
+                        <div className="grid md:grid-cols-3 gap-4">
+                            {(["free", "boost", "pro"] as const).map((id) => {
+                                const plan = PLAN_FEATURES[id];
+                                const isCurrent = id === "free";
+                                return (
+                                    <div
+                                        key={id}
+                                        className={`relative rounded-2xl border p-5 backdrop-blur-xl transition-all ${
+                                            isCurrent
+                                                ? "border-blue-500/40 bg-gradient-to-br from-blue-600/15 to-indigo-600/10"
+                                                : "border-white/10 bg-white/5 hover:border-white/20"
+                                        }`}
+                                    >
+                                        {plan.badge && (
+                                            <span className="absolute -top-2 right-4 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-gradient-to-r from-amber-400 to-rose-400 text-slate-900">
+                                                {plan.badge}
+                                            </span>
+                                        )}
+                                        <div className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${plan.accent} opacity-30 -z-10`} />
+                                        <div className="flex items-baseline justify-between mb-3">
+                                            <h4 className="text-xl font-bold text-white">{plan.label}</h4>
+                                            <span className="text-sm text-gray-300 font-medium">{plan.price}</span>
+                                        </div>
+                                        <ul className="space-y-2 text-sm text-gray-300">
+                                            {plan.features.map((f) => (
+                                                <li key={f} className="flex items-start gap-2">
+                                                    <Check className="h-4 w-4 text-emerald-400 shrink-0 mt-0.5" />
+                                                    <span>{f}</span>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                        <div className="mt-5">
+                                            {isCurrent ? (
+                                                <span className="inline-flex w-full items-center justify-center rounded-lg border border-white/10 bg-white/5 text-gray-300 text-sm font-medium py-2">
+                                                    Текущий план
+                                                </span>
+                                            ) : (
+                                                <Link
+                                                    href="/pricing"
+                                                    className="inline-flex w-full items-center justify-center gap-1.5 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-sm font-medium py-2 shadow-lg shadow-blue-500/20 transition-all"
+                                                >
+                                                    Перейти на {plan.label}
+                                                    <ArrowRight className="h-3.5 w-3.5" />
+                                                </Link>
+                                            )}
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </div>
+
+                    <div className="rounded-xl border border-white/10 bg-white/5 backdrop-blur-xl p-5 text-sm text-gray-400">
+                        <p className="font-semibold text-white mb-2">Как работает «выход в ТОП»</p>
+                        <ul className="space-y-1.5 list-disc list-inside marker:text-blue-400">
+                            <li>Ваша вакансия закрепляется первой в списке /jobs.</li>
+                            <li>AI-рекомендации поднимают её в выдаче.</li>
+                            <li>Бейдж ⚡ повышает CTR ~1.8×.</li>
+                            <li>Push в Telegram-боте по подходящим соискателям.</li>
+                        </ul>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

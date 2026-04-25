@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button";
 import { createSPASassClient } from "@/lib/supabase/client";
 import type { UserRole } from "@/lib/types";
 import { useI18n } from "@/lib/i18n";
-import { ThemeToggle } from "@/components/theme-toggle";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 
 interface DashboardNavProps {
@@ -57,7 +56,7 @@ export function DashboardNav({ role, email, name }: DashboardNavProps) {
     return (
         <>
             {/* Mobile header */}
-            <div className="lg:hidden sticky top-0 z-40 border-b border-white/10 bg-[#060818]/80 backdrop-blur-xl">
+            <div className="lg:hidden sticky top-0 z-40 border-b border-white/10 bg-[#0b1326]/80 backdrop-blur-xl">
                 <div className="px-4 py-3 flex items-center justify-between">
                     <Link
                         href="/"
@@ -68,7 +67,6 @@ export function DashboardNav({ role, email, name }: DashboardNavProps) {
                     </Link>
                     <div className="flex items-center gap-2">
                         <LanguageSwitcher />
-                        <ThemeToggle />
                     </div>
                 </div>
                 <nav className="px-3 pb-3 flex gap-2 overflow-x-auto">
@@ -94,7 +92,7 @@ export function DashboardNav({ role, email, name }: DashboardNavProps) {
             </div>
 
             {/* Desktop sidebar - sticky on scroll */}
-            <aside className="hidden lg:flex w-64 shrink-0 border-r border-white/10 bg-[#070a18]/80 backdrop-blur-xl flex-col sticky top-0 h-screen">
+            <aside className="hidden lg:flex w-64 shrink-0 border-r border-white/10 bg-[#0a1224]/80 backdrop-blur-xl flex-col sticky top-0 h-screen">
                 <div className="h-16 flex items-center px-6 border-b border-white/10">
                     <Link
                         href="/"
@@ -152,7 +150,6 @@ export function DashboardNav({ role, email, name }: DashboardNavProps) {
                 <div className="p-3 border-t border-white/10 space-y-2">
                     <div className="flex items-center justify-between gap-2 px-1">
                         <LanguageSwitcher />
-                        <ThemeToggle />
                     </div>
                     <div className="px-3 py-2">
                         <p className="text-sm font-medium text-white truncate">{name ?? email ?? t("user")}</p>

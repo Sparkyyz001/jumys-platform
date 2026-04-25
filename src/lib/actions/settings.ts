@@ -168,15 +168,27 @@ export async function createTelegramLinkAction(): Promise<{ url: string }> {
     const token = randomBytes(18).toString("base64url");
     const expiresAt = new Date(Date.now() + 10 * 60 * 1000).toISOString();
 
+    // Используем admin-клиент, чтобы обойти возможные RLS-ограничения на колонке token.
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { error } = await (supabase.from("profiles") as any)
+    const admin = createServerAdminClient() as any;
+    const { error } = await admin
+        .from("profiles")
         .update({
             telegram_link_token: token,
             telegram_link_token_expires_at: expiresAt,
         })
         .eq("id", user.id);
 
-    if (error) throw new Error("Не удалось создать ссылку для привязки Telegram");
+    if (error) {
+        const msg = String(error.message ?? "");
+        if (/telegram_link_token/i.test(msg) && /column|relation|exist/i.test(msg)) {
+            throw new Error(
+                "Колонка telegram_link_token отсутствует в БД. Примените миграцию 20260425002500_add_telegram_link_token.sql в Supabase Studio."
+            );
+        }
+        console.error("createTelegramLinkAction failed:", error);
+        throw new Error("Не удалось сохранить токен привязки. Попробуйте позже.");
+    }
 
     return {
         url: `https://t.me/${botUsername}?start=${token}`,

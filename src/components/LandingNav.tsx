@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { Briefcase } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { ThemeToggle } from "@/components/theme-toggle";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { useI18n } from "@/lib/i18n";
 
@@ -15,7 +14,7 @@ export function LandingNav({ signedIn }: LandingNavProps) {
     const { t } = useI18n();
 
     return (
-        <nav className="fixed top-0 w-full bg-[#060818]/80 backdrop-blur-xl z-50 border-b border-white/10">
+        <nav className="fixed top-0 w-full bg-[#0b1326]/80 backdrop-blur-xl z-50 border-b border-white/10">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between h-16 items-center">
                     <Link
@@ -32,7 +31,6 @@ export function LandingNav({ signedIn }: LandingNavProps) {
                         >
                             {t("pricing")}
                         </Link>
-                        <ThemeToggle />
                         <LanguageSwitcher />
                         {signedIn ? (
                             <Link href="/dashboard">

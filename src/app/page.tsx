@@ -117,7 +117,7 @@ export default async function Home() {
     const signedIn = Boolean(user);
 
     return (
-        <div className="dark min-h-screen bg-gradient-to-br from-[#060818] via-[#0a0d20] to-[#0d1023] text-white">
+        <div className="dark min-h-screen bg-gradient-to-br from-[#0b1326] via-[#0d172e] to-[#101e3a] text-white">
             <LandingNav signedIn={signedIn} />
 
             <LandingHero signedIn={signedIn} />

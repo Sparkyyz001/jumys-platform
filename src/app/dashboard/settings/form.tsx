@@ -75,12 +75,17 @@ export function SettingsForm(props: SettingsFormProps) {
                     <Label htmlFor="telegram_username">Telegram Username</Label>
                     <Input id="telegram_username" name="telegram_username" defaultValue={props.telegramUsername} placeholder="@username" />
                 </div>
-                <div className="rounded-md border p-3 space-y-2">
-                    <p className="text-sm font-medium">Telegram уведомления</p>
-                    <p className="text-xs text-gray-600">
+                <div className="rounded-xl border border-white/10 bg-white/5 p-4 space-y-2">
+                    <p className="text-sm font-medium text-white flex items-center gap-2">
                         {props.telegramConnected
-                            ? "Telegram уже подключен. Можно переподключить через кнопку ниже."
-                            : "Нажмите кнопку — откроется бот, после /start привязка выполнится автоматически."}
+                            ? <span className="inline-flex items-center gap-1.5 text-emerald-400"><span className="h-2 w-2 rounded-full bg-emerald-400" />Telegram подключён</span>
+                            : <span className="inline-flex items-center gap-1.5 text-amber-300"><span className="h-2 w-2 rounded-full bg-amber-300" />Telegram не подключён</span>
+                        }
+                    </p>
+                    <p className="text-xs text-gray-400">
+                        {props.telegramConnected
+                            ? "Уведомления о вакансиях/откликах приходят в Telegram. Можно переподключить с другого аккаунта."
+                            : "Откроется бот Jumys, после /start привязка завершится автоматически."}
                     </p>
                     <Button
                         type="button"

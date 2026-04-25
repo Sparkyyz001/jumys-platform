@@ -73,7 +73,7 @@ export function PricingPageClient({ signedIn }: { signedIn: boolean }) {
     };
 
     return (
-        <div className="dark min-h-screen bg-gradient-to-br from-[#060818] via-[#0a0d20] to-[#0d1023] text-white">
+        <div className="dark min-h-screen bg-gradient-to-br from-[#0b1326] via-[#0d172e] to-[#101e3a] text-white">
             <div className="max-w-6xl mx-auto px-4 py-10">
                 <Link
                     href="/"
