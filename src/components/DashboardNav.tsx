@@ -8,6 +8,8 @@ import { Button } from "@/components/ui/button";
 import { createSPASassClient } from "@/lib/supabase/client";
 import type { UserRole } from "@/lib/types";
 import { useI18n } from "@/lib/i18n";
+import { ThemeToggle } from "@/components/theme-toggle";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 
 interface DashboardNavProps {
     role: UserRole;
@@ -53,7 +55,10 @@ export function DashboardNav({ role, email, name }: DashboardNavProps) {
                         <Briefcase className="h-5 w-5" />
                         Jumys
                     </Link>
-                    <Link href="/dashboard/settings" className="text-xs text-gray-600">Settings</Link>
+                    <div className="flex items-center gap-2">
+                        <LanguageSwitcher />
+                        <ThemeToggle />
+                    </div>
                 </div>
                 <nav className="px-3 pb-3 flex gap-2 overflow-x-auto">
                     {links.map(({ href, label, icon: Icon }) => {
@@ -125,8 +130,12 @@ export function DashboardNav({ role, email, name }: DashboardNavProps) {
                 ))}
             </nav>
 
-            <div className="p-3 border-t">
-                <div className="px-3 py-2 mb-2">
+            <div className="p-3 border-t space-y-2">
+                <div className="flex items-center justify-between gap-2 px-1">
+                    <LanguageSwitcher />
+                    <ThemeToggle />
+                </div>
+                <div className="px-3 py-2">
                     <p className="text-sm font-medium text-gray-900 truncate">{name ?? email ?? "Пользователь"}</p>
                     <p className="text-xs text-gray-500 truncate">
                         {role === "employer" ? "Работодатель" : "Соискатель"}

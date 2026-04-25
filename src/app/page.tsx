@@ -1,14 +1,14 @@
-import Link from "next/link";
-import { ArrowRight, Briefcase, Users, ShieldCheck } from "lucide-react";
 import { createSSRClient } from "@/lib/supabase/server";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { HeroMeshBackground } from "@/components/HeroMeshBackground";
-import { LanguageSwitcher } from "@/components/LanguageSwitcher";
-import { ThemeToggle } from "@/components/theme-toggle";
 import { JobCard } from "@/components/JobCard";
-import { LocationTag } from "@/components/ui/location-tag";
 import { ProjectShowcase, type ProjectShowcaseItem } from "@/components/ui/project-showcase";
+import { LandingNav } from "@/components/LandingNav";
+import { LandingHero } from "@/components/LandingHero";
+import {
+    LandingFeatures,
+    LandingFinalCTA,
+    FreshJobsHeading,
+    AllJobsButton,
+} from "@/components/LandingSections";
 import { isSupabaseBrowserConfigured } from "@/lib/supabase/public-env";
 
 const ROADMAP_ITEMS: ProjectShowcaseItem[] = [
@@ -44,7 +44,7 @@ const ROADMAP_ITEMS: ProjectShowcaseItem[] = [
 
 export const metadata = {
     title: "Jumys — AI-поиск работы в Актау",
-    description: "Найдите работу или сотрудников в Актау с помощью AI-подбора"
+    description: "Найдите работу или сотрудников в Актау с помощью AI-подбора",
 };
 export const dynamic = "force-dynamic";
 
@@ -113,112 +113,32 @@ export default async function Home() {
         }
     }
 
-    return (
-        <div className="min-h-screen bg-gradient-to-b from-violet-50 via-white to-slate-100">
-            <nav className="fixed top-0 w-full bg-white/80 backdrop-blur-xl z-50 border-b border-white/60">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex justify-between h-16 items-center">
-                        <Link href="/" className="flex items-center gap-2 text-primary-700 font-bold text-xl">
-                            <Briefcase className="h-6 w-6" />
-                            Jumys
-                        </Link>
-                        <div className="flex items-center gap-3">
-                            <ThemeToggle />
-                            <LanguageSwitcher />
-                            {user ? (
-                                <>
-                                    <Link href="/dashboard" className="text-sm text-gray-600 hover:text-gray-900 hidden sm:inline-block">
-                                        Профиль
-                                    </Link>
-                                    <Link href="/dashboard">
-                                        <Button size="sm">Кабинет</Button>
-                                    </Link>
-                                </>
-                            ) : (
-                                <>
-                                    <Link href="/auth/login">
-                                        <Button variant="ghost" size="sm">Войти</Button>
-                                    </Link>
-                                    <Link href="/auth/register">
-                                        <Button size="sm">Регистрация</Button>
-                                    </Link>
-                                </>
-                            )}
-                        </div>
-                    </div>
-                </div>
-            </nav>
+    const signedIn = Boolean(user);
 
-            <section className="relative pt-32 pb-20 px-4 overflow-hidden">
-                <HeroMeshBackground />
-                <div className="max-w-5xl mx-auto text-center">
-                    <div className="flex justify-center mb-6">
-                        <LocationTag city="Актау" country="Казахстан" timezone="+05" timeZoneIana="Asia/Aqtau" />
-                    </div>
-                    <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-gray-900">
-                        {user ? "Работа в Актау" : "Jumys Platform: Работа в Актау для молодежи"} <br />
-                        <span className="bg-gradient-to-r from-primary-600 to-primary-800 bg-clip-text text-transparent">с AI-подбором</span>
-                    </h1>
-                    <p className="mt-6 text-xl text-gray-600 max-w-2xl mx-auto">
-                        Jumys подбирает вакансии под ваш профиль, а работодателям находит подходящих кандидатов автоматически
-                    </p>
-                    <div className="mt-10 flex gap-3 justify-center flex-wrap">
-                        <Link href="/auth/register">
-                            <Button size="lg">
-                                Начать искать работу
-                                <ArrowRight className="h-5 w-5" />
-                            </Button>
-                        </Link>
-                        <Link href={user ? "/jobs" : "/auth/login?next=/jobs"}>
-                            <Button variant="outline" size="lg">
-                                Смотреть вакансии
-                            </Button>
-                        </Link>
-                    </div>
-                </div>
-            </section>
+    return (
+        <div className="dark min-h-screen bg-gradient-to-br from-[#060818] via-[#0a0d20] to-[#0d1023] text-white">
+            <LandingNav signedIn={signedIn} />
+
+            <LandingHero signedIn={signedIn} />
 
             <section className="py-10 px-4">
-                <ProjectShowcase items={ROADMAP_ITEMS} heading="Как Jumys работает" />
-            </section>
-
-            <section className="py-12 px-4">
-                <div className="max-w-6xl mx-auto grid gap-4 md:grid-cols-3">
-                    <Card className="bg-white/80 border-white/50">
-                        <CardContent className="p-5">
-                            <p className="text-xs text-gray-500">Активные вакансии</p>
-                            <p className="text-2xl font-bold mt-1">{activeJobsCount}</p>
-                        </CardContent>
-                    </Card>
-                    <Card className="bg-white/80 border-white/50">
-                        <CardContent className="p-5">
-                            <p className="text-xs text-gray-500">Соискатели в системе</p>
-                            <p className="text-2xl font-bold mt-1">{seekersCount}</p>
-                        </CardContent>
-                    </Card>
-                    <Card className="bg-white/80 border-white/50">
-                        <CardContent className="p-5">
-                            <p className="text-xs text-gray-500">Отклики за неделю</p>
-                            <p className="text-2xl font-bold mt-1">{applicationsLastWeek}</p>
-                        </CardContent>
-                    </Card>
+                <div className="max-w-5xl mx-auto">
+                    <ProjectShowcase items={ROADMAP_ITEMS} heading="Как Jumys работает" />
                 </div>
             </section>
+
+            <LandingFeatures
+                activeJobsCount={activeJobsCount}
+                seekersCount={seekersCount}
+                applicationsLastWeek={applicationsLastWeek}
+            />
 
             {latestJobs.length > 0 && (
                 <section className="py-14 px-4">
                     <div className="max-w-6xl mx-auto">
                         <div className="flex items-end justify-between flex-wrap gap-3 mb-6">
-                            <div>
-                                <h2 className="text-2xl md:text-3xl font-bold">Свежие вакансии в Актау</h2>
-                                <p className="text-sm text-gray-600 mt-1">Реальные предложения, обновляются в реальном времени</p>
-                            </div>
-                            <Link href={user ? "/jobs" : "/auth/login?next=/jobs"}>
-                                <Button variant="outline" size="sm">
-                                    Все вакансии
-                                    <ArrowRight className="h-4 w-4" />
-                                </Button>
-                            </Link>
+                            <FreshJobsHeading />
+                            <AllJobsButton href={signedIn ? "/jobs" : "/auth/login?next=/jobs"} />
                         </div>
                         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                             {latestJobs.map(j => {
@@ -236,6 +156,7 @@ export default async function Home() {
                                         salary_from={j.salary_from}
                                         salary_to={j.salary_to}
                                         verified={verified}
+                                        variant="dark"
                                     />
                                 );
                             })}
@@ -244,64 +165,36 @@ export default async function Home() {
                 </section>
             )}
 
-            <section className="py-10 px-4">
-                <div className="max-w-6xl mx-auto grid gap-4 md:grid-cols-2">
-                    <Card className="border border-white/45 bg-white/70 backdrop-blur-xl">
-                        <CardContent className="p-6">
-                            <div className="flex items-center gap-2 mb-3">
-                                <Users className="h-5 w-5 text-primary-700" />
-                                <h3 className="font-semibold">Для молодежи и студентов</h3>
-                            </div>
-                            <p className="text-sm text-gray-600">Подработка, стажировки и стартовые вакансии в Актау с фильтрами по району и опыту.</p>
-                        </CardContent>
-                    </Card>
-                    <Card className="border border-white/45 bg-white/70 backdrop-blur-xl">
-                        <CardContent className="p-6">
-                            <div className="flex items-center gap-2 mb-3">
-                                <ShieldCheck className="h-5 w-5 text-primary-700" />
-                                <h3 className="font-semibold">Проверка личности</h3>
-                            </div>
-                            <p className="text-sm text-gray-600">В настройках доступна отдельная вкладка верификации работодателя и соискателя по IIN/BIN.</p>
-                        </CardContent>
-                    </Card>
-                </div>
-            </section>
+            <LandingFinalCTA />
 
-            <section className="py-16 bg-gradient-to-br from-primary-600 via-primary-700 to-primary-800 text-white px-4 relative overflow-hidden">
-                <div className="max-w-4xl mx-auto text-center">
-                    <h2 className="text-3xl md:text-4xl font-bold">
-                        Готовы найти работу в Актау?
-                    </h2>
-                    <p className="mt-3 text-primary-100">
-                        Регистрация бесплатна, первая подборка появится сразу после заполнения профиля
-                    </p>
-                    <Link href="/auth/register" className="inline-block mt-8">
-                        <Button size="lg" variant="secondary" className="bg-white text-primary-700 hover:bg-gray-100">
-                            Создать аккаунт
-                            <ArrowRight className="h-5 w-5" />
-                        </Button>
-                    </Link>
-                </div>
-            </section>
-
-            <footer className="py-10 text-sm text-gray-500 border-t bg-white/60">
+            <footer className="py-10 text-sm text-gray-500 border-t border-white/10 bg-white/[0.02]">
                 <div className="max-w-7xl mx-auto px-4 grid gap-6 md:grid-cols-3">
                     <div>
-                        <p className="font-semibold text-gray-800">Jumys Platform</p>
+                        <p className="font-semibold text-white">Jumys Platform</p>
                         <p className="mt-2">© {new Date().getFullYear()} AI-поиск работы в Актау</p>
                     </div>
                     <div>
-                        <p className="font-semibold text-gray-800">Our Team</p>
+                        <p className="font-semibold text-white">Our Team</p>
                         <p className="mt-2">Product Lead - Hackathon Strategy</p>
-                        <p>Full-stack Dev - Platform & AI Matching</p>
+                        <p>Full-stack Dev - Platform &amp; AI Matching</p>
                         <p>UX Engineer - Mobile-first Interface</p>
                     </div>
                     <div>
-                        <p className="font-semibold text-gray-800">Support Contacts</p>
-                        <a href="https://t.me/jumys_support" target="_blank" rel="noreferrer" className="block mt-2 text-primary-700 hover:underline">
+                        <p className="font-semibold text-white">Support Contacts</p>
+                        <a
+                            href="https://t.me/jumys_support"
+                            target="_blank"
+                            rel="noreferrer"
+                            className="block mt-2 text-blue-400 hover:underline"
+                        >
                             Telegram: @jumys_support
                         </a>
-                        <a href="https://wa.me/" target="_blank" rel="noreferrer" className="block text-emerald-700 hover:underline">
+                        <a
+                            href="https://wa.me/"
+                            target="_blank"
+                            rel="noreferrer"
+                            className="block text-emerald-400 hover:underline"
+                        >
                             WhatsApp Support
                         </a>
                     </div>
