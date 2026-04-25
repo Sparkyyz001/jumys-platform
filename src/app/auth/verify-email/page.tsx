@@ -2,7 +2,7 @@
 
 import { CheckCircle, RefreshCw } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createSPASassClient } from "@/lib/supabase/client";
 import { motion } from "framer-motion";
@@ -22,7 +22,7 @@ export default function VerifyEmailPage() {
         if (initialEmail) setEmail(initialEmail);
     }, []);
 
-    const checkOnce = async (): Promise<boolean> => {
+    const checkOnce = useCallback(async (): Promise<boolean> => {
         try {
             const client = await createSPASassClient();
             const sb = client.getSupabaseClient();
@@ -40,7 +40,7 @@ export default function VerifyEmailPage() {
         } catch {
             return false;
         }
-    };
+    }, [router]);
 
     useEffect(() => {
         isAliveRef.current = true;
@@ -52,7 +52,7 @@ export default function VerifyEmailPage() {
             isAliveRef.current = false;
             clearInterval(timer);
         };
-    }, [router]);
+    }, [checkOnce]);
 
     const handleManualCheck = async () => {
         setChecking(true);
