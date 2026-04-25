@@ -4,6 +4,7 @@ import { ArrowLeft, ArrowRight, Briefcase, Send } from "lucide-react";
 import { getCurrentFullProfile } from "@/lib/profile";
 import { DotMapBackground } from "@/components/ui/dot-map-background";
 import TelegramConnectButton from "./connect-button";
+import { TelegramPollStatus } from "./poll-status";
 
 export const metadata = { title: "Подключение Telegram — Jumys" };
 export const dynamic = "force-dynamic";
@@ -88,6 +89,8 @@ export default async function TelegramOnboardingPage() {
                     </ol>
 
                     <TelegramConnectButton />
+
+                    <TelegramPollStatus />
 
                     <p className="mt-6 text-center text-xs text-gray-500">
                         Можно подключить позже из{" "}

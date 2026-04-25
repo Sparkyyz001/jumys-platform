@@ -22,13 +22,13 @@ export default function RootLayout({
     children,
 }: Readonly<{ children: React.ReactNode }>) {
     return (
-        <html lang="ru" suppressHydrationWarning className={inter.variable}>
-            <body className="theme-sass3 font-sans antialiased overflow-x-hidden">
+        <html lang="ru" suppressHydrationWarning className={`${inter.variable} dark`}>
+            <body className="theme-sass3 font-sans antialiased overflow-x-hidden dark-mesh-root">
                 <ThemeProvider>
                     <I18nProvider>
                         {children}
                         <FloatingAIAssistant />
-                        <Toaster richColors position="top-right" />
+                        <Toaster richColors position="top-right" theme="dark" />
                     </I18nProvider>
                 </ThemeProvider>
             </body>

@@ -4,6 +4,7 @@ import { ProjectShowcase, type ProjectShowcaseItem } from "@/components/ui/proje
 import { LandingNav } from "@/components/LandingNav";
 import { LandingHero } from "@/components/LandingHero";
 import { LandingFooter } from "@/components/LandingFooter";
+import { MeshGridBackground } from "@/components/ui/mesh-grid-bg";
 import {
     LandingFeatures,
     LandingFinalCTA,
@@ -117,7 +118,9 @@ export default async function Home() {
     const signedIn = Boolean(user);
 
     return (
-        <div className="dark min-h-screen bg-gradient-to-br from-[#0b1326] via-[#0d172e] to-[#101e3a] text-white">
+        <div className="dark min-h-screen relative text-white isolate overflow-x-hidden">
+            <MeshGridBackground intensity="default" />
+            <div className="relative z-10">
             <LandingNav signedIn={signedIn} />
 
             <LandingHero signedIn={signedIn} />
@@ -168,6 +171,7 @@ export default async function Home() {
 
             <LandingFinalCTA />
             <LandingFooter />
+            </div>
         </div>
     );
 }
