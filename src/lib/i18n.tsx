@@ -14,6 +14,14 @@ type I18nKey =
     | "heroTitle"
     | "heroTitleAccent"
     | "heroDescription"
+    | "heroBadge"
+    | "heroEmployerCta"
+    | "heroSocialProof"
+    | "heroMockupRole"
+    | "heroMockupToast"
+    | "heroMockupDays"
+    | "heroMockupAvgHire"
+    | "heroMockupVs"
     | "ctaStart"
     | "ctaBrowseJobs"
     | "freshJobs"
@@ -60,6 +68,14 @@ const translations: Record<Lang, Record<I18nKey, string>> = {
         heroTitleAccent: "AI-ұсыныспен",
         heroDescription:
             "Jumys сіздің профиліңізге сай вакансияларды таңдайды, ал жұмыс берушілерге үміткерлерді автоматты түрде ұсынады",
+        heroBadge: "🇰🇿 Ақтауда жасалған · AI-матчинг",
+        heroEmployerCta: "Мен жұмыс берушімін",
+        heroSocialProof: "720 вакансия · 124 үміткер · 39 шағын аудан",
+        heroMockupRole: "Үміткер · 1 ш/а",
+        heroMockupToast: "Сізге жаңа вакансия",
+        heroMockupDays: "күн",
+        heroMockupAvgHire: "Jumys арқылы орташа жалдау уақыты",
+        heroMockupVs: "−68% кәдімгі жалдаумен салыстырғанда",
         ctaStart: "Жұмыс іздеуді бастау",
         ctaBrowseJobs: "Вакансияларды көру",
         freshJobs: "Ақтаудағы жаңа вакансиялар",
@@ -101,10 +117,18 @@ const translations: Record<Lang, Record<I18nKey, string>> = {
         login: "Войти",
         register: "Регистрация",
         dashboard: "Кабинет",
-        heroTitle: "Jumys Platform: Работа в Актау для молодежи",
-        heroTitleAccent: "с AI-подбором",
+        heroTitle: "Найди работу в Актау",
+        heroTitleAccent: "за 24 часа",
         heroDescription:
-            "Jumys подбирает вакансии под ваш профиль, а работодателям находит подходящих кандидатов автоматически",
+            "Jumys подбирает вакансии под твой профиль и район. Отклик в один клик через Telegram.",
+        heroBadge: "🇰🇿 Сделано в Актау · AI-матчинг",
+        heroEmployerCta: "Я работодатель",
+        heroSocialProof: "720 вакансий · 124 соискателя · 39 микрорайонов",
+        heroMockupRole: "Соискатель · 1 мкр.",
+        heroMockupToast: "Новая вакансия для тебя",
+        heroMockupDays: "дня",
+        heroMockupAvgHire: "среднее время найма через Jumys",
+        heroMockupVs: "−68% vs обычный найм",
         ctaStart: "Начать искать работу",
         ctaBrowseJobs: "Смотреть вакансии",
         freshJobs: "Свежие вакансии в Актау",
@@ -146,10 +170,18 @@ const translations: Record<Lang, Record<I18nKey, string>> = {
         login: "Sign in",
         register: "Sign up",
         dashboard: "Dashboard",
-        heroTitle: "Jumys Platform: Jobs in Aktau for youth",
-        heroTitleAccent: "with AI matching",
+        heroTitle: "Find a job in Aktau",
+        heroTitleAccent: "in 24 hours",
         heroDescription:
-            "Jumys ranks jobs for your profile and surfaces best-fit candidates to employers automatically",
+            "Jumys matches jobs to your profile and district. Apply in one click via Telegram.",
+        heroBadge: "🇰🇿 Built in Aktau · AI matching",
+        heroEmployerCta: "I am an employer",
+        heroSocialProof: "720 jobs · 124 seekers · 39 microdistricts",
+        heroMockupRole: "Seeker · 1st district",
+        heroMockupToast: "A new vacancy for you",
+        heroMockupDays: "days",
+        heroMockupAvgHire: "average time-to-hire with Jumys",
+        heroMockupVs: "−68% vs traditional hiring",
         ctaStart: "Start job hunt",
         ctaBrowseJobs: "Browse jobs",
         freshJobs: "Fresh jobs in Aktau",
