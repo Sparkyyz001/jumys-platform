@@ -53,7 +53,35 @@ type I18nKey =
     | "pricing"
     | "boostJob"
     | "privacy"
-    | "terms";
+    | "terms"
+    | "navForEmployers"
+    | "employersBadge"
+    | "employersTitle"
+    | "employersSub"
+    | "employersCta"
+    | "employersAvgHire"
+    | "employersVs"
+    | "employersWhy"
+    | "employersFeatureAiTitle"
+    | "employersFeatureAiText"
+    | "employersFeatureVerifyTitle"
+    | "employersFeatureVerifyText"
+    | "employersFeatureBoostTitle"
+    | "employersFeatureBoostText"
+    | "employersCompareTitle"
+    | "employersTableFeature"
+    | "employersTableJumys"
+    | "employersTableHH"
+    | "employersTableOlx"
+    | "employersRowDistricts"
+    | "employersRowAi"
+    | "employersRowTelegram"
+    | "employersRowVerified"
+    | "employersRowPrice"
+    | "employersPartial"
+    | "employersCtaTitle"
+    | "employersCtaPrimary"
+    | "employersCtaSecondary";
 
 const translations: Record<Lang, Record<I18nKey, string>> = {
     kk: {
@@ -108,6 +136,34 @@ const translations: Record<Lang, Record<I18nKey, string>> = {
         boostJob: "Топқа шығару",
         privacy: "Құпиялылық саясаты",
         terms: "Пайдалану шарттары",
+        navForEmployers: "Мен жұмыс берушімін",
+        employersBadge: "Ақтаудағы бизнес үшін",
+        employersTitle: "Ақтауда тезірек әрі арзан жалдаңыз",
+        employersSub: "AI сіздің ауданыңыздағы 124+ үміткерден лайықтыларын табады. Жазылым 4 990 ₸/ай бастап.",
+        employersCta: "Вакансияны тегін жариялау",
+        employersAvgHire: "Jumys арқылы орташа жалдау уақыты",
+        employersVs: "−68% кәдімгі жалдаумен салыстырғанда",
+        employersWhy: "Неге Jumys",
+        employersFeatureAiTitle: "AI үміткерлерді ранжирлейді",
+        employersFeatureAiText: "Қолмен іріктеусіз — үміткерлер вакансияңызға релеванттылығы бойынша сұрыпталады.",
+        employersFeatureVerifyTitle: "Verified Business",
+        employersFeatureVerifyText: "БСН/ЖСН тексерісі вакансияларыңыздың CTR-ін орташа 1.4× арттырады.",
+        employersFeatureBoostTitle: "Boost вакансиялар",
+        employersFeatureBoostText: "Бекітілген вакансия 7 күнде 6× көбірек өтінім алады.",
+        employersCompareTitle: "Салыстыру",
+        employersTableFeature: "Функция",
+        employersTableJumys: "Jumys",
+        employersTableHH: "hh.kz",
+        employersTableOlx: "OLX",
+        employersRowDistricts: "Шағын аудандар бойынша жергілікті матчинг",
+        employersRowAi: "AI үміткерлерді іріктеу",
+        employersRowTelegram: "Telegram хабарламалары",
+        employersRowVerified: "Verified Business (БСН/ЖСН)",
+        employersRowPrice: "Айына бастапқы баға",
+        employersPartial: "ішінара",
+        employersCtaTitle: "AI арқылы жалдауға дайынсыз ба?",
+        employersCtaPrimary: "Тегін бастау",
+        employersCtaSecondary: "Тарифтерді көру",
     },
     ru: {
         findJob: "Найти работу",
@@ -161,6 +217,34 @@ const translations: Record<Lang, Record<I18nKey, string>> = {
         boostJob: "Поднять в топ",
         privacy: "Политика конфиденциальности",
         terms: "Условия использования",
+        navForEmployers: "Я работодатель",
+        employersBadge: "Для бизнеса в Актау",
+        employersTitle: "Нанимайте в Актау быстрее и дешевле",
+        employersSub: "AI находит подходящих кандидатов из 124+ соискателей в твоём районе. Подписка от 4 990 ₸/мес.",
+        employersCta: "Разместить вакансию бесплатно",
+        employersAvgHire: "среднее время найма через Jumys",
+        employersVs: "−68% vs обычный найм",
+        employersWhy: "Почему Jumys",
+        employersFeatureAiTitle: "AI ранжирует кандидатов",
+        employersFeatureAiText: "Без ручного отбора — кандидаты упорядочены по релевантности к вашей вакансии.",
+        employersFeatureVerifyTitle: "Verified Business",
+        employersFeatureVerifyText: "Проверка БИН/ИИН повышает CTR ваших вакансий в 1.4×.",
+        employersFeatureBoostTitle: "Boost вакансий",
+        employersFeatureBoostText: "Закреплённая вакансия получает в 6× больше откликов за 7 дней.",
+        employersCompareTitle: "Сравнение",
+        employersTableFeature: "Функция",
+        employersTableJumys: "Jumys",
+        employersTableHH: "hh.kz",
+        employersTableOlx: "OLX",
+        employersRowDistricts: "Локальный матчинг по микрорайонам",
+        employersRowAi: "AI-подбор кандидатов",
+        employersRowTelegram: "Telegram-уведомления",
+        employersRowVerified: "Verified Business (БИН/ИИН)",
+        employersRowPrice: "Цена/месяц от",
+        employersPartial: "частично",
+        employersCtaTitle: "Готовы нанимать через AI?",
+        employersCtaPrimary: "Начать бесплатно",
+        employersCtaSecondary: "Посмотреть тарифы",
     },
     en: {
         findJob: "Find Job",
@@ -214,6 +298,34 @@ const translations: Record<Lang, Record<I18nKey, string>> = {
         boostJob: "Boost to top",
         privacy: "Privacy policy",
         terms: "Terms of use",
+        navForEmployers: "I am an employer",
+        employersBadge: "For businesses in Aktau",
+        employersTitle: "Hire in Aktau faster and cheaper",
+        employersSub: "AI finds the right candidates from 124+ seekers in your district. Plans start at 4,990 ₸/month.",
+        employersCta: "Post a vacancy for free",
+        employersAvgHire: "average time-to-hire with Jumys",
+        employersVs: "−68% vs traditional hiring",
+        employersWhy: "Why Jumys",
+        employersFeatureAiTitle: "AI ranks candidates",
+        employersFeatureAiText: "No manual screening — candidates are sorted by relevance to your vacancy.",
+        employersFeatureVerifyTitle: "Verified Business",
+        employersFeatureVerifyText: "BIN/IIN verification increases vacancy CTR by 1.4× on average.",
+        employersFeatureBoostTitle: "Vacancy boost",
+        employersFeatureBoostText: "Pinned vacancies get 6× more applications in 7 days.",
+        employersCompareTitle: "Comparison",
+        employersTableFeature: "Feature",
+        employersTableJumys: "Jumys",
+        employersTableHH: "hh.kz",
+        employersTableOlx: "OLX",
+        employersRowDistricts: "Local matching by microdistrict",
+        employersRowAi: "AI candidate matching",
+        employersRowTelegram: "Telegram notifications",
+        employersRowVerified: "Verified Business (BIN/IIN)",
+        employersRowPrice: "Monthly price from",
+        employersPartial: "partial",
+        employersCtaTitle: "Ready to hire with AI?",
+        employersCtaPrimary: "Start free",
+        employersCtaSecondary: "View pricing",
     },
 };
 

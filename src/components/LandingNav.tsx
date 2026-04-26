@@ -25,6 +25,12 @@ export function LandingNav({ signedIn }: LandingNavProps) {
                         >
                             {t("pricing")}
                         </Link>
+                        <Link
+                            href="/employers"
+                            className="hidden md:inline-flex items-center text-sm text-gray-300 hover:text-white px-3 py-1.5 rounded-md hover:bg-white/10 transition-colors"
+                        >
+                            {t("navForEmployers")}
+                        </Link>
                         <LanguageSwitcher />
                         {signedIn ? (
                             <Link href="/dashboard">
