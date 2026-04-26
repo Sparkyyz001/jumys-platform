@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowLeft, Crown, Sparkles, ShieldCheck } from "lucide-react";
+import { ArrowLeft, Check, ChevronDown, Crown, Sparkles, ShieldCheck } from "lucide-react";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -48,6 +48,37 @@ const PLANS = [
 
 export function PricingPageClient({ signedIn }: { signedIn: boolean }) {
     const [busy, setBusy] = useState(false);
+    const compareRows = [
+        ["Активных вакансий", "3", "3", "∞"],
+        ["AI-рекомендации", "✓", "✓", "✓"],
+        ["Telegram", "✓", "✓", "✓"],
+        ["Boost в ТОПе", "—", "1 на 7 дней", "Все вакансии"],
+        ["Verified Business", "—", "—", "✓"],
+        ["Расширенная аналитика", "—", "—", "✓"],
+        ["Приоритетная поддержка", "—", "—", "✓"],
+    ];
+    const faq = [
+        {
+            q: "Можно ли отменить подписку?",
+            a: "Да, в любой момент из личного кабинета. Доступ сохраняется до конца оплаченного периода.",
+        },
+        {
+            q: "Как работает Verified Business?",
+            a: "Мы проверяем БИН/ИИН компании через открытые источники РК. Verified-бейдж видят соискатели — это в среднем в 1.4× повышает CTR на ваших вакансиях.",
+        },
+        {
+            q: "В чём разница между Boost и Pro?",
+            a: "Boost — одна вакансия в ТОПе на 7 дней. Pro — все ваши вакансии в ТОПе постоянно + безлимит вакансий + аналитика и Verified Business.",
+        },
+        {
+            q: "Принимаете ли Kaspi Pay?",
+            a: "Сейчас оплата через Stripe. Kaspi Pay в ближайшем релизе.",
+        },
+        {
+            q: "Есть ли скидка для стартапов и НКО?",
+            a: "Да, напишите нам в Telegram @jumys_support — даём 50% на первые 3 месяца.",
+        },
+    ];
 
     const handleSelect = async (planIndex: number, period: "monthly" | "annual") => {
         const plan = PLANS[planIndex];
@@ -167,6 +198,47 @@ export function PricingPageClient({ signedIn }: { signedIn: boolean }) {
                     и{" "}
                     <Link href="/privacy" className="underline hover:text-white">политике конфиденциальности</Link>.
                 </p>
+
+                <section className="max-w-4xl mx-auto rounded-2xl border border-border/60 overflow-hidden mt-16">
+                    <div className="overflow-x-auto">
+                        <table className="w-full text-sm">
+                            <thead className="bg-muted/40">
+                                <tr>
+                                    <th className="px-4 py-3 text-left font-medium">Функция</th>
+                                    <th className="px-4 py-3 text-center font-medium">Free</th>
+                                    <th className="px-4 py-3 text-center font-medium">Boost</th>
+                                    <th className="px-4 py-3 text-center font-medium bg-violet-500/5">Pro</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {compareRows.map((row) => (
+                                    <tr key={row[0]} className="border-t border-border/50">
+                                        <td className="px-4 py-3 text-muted-foreground">{row[0]}</td>
+                                        <td className="px-4 py-3 text-center">{row[1] === "✓" ? <Check className="size-4 mx-auto text-emerald-500" /> : row[1]}</td>
+                                        <td className="px-4 py-3 text-center">{row[2] === "✓" ? <Check className="size-4 mx-auto text-emerald-500" /> : row[2]}</td>
+                                        <td className="px-4 py-3 text-center bg-violet-500/5">{row[3] === "✓" ? <Check className="size-4 mx-auto text-emerald-500" /> : row[3]}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section className="max-w-3xl mx-auto mt-16 space-y-3">
+                    <h2 className="text-2xl font-bold text-center mb-8">Частые вопросы</h2>
+                    {faq.map((item) => (
+                        <details
+                            key={item.q}
+                            className="group rounded-lg border border-border bg-card p-4 [&_summary::-webkit-details-marker]:hidden"
+                        >
+                            <summary className="flex cursor-pointer items-center justify-between font-medium">
+                                <span>{item.q}</span>
+                                <ChevronDown className="size-4 transition-transform group-open:rotate-180" />
+                            </summary>
+                            <p className="mt-3 text-sm text-muted-foreground">{item.a}</p>
+                        </details>
+                    ))}
+                </section>
             </div>
         </div>
     );

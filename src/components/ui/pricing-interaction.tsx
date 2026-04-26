@@ -63,18 +63,25 @@ export function PricingInteraction({
                 {plans.map((plan, i) => {
                     const value = period === 0 ? plan.monthly : plan.annual;
                     const isActive = active === i;
+                    const isPro = plan.name === "Pro";
                     return (
                         <button
                             type="button"
                             key={plan.name}
                             className={cn(
-                                "w-full text-left flex flex-col gap-3 cursor-pointer border-2 p-4 rounded-2xl transition-colors",
+                                "w-full text-left flex flex-col gap-3 cursor-pointer border-2 p-4 rounded-2xl transition-colors relative",
                                 isActive
                                     ? "border-blue-500 bg-blue-500/5"
-                                    : "border-white/10 hover:border-white/20"
+                                    : "border-white/10 hover:border-white/20",
+                                isPro && "border-2 border-violet-500/40 lg:scale-105"
                             )}
                             onClick={() => setActive(i)}
                         >
+                            {isPro ? (
+                                <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-violet-500 to-indigo-500 text-white text-xs font-semibold px-3 py-1 rounded-full shadow-md whitespace-nowrap">
+                                    Самый популярный
+                                </span>
+                            ) : null}
                             <div className="w-full flex justify-between items-start">
                                 <div className="flex flex-col items-start gap-0.5">
                                     <p className="font-semibold text-lg flex items-center gap-2">
