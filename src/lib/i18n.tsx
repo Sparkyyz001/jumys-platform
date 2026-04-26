@@ -81,7 +81,13 @@ type I18nKey =
     | "employersPartial"
     | "employersCtaTitle"
     | "employersCtaPrimary"
-    | "employersCtaSecondary";
+    | "employersCtaSecondary"
+    | "caseStudyHeading"
+    | "caseStudyCompany"
+    | "caseStudyRole"
+    | "caseStudyQuote"
+    | "caseStudyTime"
+    | "caseStudyLink";
 
 const translations: Record<Lang, Record<I18nKey, string>> = {
     kk: {
@@ -164,6 +170,12 @@ const translations: Record<Lang, Record<I18nKey, string>> = {
         employersCtaTitle: "AI арқылы жалдауға дайынсыз ба?",
         employersCtaPrimary: "Тегін бастау",
         employersCtaSecondary: "Тарифтерді көру",
+        caseStudyHeading: "Ақтау компанияларының оқиғалары",
+        caseStudyCompany: "Caspian Tourism Hub",
+        caseStudyRole: "HR · Ақтау",
+        caseStudyQuote: "4 күнде екі кеңесші таптық. AI-іріктеу рекрутердің бір апта жұмысын үнемдеді.",
+        caseStudyTime: "жалдау уақыты",
+        caseStudyLink: "Кейс қосқыңыз келе ме? @jumys_support-қа жазыңыз",
     },
     ru: {
         findJob: "Найти работу",
@@ -245,6 +257,12 @@ const translations: Record<Lang, Record<I18nKey, string>> = {
         employersCtaTitle: "Готовы нанимать через AI?",
         employersCtaPrimary: "Начать бесплатно",
         employersCtaSecondary: "Посмотреть тарифы",
+        caseStudyHeading: "Истории компаний Актау",
+        caseStudyCompany: "Caspian Tourism Hub",
+        caseStudyRole: "HR · Актау",
+        caseStudyQuote: "Нашли двух консультантов за 4 дня. AI-подбор сэкономил неделю работы рекрутера.",
+        caseStudyTime: "время найма",
+        caseStudyLink: "Хотите добавить ваш кейс? Напишите в @jumys_support",
     },
     en: {
         findJob: "Find Job",
@@ -326,6 +344,12 @@ const translations: Record<Lang, Record<I18nKey, string>> = {
         employersCtaTitle: "Ready to hire with AI?",
         employersCtaPrimary: "Start free",
         employersCtaSecondary: "View pricing",
+        caseStudyHeading: "Aktau company stories",
+        caseStudyCompany: "Caspian Tourism Hub",
+        caseStudyRole: "HR · Aktau",
+        caseStudyQuote: "We hired two consultants in 4 days. AI matching saved a week of recruiter effort.",
+        caseStudyTime: "time-to-hire",
+        caseStudyLink: "Want your case featured? Message @jumys_support",
     },
 };
 

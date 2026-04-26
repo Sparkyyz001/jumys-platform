@@ -4,6 +4,7 @@ import { JobCard } from "@/components/JobCard";
 import { LandingNav } from "@/components/LandingNav";
 import { LandingHero } from "@/components/LandingHero";
 import { LandingFooter } from "@/components/LandingFooter";
+import { CaseStudy } from "@/components/sections/CaseStudy";
 import { MeshGridBackground } from "@/components/ui/mesh-grid-bg";
 import { Sparkles, Send, MapPin, ShieldCheck } from "lucide-react";
 import {
@@ -196,6 +197,7 @@ export default async function Home() {
                 </section>
             )}
 
+            <CaseStudy />
             <LandingFinalCTA />
             <LandingFooter />
         </div>
