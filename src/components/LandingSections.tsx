@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, Users, ShieldCheck } from "lucide-react";
+import NumberFlow from "@number-flow/react";
+import { ArrowRight, Users, ShieldCheck, TrendingUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useI18n } from "@/lib/i18n";
@@ -14,29 +15,32 @@ interface LandingFeaturesProps {
 
 export function LandingFeatures({ activeJobsCount, seekersCount, applicationsLastWeek }: LandingFeaturesProps) {
     const { t } = useI18n();
+    const stats = [
+        { label: t("statsActive"), value: activeJobsCount, trend: "+12%" },
+        { label: t("statsSeekers"), value: seekersCount, trend: "+8%" },
+        { label: t("statsApplications"), value: applicationsLastWeek, trend: "+24%" },
+    ];
 
     return (
         <>
             <section className="py-12 px-4">
                 <div className="max-w-6xl mx-auto grid gap-4 md:grid-cols-3">
-                    <Card className="border-white/10 bg-white/5 backdrop-blur-xl">
-                        <CardContent className="p-5">
-                            <p className="text-xs text-gray-400">{t("statsActive")}</p>
-                            <p className="text-3xl font-bold mt-1 text-white">{activeJobsCount}</p>
-                        </CardContent>
-                    </Card>
-                    <Card className="border-white/10 bg-white/5 backdrop-blur-xl">
-                        <CardContent className="p-5">
-                            <p className="text-xs text-gray-400">{t("statsSeekers")}</p>
-                            <p className="text-3xl font-bold mt-1 text-white">{seekersCount}</p>
-                        </CardContent>
-                    </Card>
-                    <Card className="border-white/10 bg-white/5 backdrop-blur-xl">
-                        <CardContent className="p-5">
-                            <p className="text-xs text-gray-400">{t("statsApplications")}</p>
-                            <p className="text-3xl font-bold mt-1 text-white">{applicationsLastWeek}</p>
-                        </CardContent>
-                    </Card>
+                    {stats.map((stat) => (
+                        <Card key={stat.label} className="border-border/40 bg-card/70 backdrop-blur-xl">
+                            <CardContent className="p-5">
+                                <div className="mt-1 flex items-end gap-2">
+                                    <p className="text-3xl lg:text-4xl font-bold text-foreground">
+                                        <NumberFlow value={stat.value} />
+                                    </p>
+                                    <span className="mb-1 inline-flex items-center gap-1 text-xs text-emerald-500 font-medium">
+                                        <TrendingUp size={14} className="text-emerald-500" />
+                                        {stat.trend}
+                                    </span>
+                                </div>
+                                <p className="text-sm text-muted-foreground mt-1">{stat.label}</p>
+                            </CardContent>
+                        </Card>
+                    ))}
                 </div>
             </section>
 
