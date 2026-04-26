@@ -1,10 +1,11 @@
 import { createSSRClient } from "@/lib/supabase/server";
+import Link from "next/link";
 import { JobCard } from "@/components/JobCard";
-import { ProjectShowcase, type ProjectShowcaseItem } from "@/components/ui/project-showcase";
 import { LandingNav } from "@/components/LandingNav";
 import { LandingHero } from "@/components/LandingHero";
 import { LandingFooter } from "@/components/LandingFooter";
 import { MeshGridBackground } from "@/components/ui/mesh-grid-bg";
+import { Sparkles, Send, MapPin, ShieldCheck } from "lucide-react";
 import {
     LandingFeatures,
     LandingFinalCTA,
@@ -13,34 +14,42 @@ import {
 } from "@/components/LandingSections";
 import { isSupabaseBrowserConfigured } from "@/lib/supabase/public-env";
 
-const ROADMAP_ITEMS: ProjectShowcaseItem[] = [
+const ROADMAP_ITEMS = [
     {
         title: "AI-подбор вакансий",
         description: "Embedding-модель ранжирует вакансии под ваш профиль и навыки — без ручного поиска.",
         badge: "01",
         link: "/jobs",
-        image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1200&auto=format&fit=crop",
+        icon: Sparkles,
+        iconClassName: "text-violet-500",
+        iconWrapClassName: "bg-gradient-to-br from-violet-500/10 to-violet-500/0",
     },
     {
         title: "Telegram-бот для откликов",
         description: "Уведомления о новых вакансиях и отклики в один клик прямо в Telegram.",
         badge: "02",
         link: "/auth/register",
-        image: "https://images.unsplash.com/photo-1611605698335-8b1569810432?q=80&w=1200&auto=format&fit=crop",
+        icon: Send,
+        iconClassName: "text-sky-500",
+        iconWrapClassName: "bg-gradient-to-br from-sky-500/10 to-sky-500/0",
     },
     {
         title: "Только Актау",
         description: "Фильтры по микрорайонам Актау: 1, 3А, 4А, Приморский, Koktem и другие.",
         badge: "03",
         link: "/jobs",
-        image: "https://images.unsplash.com/photo-1502920917128-1aa500764cbd?q=80&w=1200&auto=format&fit=crop",
+        icon: MapPin,
+        iconClassName: "text-emerald-500",
+        iconWrapClassName: "bg-gradient-to-br from-emerald-500/10 to-emerald-500/0",
     },
     {
         title: "Проверенные компании",
         description: "Верификация работодателей по BIN/IIN и значок Verified Business в карточке вакансии.",
         badge: "04",
         link: "/auth/register",
-        image: "https://images.unsplash.com/photo-1573164713988-8665fc963095?q=80&w=1200&auto=format&fit=crop",
+        icon: ShieldCheck,
+        iconClassName: "text-amber-500",
+        iconWrapClassName: "bg-gradient-to-br from-amber-500/10 to-amber-500/0",
     },
 ];
 
@@ -125,8 +134,27 @@ export default async function Home() {
             <LandingHero signedIn={signedIn} />
 
             <section className="py-10 px-4">
-                <div className="max-w-5xl mx-auto">
-                    <ProjectShowcase items={ROADMAP_ITEMS} heading="Как Jumys работает" />
+                <div className="max-w-7xl mx-auto">
+                    <h2 className="text-2xl md:text-3xl font-bold text-foreground text-center mb-6">Как Jumys работает</h2>
+                    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+                        {ROADMAP_ITEMS.map((item) => {
+                            const Icon = item.icon;
+                            return (
+                                <Link
+                                    key={item.title}
+                                    href={item.link}
+                                    className="relative rounded-2xl border border-border/40 bg-card p-6 hover:border-primary/40 hover:-translate-y-0.5 transition-all duration-200"
+                                >
+                                    <span className="absolute top-4 right-4 text-xs text-muted-foreground/60">{item.badge}</span>
+                                    <div className={`size-14 rounded-2xl ${item.iconWrapClassName} flex items-center justify-center`}>
+                                        <Icon size={28} strokeWidth={1.5} className={item.iconClassName} />
+                                    </div>
+                                    <h3 className="mt-4 text-lg font-semibold text-foreground">{item.title}</h3>
+                                    <p className="mt-2 text-sm text-muted-foreground">{item.description}</p>
+                                </Link>
+                            );
+                        })}
+                    </div>
                 </div>
             </section>
 
