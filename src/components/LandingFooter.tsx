@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { Briefcase, ArrowUp } from "lucide-react";
+import { ArrowUp } from "lucide-react";
 import { useI18n } from "@/lib/i18n";
+import { Logo } from "@/components/brand/Logo";
 
 export function LandingFooter() {
     const { t } = useI18n();
@@ -19,13 +20,7 @@ export function LandingFooter() {
             <div className="max-w-7xl mx-auto px-4">
                 <div className="grid gap-8 md:grid-cols-4">
                     <div className="md:col-span-1">
-                        <Link
-                            href="/"
-                            className="inline-flex items-center gap-2 font-bold text-lg bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-400"
-                        >
-                            <Briefcase className="h-5 w-5 text-blue-400" />
-                            Jumys
-                        </Link>
+                        <Logo className="text-white" />
                         <p className="mt-3 text-gray-500 leading-relaxed">
                             AI-поиск работы и кандидатов в Актау. Уведомления в Telegram, верификация компаний.
                         </p>

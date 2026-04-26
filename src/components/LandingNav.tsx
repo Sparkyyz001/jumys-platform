@@ -1,10 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { Briefcase } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { useI18n } from "@/lib/i18n";
+import { Logo } from "@/components/brand/Logo";
 
 interface LandingNavProps {
     signedIn: boolean;
@@ -17,13 +17,7 @@ export function LandingNav({ signedIn }: LandingNavProps) {
         <nav className="fixed top-0 w-full bg-[#020617]/85 backdrop-blur-md z-50 border-b border-white/10">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between h-16 items-center">
-                    <Link
-                        href="/"
-                        className="flex items-center gap-2 font-bold text-xl bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-400"
-                    >
-                        <Briefcase className="h-6 w-6 text-blue-400" />
-                        Jumys
-                    </Link>
+                    <Logo className="text-white" />
                     <div className="flex items-center gap-2 sm:gap-3">
                         <Link
                             href="/pricing"
