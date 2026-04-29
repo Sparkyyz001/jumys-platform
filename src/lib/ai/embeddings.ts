@@ -7,6 +7,10 @@ export const EMBEDDING_DIMENSIONS = 1536;
 const LOCAL_MODEL = "Xenova/all-MiniLM-L6-v2";
 
 let embeddingPipelinePromise: Promise<Awaited<ReturnType<typeof pipeline>>> | null = null;
+type FeatureExtractor = (
+    input: string,
+    options?: { pooling?: "mean" | "cls" }
+) => Promise<{ data?: Iterable<number> }>;
 
 async function getEmbeddingPipeline() {
     if (!embeddingPipelinePromise) {
@@ -26,19 +30,25 @@ function padToPgVectorDimensions(vector: number[]): number[] {
     return normalized;
 }
 
+function l2Normalize(vector: number[]): number[] {
+    const norm = Math.sqrt(vector.reduce((sum, value) => sum + value * value, 0));
+    if (!Number.isFinite(norm) || norm === 0) return vector;
+    return vector.map((value) => value / norm);
+}
+
 export async function generateEmbedding(text: string): Promise<number[]> {
     const input = text.trim().slice(0, 8000);
     if (!input) throw new Error("Empty text passed to generateEmbedding");
 
     try {
-        const extractor = await getEmbeddingPipeline();
-        const output = await extractor(input, { pooling: "mean", normalize: true });
+        const extractor = await getEmbeddingPipeline() as unknown as FeatureExtractor;
+        const output = await extractor(input, { pooling: "mean" });
         const vectorData = output?.data;
         if (!vectorData || typeof vectorData[Symbol.iterator] !== "function") {
             throw new Error("Unexpected embedding output format");
         }
         const localVector = Array.from(vectorData as Iterable<number>);
-        return padToPgVectorDimensions(localVector);
+        return padToPgVectorDimensions(l2Normalize(localVector));
     } catch (error) {
         const message = error instanceof Error ? error.message : "Unknown embedding failure";
         throw new Error(`Local embedding generation failed: ${message}`);
