@@ -26,6 +26,70 @@ interface MatchJobsRpcRow extends MatchedJobFromQuery {
     created_at: string;
 }
 
+interface ParsedSearchIntent {
+    query: string;
+    district: string | null;
+    parser: "gemini" | "heuristic";
+}
+
+function parseDistrictHeuristic(input: string): string | null {
+    const districtMatch = input.toLowerCase().match(/(\d{1,2})\s*(мкр|микрорайон)?/i);
+    return districtMatch?.[1] ?? null;
+}
+
+async function parseIntentWithGemini(query: string): Promise<ParsedSearchIntent> {
+    const apiKey = process.env.GEMINI_API_KEY?.trim();
+    if (!apiKey) {
+        return { query, district: parseDistrictHeuristic(query), parser: "heuristic" };
+    }
+
+    const res = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+        {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                contents: [{
+                    parts: [{
+                        text:
+                            "Extract JSON object with keys: query (string for job semantic search), district (Aktau microdistrict number string or null)." +
+                            ` User text: ${query}`,
+                    }],
+                }],
+                generationConfig: {
+                    responseMimeType: "application/json",
+                },
+            }),
+        }
+    );
+
+    if (!res.ok) {
+        return { query, district: parseDistrictHeuristic(query), parser: "heuristic" };
+    }
+
+    const payload = await res.json() as {
+        candidates?: Array<{ content?: { parts?: Array<{ text?: string }> } }>;
+    };
+    const raw = payload.candidates?.[0]?.content?.parts?.[0]?.text;
+    if (!raw) return { query, district: parseDistrictHeuristic(query), parser: "heuristic" };
+
+    try {
+        const parsed = JSON.parse(raw) as { query?: string; district?: string | null };
+        return {
+            query: parsed.query?.trim() || query,
+            district: parsed.district?.trim() || parseDistrictHeuristic(query),
+            parser: "gemini",
+        };
+    } catch {
+        return { query, district: parseDistrictHeuristic(query), parser: "heuristic" };
+    }
+}
+
+export interface MatchJobsByQueryResult {
+    jobs: MatchedJobFromQuery[];
+    provider: "local-transformers" | "gemini+local-transformers";
+}
+
 export async function getMatchExplanationAction(
     jobId: string,
     seekerId: string,
@@ -109,22 +173,31 @@ export async function matchJobsByTextQuery(
     query: string,
     options?: { limit?: number; district?: string | null }
 ): Promise<MatchedJobFromQuery[]> {
-    const text = query.trim();
-    if (!text) return [];
+    const result = await matchJobsByTextQueryWithMeta(query, options);
+    return result.jobs;
+}
 
-    const embedding = await generateEmbedding(text);
+export async function matchJobsByTextQueryWithMeta(
+    query: string,
+    options?: { limit?: number; district?: string | null }
+): Promise<MatchJobsByQueryResult> {
+    const text = query.trim();
+    if (!text) return { jobs: [], provider: "local-transformers" };
+
+    const intent = await parseIntentWithGemini(text);
+    const embedding = await generateEmbedding(intent.query);
     const admin = createServerAdminClient();
 
     const { data, error } = await admin.rpc("match_jobs", {
         p_query_embedding: embedding,
         p_count: options?.limit ?? 5,
-        p_filter_district: options?.district ?? null,
+        p_filter_district: options?.district ?? intent.district,
     });
 
     if (error) throw new Error(error.message);
     const rows = (data as MatchJobsRpcRow[] | null) ?? [];
 
-    return rows.map((row) => ({
+    const jobs = rows.map((row) => ({
         id: row.id,
         title: row.title,
         description: row.description,
@@ -134,4 +207,9 @@ export async function matchJobsByTextQuery(
         salary_to: row.salary_to,
         similarity: Number(row.similarity),
     }));
+
+    return {
+        jobs,
+        provider: intent.parser === "gemini" ? "gemini+local-transformers" : "local-transformers",
+    };
 }

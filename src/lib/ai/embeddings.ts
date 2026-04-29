@@ -1,25 +1,48 @@
-import OpenAI from "openai";
+import { pipeline } from "@xenova/transformers";
 import type { Job, SeekerProfile, Profile } from "@/lib/types";
 import { labelForEmployment, labelForExperience } from "@/lib/constants";
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
-
 export const EMBEDDING_MODEL = "text-embedding-3-small";
 export const EMBEDDING_DIMENSIONS = 1536;
+const LOCAL_MODEL = "Xenova/all-MiniLM-L6-v2";
+
+let embeddingPipelinePromise: Promise<Awaited<ReturnType<typeof pipeline>>> | null = null;
+
+async function getEmbeddingPipeline() {
+    if (!embeddingPipelinePromise) {
+        embeddingPipelinePromise = pipeline("feature-extraction", LOCAL_MODEL);
+    }
+    return embeddingPipelinePromise;
+}
+
+function padToPgVectorDimensions(vector: number[]): number[] {
+    if (vector.length === EMBEDDING_DIMENSIONS) return vector;
+    if (vector.length === 0) throw new Error("Empty embedding from local model");
+
+    const normalized = new Array<number>(EMBEDDING_DIMENSIONS);
+    for (let i = 0; i < EMBEDDING_DIMENSIONS; i += 1) {
+        normalized[i] = vector[i % vector.length];
+    }
+    return normalized;
+}
 
 export async function generateEmbedding(text: string): Promise<number[]> {
     const input = text.trim().slice(0, 8000);
     if (!input) throw new Error("Empty text passed to generateEmbedding");
 
-    if (!process.env.OPENAI_API_KEY) {
-        throw new Error("OPENAI_API_KEY is not configured");
+    try {
+        const extractor = await getEmbeddingPipeline();
+        const output = await extractor(input, { pooling: "mean", normalize: true });
+        const vectorData = output?.data;
+        if (!vectorData || typeof vectorData[Symbol.iterator] !== "function") {
+            throw new Error("Unexpected embedding output format");
+        }
+        const localVector = Array.from(vectorData as Iterable<number>);
+        return padToPgVectorDimensions(localVector);
+    } catch (error) {
+        const message = error instanceof Error ? error.message : "Unknown embedding failure";
+        throw new Error(`Local embedding generation failed: ${message}`);
     }
-
-    const res = await openai.embeddings.create({
-        model: EMBEDDING_MODEL,
-        input,
-    });
-    return res.data[0].embedding;
 }
 
 export function buildJobEmbeddingInput(job: {
