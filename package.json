@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "seed": "tsx scripts/seed.ts"
+    "seed": "tsx scripts/seed.ts",
+    "reembed": "tsx scripts/reembed-existing.ts",
+    "seed:demo-jobs": "tsx scripts/add-demo-jobs.ts"
   },
   "dependencies": {
     "@ai-sdk/openai": "^1.0.11",

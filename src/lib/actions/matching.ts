@@ -37,6 +37,51 @@ function parseDistrictHeuristic(input: string): string | null {
     return districtMatch?.[1] ?? null;
 }
 
+const STOP_WORDS = new Set([
+    "работа", "работу", "ищу", "найти", "нужна", "нужен", "в", "на", "для", "по",
+    "актау", "мкр", "микрорайон", "вакансия", "хочу", "мне",
+]);
+
+const QUERY_NORMALIZATION: Record<string, string> = {
+    "офицант": "официант",
+    "офицанта": "официант",
+    "официанта": "официант",
+    "бариста": "бариста",
+    "повара": "повар",
+    "поваром": "повар",
+};
+
+function normalizeToken(token: string): string {
+    const raw = token.toLowerCase().replace(/[^a-zA-Zа-яА-ЯёЁ0-9]/g, "");
+    return QUERY_NORMALIZATION[raw] ?? raw;
+}
+
+function extractQueryTokens(query: string): string[] {
+    return query
+        .split(/\s+/)
+        .map(normalizeToken)
+        .filter((token) => token.length >= 3 && !STOP_WORDS.has(token));
+}
+
+function lexicalScore(queryTokens: string[], row: MatchJobsRpcRow): number {
+    if (queryTokens.length === 0) return 0;
+    const title = normalizeToken(row.title);
+    const description = normalizeToken(row.description ?? "");
+    const haystack = `${title} ${description}`;
+
+    let score = 0;
+    for (const token of queryTokens) {
+        if (title.includes(token)) {
+            score += 2.5;
+            continue;
+        }
+        if (haystack.includes(token)) {
+            score += 1.2;
+        }
+    }
+    return score / queryTokens.length;
+}
+
 async function parseIntentWithGemini(query: string): Promise<ParsedSearchIntent> {
     const apiKey = process.env.GEMINI_API_KEY?.trim();
     if (!apiKey) {
@@ -196,17 +241,26 @@ export async function matchJobsByTextQueryWithMeta(
 
     if (error) throw new Error(error.message);
     const rows = (data as MatchJobsRpcRow[] | null) ?? [];
+    const queryTokens = extractQueryTokens(text);
 
-    const jobs = rows.map((row) => ({
-        id: row.id,
-        title: row.title,
-        description: row.description,
-        district: row.district,
-        employment: row.employment,
-        salary_from: row.salary_from,
-        salary_to: row.salary_to,
-        similarity: Number(row.similarity),
-    }));
+    const jobs = rows
+        .map((row) => {
+            const semantic = Math.max(0, Math.min(1, Number(row.similarity)));
+            const lexical = Math.max(0, Math.min(1, lexicalScore(queryTokens, row) / 2.5));
+            const hybrid = (semantic * 0.75) + (lexical * 0.25);
+
+            return {
+                id: row.id,
+                title: row.title,
+                description: row.description,
+                district: row.district,
+                employment: row.employment,
+                salary_from: row.salary_from,
+                salary_to: row.salary_to,
+                similarity: hybrid,
+            };
+        })
+        .sort((a, b) => b.similarity - a.similarity);
 
     return {
         jobs,
