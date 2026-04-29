@@ -7,43 +7,19 @@ const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 export const EMBEDDING_MODEL = "text-embedding-3-small";
 export const EMBEDDING_DIMENSIONS = 1536;
 
-function deterministicEmbeddingFromText(text: string): number[] {
-    const vector = new Array<number>(EMBEDDING_DIMENSIONS).fill(0);
-    let state = 2166136261;
-    for (let i = 0; i < text.length; i += 1) {
-        state ^= text.charCodeAt(i);
-        state = Math.imul(state, 16777619);
-    }
-
-    for (let i = 0; i < EMBEDDING_DIMENSIONS; i += 1) {
-        state ^= i + 1;
-        state = Math.imul(state, 2246822519);
-        const normalized = ((state >>> 0) % 2000) / 1000 - 1;
-        vector[i] = normalized;
-    }
-    return vector;
-}
-
 export async function generateEmbedding(text: string): Promise<number[]> {
     const input = text.trim().slice(0, 8000);
     if (!input) throw new Error("Empty text passed to generateEmbedding");
 
     if (!process.env.OPENAI_API_KEY) {
-        return deterministicEmbeddingFromText(input);
+        throw new Error("OPENAI_API_KEY is not configured");
     }
 
-    try {
-        const res = await openai.embeddings.create({
-            model: EMBEDDING_MODEL,
-            input,
-        });
-        return res.data[0].embedding;
-    } catch (error) {
-        if (error instanceof OpenAI.APIError && error.status === 429) {
-            return deterministicEmbeddingFromText(input);
-        }
-        throw error;
-    }
+    const res = await openai.embeddings.create({
+        model: EMBEDDING_MODEL,
+        input,
+    });
+    return res.data[0].embedding;
 }
 
 export function buildJobEmbeddingInput(job: {

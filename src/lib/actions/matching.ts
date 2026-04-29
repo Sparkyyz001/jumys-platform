@@ -3,6 +3,28 @@
 import { createSSRClient } from "@/lib/supabase/server";
 import { createServerAdminClient } from "@/lib/supabase/serverAdminClient";
 import { generateMatchExplanation } from "@/lib/ai/explanations";
+import { generateEmbedding } from "@/lib/ai/embeddings";
+import type { EmploymentType, ExperienceLevel } from "@/lib/types";
+
+export interface MatchedJobFromQuery {
+    id: string;
+    title: string;
+    description: string;
+    district: string | null;
+    employment: EmploymentType | null;
+    salary_from: number | null;
+    salary_to: number | null;
+    similarity: number;
+}
+
+interface MatchJobsRpcRow extends MatchedJobFromQuery {
+    category: string | null;
+    experience_required: ExperienceLevel;
+    skills_required: string[];
+    employer_id: string;
+    company_name: string | null;
+    created_at: string;
+}
 
 export async function getMatchExplanationAction(
     jobId: string,
@@ -23,8 +45,7 @@ export async function getMatchExplanationAction(
     if (cachedRow?.explanation) return cachedRow.explanation;
 
     // Fetch data via admin to bypass RLS on cross-role reads when seeker views a job's match
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const admin = createServerAdminClient() as any;
+    const admin = createServerAdminClient();
 
     const { data: jobRow } = await admin
         .from("jobs")
@@ -82,4 +103,35 @@ export async function getMatchExplanationAction(
     });
 
     return explanation;
+}
+
+export async function matchJobsByTextQuery(
+    query: string,
+    options?: { limit?: number; district?: string | null }
+): Promise<MatchedJobFromQuery[]> {
+    const text = query.trim();
+    if (!text) return [];
+
+    const embedding = await generateEmbedding(text);
+    const admin = createServerAdminClient();
+
+    const { data, error } = await admin.rpc("match_jobs", {
+        p_query_embedding: embedding,
+        p_count: options?.limit ?? 5,
+        p_filter_district: options?.district ?? null,
+    });
+
+    if (error) throw new Error(error.message);
+    const rows = (data as MatchJobsRpcRow[] | null) ?? [];
+
+    return rows.map((row) => ({
+        id: row.id,
+        title: row.title,
+        description: row.description,
+        district: row.district,
+        employment: row.employment,
+        salary_from: row.salary_from,
+        salary_to: row.salary_to,
+        similarity: Number(row.similarity),
+    }));
 }

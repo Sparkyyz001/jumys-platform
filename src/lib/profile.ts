@@ -1,4 +1,5 @@
 import { createSSRClient } from "@/lib/supabase/server";
+import { createServerAdminClient } from "@/lib/supabase/serverAdminClient";
 import type { Profile, EmployerProfile, SeekerProfile } from "@/lib/types";
 
 export interface FullProfile {
@@ -49,4 +50,43 @@ export async function getCurrentFullProfile(): Promise<FullProfile | null> {
         employer,
         seeker,
     };
+}
+
+export function normalizePhone(phone: string): string {
+    let digits = phone.replace(/\D/g, "");
+    if (digits.startsWith("8") && digits.length === 11) digits = `7${digits.slice(1)}`;
+    return digits;
+}
+
+type BotProfileRow = Pick<Profile, "id" | "role" | "full_name" | "phone" | "district" | "telegram_chat_id">;
+
+export async function getProfileByTelegramChatId(chatId: number): Promise<BotProfileRow | null> {
+    const admin = createServerAdminClient();
+    const { data, error } = await admin
+        .from("profiles")
+        .select("id, role, full_name, phone, district, telegram_chat_id")
+        .eq("telegram_chat_id", chatId)
+        .maybeSingle();
+
+    if (error) throw new Error(error.message);
+    return (data as BotProfileRow | null) ?? null;
+}
+
+export async function findProfileByPhone(phone: string): Promise<BotProfileRow | null> {
+    const admin = createServerAdminClient();
+    const normalized = normalizePhone(phone);
+    if (!normalized) return null;
+
+    const full = `+${normalized}`;
+    const last10 = normalized.length >= 10 ? normalized.slice(-10) : normalized;
+
+    const { data, error } = await admin
+        .from("profiles")
+        .select("id, role, full_name, phone, district, telegram_chat_id")
+        .or(`phone.eq.${full},phone.ilike.%${last10}`)
+        .limit(1)
+        .maybeSingle();
+
+    if (error) throw new Error(error.message);
+    return (data as BotProfileRow | null) ?? null;
 }

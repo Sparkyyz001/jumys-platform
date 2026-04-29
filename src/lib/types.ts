@@ -201,6 +201,14 @@ export type Database = {
         }
         Returns: MatchedJob[]
       }
+      match_jobs: {
+        Args: {
+          p_query_embedding: number[]
+          p_count?: number
+          p_filter_district?: string | null
+        }
+        Returns: MatchedJob[]
+      }
       match_seekers_for_job: {
         Args: {
           p_job_id: string
