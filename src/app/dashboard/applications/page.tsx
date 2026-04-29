@@ -73,8 +73,39 @@ export default async function ApplicationsPage() {
                     />
                 ) : (
                     <Card>
-                        <CardContent className="p-0 overflow-x-auto">
-                            <table className="w-full text-sm">
+                        <CardContent className="p-0">
+                            <div className="md:hidden divide-y divide-border">
+                                {applications.map(a => {
+                                    const seeker = seekerById.get(a.seeker_id);
+                                    return (
+                                        <div key={`mobile-${a.id}`} className="p-4 space-y-2">
+                                            <div className="font-medium">{seeker?.full_name ?? "Без имени"}</div>
+                                            <Link href={`/jobs/${a.job_id}`} className="text-sm text-primary-700 hover:underline">
+                                                {jobTitleById.get(a.job_id) ?? "—"}
+                                            </Link>
+                                            <div className="flex items-center gap-2">
+                                                {typeof a.match_score === "number" ? <MatchScoreBadge score={Number(a.match_score)} /> : <span className="text-gray-400">—</span>}
+                                                <span className="text-xs text-gray-600">{new Date(a.created_at).toLocaleDateString("ru-RU")}</span>
+                                            </div>
+                                            <div className="flex items-center gap-2">
+                                                <ApplicationStatusControl applicationId={a.id} status={a.status} />
+                                                {seeker?.phone ? (
+                                                    <ContactDialog
+                                                        applicationId={a.id}
+                                                        name={seeker.full_name ?? "Кандидат"}
+                                                        phone={seeker.phone}
+                                                        currentStatus={a.status}
+                                                    />
+                                                ) : (
+                                                    <span className="text-xs text-gray-400">Нет телефона</span>
+                                                )}
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                            <div className="hidden md:block overflow-x-auto">
+                                <table className="w-full text-sm">
                                 <thead className="border-b border-border bg-muted/50 text-muted-foreground">
                                     <tr>
                                         <th className="text-left px-4 py-3 font-medium">Кандидат</th>
@@ -140,7 +171,8 @@ export default async function ApplicationsPage() {
                                         );
                                     })}
                                 </tbody>
-                            </table>
+                                </table>
+                            </div>
                         </CardContent>
                     </Card>
                 )}

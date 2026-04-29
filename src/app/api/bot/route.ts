@@ -5,6 +5,7 @@ import { enqueueNewApplicationNotification, flushNotifications } from "@/lib/tel
 import { findProfileByPhone, getProfileByTelegramChatId, normalizePhone } from "@/lib/profile";
 import { matchJobsByTextQuery, type MatchedJobFromQuery } from "@/lib/actions/matching";
 import type { EmploymentType, Profile } from "@/lib/types";
+import { buildSeekerEmbeddingInput, generateEmbedding } from "@/lib/ai/embeddings";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -29,7 +30,8 @@ type VacancySlim = {
 type OnboardingSession = {
     phone?: string;
     district?: string;
-    step: "await_phone" | "await_district";
+    fullName?: string;
+    step: "await_phone" | "await_full_name" | "await_district";
 };
 
 const sessions = new Map<number, OnboardingSession>();
@@ -42,6 +44,13 @@ function parseDistrict(text: string): string | null {
 function getOpenJobButton(jobId: string) {
     const appUrl = `${siteUrl || "https://jumys.kz"}/dashboard/jobs/${jobId}`;
     return [{ text: "Открыть вакансию", web_app: { url: appUrl } }];
+}
+
+function getMainMenuKeyboard() {
+    return {
+        keyboard: [[{ text: "📱 Поделиться номером", request_contact: true }], [{ text: "/vacancies" }, { text: "/profile" }]],
+        resize_keyboard: true,
+    };
 }
 
 async function linkTelegramToProfile(chatId: number, profileId: string): Promise<void> {
@@ -62,6 +71,76 @@ async function linkTelegramToProfile(chatId: number, profileId: string): Promise
 async function getSeekerProfile(chatId: number): Promise<{ id: string; role: Role } | null> {
     const profile = await getProfileByTelegramChatId(chatId);
     return profile ? { id: profile.id, role: profile.role } : null;
+}
+
+async function createTelegramSeekerProfile(input: {
+    chatId: number;
+    phone: string;
+    fullName: string;
+    district: string;
+}): Promise<{ profileId: string; created: boolean }> {
+    const normalizedPhone = normalizePhone(input.phone);
+    const existingByPhone = await findProfileByPhone(normalizedPhone);
+    if (existingByPhone) {
+        await linkTelegramToProfile(input.chatId, existingByPhone.id);
+        return { profileId: existingByPhone.id, created: false };
+    }
+
+    const pseudoEmail = `tg_${input.chatId}_${Date.now()}@telegram.jumys.local`;
+    const password = `Jumys_${crypto.randomUUID()}!`;
+    const { data: createdUser, error: userError } = await admin.auth.admin.createUser({
+        email: pseudoEmail,
+        password,
+        email_confirm: true,
+        user_metadata: {
+            source: "telegram_bot",
+            telegram_chat_id: input.chatId,
+            phone: normalizedPhone,
+        },
+    });
+    if (userError || !createdUser.user) {
+        throw new Error(userError?.message ?? "Failed to create auth user");
+    }
+
+    const profileId = createdUser.user.id;
+    const { error: profileError } = await admin
+        .from("profiles")
+        .upsert(
+            {
+                id: profileId,
+                role: "seeker",
+                full_name: input.fullName,
+                phone: `+${normalizedPhone}`,
+                district: input.district,
+                telegram_chat_id: input.chatId,
+            },
+            { onConflict: "id" }
+        );
+    if (profileError) throw new Error(profileError.message);
+
+    const seekerText = buildSeekerEmbeddingInput({
+        full_name: input.fullName,
+        district: input.district,
+        about: `Кандидат из Telegram. Ищет работу в ${input.district} мкр Актау.`,
+        skills: [],
+        desired_employment: "full",
+        experience_years: 0,
+    });
+    const embedding = await generateEmbedding(seekerText);
+    const { error: seekerError } = await admin.from("seeker_profiles").upsert(
+        {
+            profile_id: profileId,
+            about: `Кандидат из Telegram. Ищет работу в ${input.district} мкр Актау.`,
+            skills: [],
+            experience_years: 0,
+            desired_employment: "full",
+            embedding: embedding as unknown as number[],
+        },
+        { onConflict: "profile_id" }
+    );
+    if (seekerError) throw new Error(seekerError.message);
+
+    return { profileId, created: true };
 }
 
 async function sendMatches(ctx: Context, query: string) {
@@ -150,11 +229,7 @@ if (bot) {
                 (startPayload ? `Код привязки: ${startPayload}\n` : "") +
                 "После этого сможете искать вакансии прямо в Telegram (например: \"Ищу работу баристой в 14 мкр\").",
             {
-                reply_markup: {
-                    keyboard: [[{ text: "📱 Поделиться номером", request_contact: true }]],
-                    resize_keyboard: true,
-                    one_time_keyboard: true,
-                },
+                reply_markup: getMainMenuKeyboard(),
             }
         );
     });
@@ -167,9 +242,9 @@ if (bot) {
 
         const profile = await findProfileByPhone(contact.phone_number);
         if (!profile) {
-            sessions.set(chatId, { phone: normalizePhone(contact.phone_number), step: "await_district" });
+            sessions.set(chatId, { phone: normalizePhone(contact.phone_number), step: "await_full_name" });
             await ctx.reply(
-                "Профиль с таким номером не найден. Продолжим мини-онбординг: укажите ваш микрорайон в Актау (например, 14 мкр).",
+                "Профиль с таким номером не найден. Продолжим регистрацию прямо здесь.\n\nКак вас зовут? (Имя и фамилия)",
             );
             return;
         }
@@ -190,9 +265,32 @@ if (bot) {
         await ctx.reply(
             "✅ Telegram привязан! Теперь вы будете получать уведомления о подходящих вакансиях.\n\n" +
                 "Команды:\n/vacancies — подборка вакансий",
-            { reply_markup: { remove_keyboard: true } }
+            { reply_markup: getMainMenuKeyboard() }
         );
     });
+    bot.command("profile", async (ctx) => {
+        const chatId = ctx.chat?.id;
+        if (!chatId) return;
+        const profile = await getProfileByTelegramChatId(chatId);
+        if (!profile) {
+            await ctx.reply("Профиль не найден. Нажмите /start и зарегистрируйтесь через Telegram.");
+            return;
+        }
+        await ctx.reply(
+            `👤 Профиль Jumys\n` +
+            `ID: ${profile.id}\n` +
+            `Роль: ${profile.role}\n` +
+            `Имя: ${profile.full_name ?? "—"}\n` +
+            `Телефон: ${profile.phone ?? "—"}\n` +
+            `Район: ${profile.district ?? "—"} мкр.`,
+            {
+                reply_markup: {
+                    inline_keyboard: [[{ text: "Открыть вакансии", web_app: { url: `${siteUrl || "https://jumys.kz"}/jobs` } }]],
+                },
+            }
+        );
+    });
+
 
     bot.command("vacancies", async (ctx) => {
         const chatId = ctx.chat?.id;
@@ -247,11 +345,7 @@ if (bot) {
         if (!linkedProfile && !onboarding) {
             sessions.set(chatId, { step: "await_phone" });
             await ctx.reply("Сначала отправьте ваш номер телефона кнопкой ниже.", {
-                reply_markup: {
-                    keyboard: [[{ text: "📱 Поделиться номером", request_contact: true }]],
-                    resize_keyboard: true,
-                    one_time_keyboard: true,
-                },
+                reply_markup: getMainMenuKeyboard(),
             });
             return;
         }
@@ -261,18 +355,50 @@ if (bot) {
             return;
         }
 
+        if (onboarding?.step === "await_full_name") {
+            if (messageText.length < 3) {
+                await ctx.reply("Имя слишком короткое. Пример: Айдана Турсынова.");
+                return;
+            }
+            sessions.set(chatId, { ...onboarding, fullName: messageText, step: "await_district" });
+            await ctx.reply("Отлично! Теперь укажите ваш микрорайон в Актау (например: 14 мкр).");
+            return;
+        }
+
         if (onboarding?.step === "await_district") {
             const district = parseDistrict(messageText);
             if (!district) {
                 await ctx.reply("Не распознал микрорайон. Пример: 14 мкр.");
                 return;
             }
+            if (!onboarding.phone || !onboarding.fullName) {
+                sessions.set(chatId, { step: "await_phone" });
+                await ctx.reply("Давайте начнем заново. Нажмите кнопку и отправьте номер телефона.");
+                return;
+            }
 
-            sessions.set(chatId, { ...onboarding, district });
-            await ctx.reply(
-                "Спасибо! Завершите регистрацию на сайте, чтобы мы создали профиль, и затем привяжите Telegram через /start.\n" +
-                `Данные сохранены: телефон ${onboarding.phone ?? "не указан"}, район ${district} мкр.`
-            );
+            try {
+                const created = await createTelegramSeekerProfile({
+                    chatId,
+                    phone: onboarding.phone,
+                    fullName: onboarding.fullName,
+                    district,
+                });
+                sessions.delete(chatId);
+                await ctx.reply(
+                    created.created
+                        ? "✅ Готово! Мы зарегистрировали вас в Jumys прямо через Telegram и подключили AI-поиск вакансий."
+                        : "✅ Профиль найден и Telegram успешно привязан.",
+                    {
+                        reply_markup: {
+                            inline_keyboard: [[{ text: "Смотреть вакансии", web_app: { url: `${siteUrl || "https://jumys.kz"}/jobs` } }]],
+                        },
+                    }
+                );
+            } catch (error) {
+                const detail = error instanceof Error ? error.message : "Registration failed";
+                await ctx.reply(`Не удалось завершить регистрацию: ${detail}`);
+            }
             return;
         }
 
@@ -345,6 +471,12 @@ if (bot) {
         }
 
         await ctx.answerCallbackQuery();
+    });
+}
+
+if (bot) {
+    bot.catch((err) => {
+        console.error("telegram bot unhandled error", err.error);
     });
 }
 

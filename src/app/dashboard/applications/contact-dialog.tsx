@@ -39,12 +39,12 @@ export function ContactDialog({
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button size="sm">
+                <Button size="sm" className="w-full sm:w-auto">
                     <Phone className="h-3.5 w-3.5" />
                     Связаться
                 </Button>
             </DialogTrigger>
-            <DialogContent>
+            <DialogContent className="max-w-md">
                 <DialogHeader>
                     <DialogTitle>Связаться с кандидатом</DialogTitle>
                     <DialogDescription>{name}</DialogDescription>
