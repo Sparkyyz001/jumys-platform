@@ -4,7 +4,7 @@ import { formatSalary, labelForEmployment } from "@/lib/constants";
 import { enqueueNewApplicationNotification, flushNotifications } from "@/lib/telegram/send";
 import { findProfileByPhone, getProfileByTelegramChatId, normalizePhone } from "@/lib/profile";
 import { matchJobsByTextQuery, type MatchedJobFromQuery } from "@/lib/actions/matching";
-import type { EmploymentType, Profile } from "@/lib/types";
+import type { EmploymentType, Profile, TelegramJobFeedback } from "@/lib/types";
 import { buildSeekerEmbeddingInput, generateEmbedding } from "@/lib/ai/embeddings";
 
 export const runtime = "nodejs";
@@ -44,6 +44,19 @@ function parseDistrict(text: string): string | null {
 function getOpenJobButton(jobId: string) {
     const appUrl = `${siteUrl || "https://jumys.kz"}/dashboard/jobs/${jobId}`;
     return [{ text: "Открыть вакансию", web_app: { url: appUrl } }];
+}
+
+function getJobActionsKeyboard(jobId: string) {
+    return [
+        [
+            { text: "Откликнуться ✅", callback_data: `apply_${jobId}` },
+            { text: "Сохранить ⭐", callback_data: `save_${jobId}` },
+        ],
+        [
+            { text: "Не интересно 🙈", callback_data: `dislike_${jobId}` },
+            ...getOpenJobButton(jobId),
+        ],
+    ];
 }
 
 function getMainMenuKeyboard() {
@@ -144,13 +157,42 @@ async function createTelegramSeekerProfile(input: {
 }
 
 async function sendMatches(ctx: Context, query: string) {
-    const jobs = await matchJobsByTextQuery(query, { limit: 5 });
+    const chatId = ctx.chat?.id;
+    if (!chatId) return;
+    const linked = await getSeekerProfile(chatId);
+    if (!linked || linked.role !== "seeker") {
+        await ctx.reply("Сначала пройдите регистрацию соискателя через /start.");
+        return;
+    }
+
+    const jobs = await matchJobsByTextQuery(query, { limit: 20 });
     if (jobs.length === 0) {
         await ctx.reply("По этому запросу пока нет подходящих вакансий.");
         return;
     }
 
-    for (const job of jobs) {
+    const jobIds = jobs.map((job) => job.id);
+    const { data: feedbackRows } = await admin
+        .from("telegram_job_feedback")
+        .select("job_id, action")
+        .eq("seeker_id", linked.id)
+        .in("job_id", jobIds);
+    const feedback = (feedbackRows as Pick<TelegramJobFeedback, "job_id" | "action">[] | null) ?? [];
+    const feedbackByJob = new Map(feedback.map((item) => [item.job_id, item.action]));
+
+    const ranked = jobs
+        .map((job) => {
+            const action = feedbackByJob.get(job.id);
+            let adjusted = job.similarity;
+            if (action === "saved") adjusted += 0.08;
+            if (action === "disliked") adjusted -= 0.2;
+            return { ...job, similarity: Math.max(0, Math.min(1, adjusted)) };
+        })
+        .filter((job) => !feedbackByJob.has(job.id) || feedbackByJob.get(job.id) !== "disliked")
+        .sort((a, b) => b.similarity - a.similarity)
+        .slice(0, 5);
+
+    for (const job of ranked) {
         const pct = Math.round(Number(job.similarity) * 100);
         const text = [
             `<b>${job.title}</b> — ${pct}% матч`,
@@ -162,7 +204,7 @@ async function sendMatches(ctx: Context, query: string) {
         await ctx.reply(text, {
             parse_mode: "HTML",
             reply_markup: {
-                inline_keyboard: [getOpenJobButton(job.id)],
+                inline_keyboard: getJobActionsKeyboard(job.id),
             },
         });
     }
@@ -218,7 +260,7 @@ if (bot) {
             await ctx.reply(
                 "✅ Telegram успешно подтвержден и привязан к вашему профилю.\n" +
                 "Теперь уведомления и команды бота работают автоматически.\n\n" +
-                "Команды:\n/vacancies — подборка вакансий"
+                "Команды:\n/vacancies — подборка вакансий\n/saved — сохраненные вакансии\n/profile — ваш профиль"
             );
             return;
         }
@@ -264,7 +306,7 @@ if (bot) {
 
         await ctx.reply(
             "✅ Telegram привязан! Теперь вы будете получать уведомления о подходящих вакансиях.\n\n" +
-                "Команды:\n/vacancies — подборка вакансий",
+                "Команды:\n/vacancies — подборка вакансий\n/saved — сохраненные вакансии\n/profile — ваш профиль",
             { reply_markup: getMainMenuKeyboard() }
         );
     });
@@ -309,16 +351,35 @@ if (bot) {
 
         const { data: matches } = await admin.rpc("match_jobs_for_seeker", {
             p_seeker_id: profile.id,
-            p_count: 5,
+            p_count: 20,
         });
         const slimMatches = (matches as VacancySlim[] | null) ?? [];
+        const jobIds = slimMatches.map((m) => m.id);
+        const { data: feedbackRows } = await admin
+            .from("telegram_job_feedback")
+            .select("job_id, action")
+            .eq("seeker_id", profile.id)
+            .in("job_id", jobIds);
+        const feedback = (feedbackRows as Pick<TelegramJobFeedback, "job_id" | "action">[] | null) ?? [];
+        const feedbackByJob = new Map(feedback.map((item) => [item.job_id, item.action]));
+        const ranked = slimMatches
+            .map((job) => {
+                const action = feedbackByJob.get(job.id);
+                let score = Number(job.similarity);
+                if (action === "saved") score += 0.08;
+                if (action === "disliked") score -= 0.2;
+                return { ...job, similarity: Math.max(0, Math.min(1, score)) };
+            })
+            .filter((job) => feedbackByJob.get(job.id) !== "disliked")
+            .sort((a, b) => b.similarity - a.similarity)
+            .slice(0, 5);
 
-        if (slimMatches.length === 0) {
+        if (ranked.length === 0) {
             await ctx.reply("Пока нет подходящих вакансий. Загляните позже.");
             return;
         }
 
-        for (const m of slimMatches) {
+        for (const m of ranked) {
             const pct = Math.round(Number(m.similarity) * 100);
             const text = [
                 `<b>${m.title}</b> — ${pct}% матч`,
@@ -329,8 +390,51 @@ if (bot) {
 
             await ctx.reply(text, {
                 parse_mode: "HTML",
-                reply_markup: { inline_keyboard: [getOpenJobButton(m.id)] },
+                reply_markup: { inline_keyboard: getJobActionsKeyboard(m.id) },
             });
+        }
+    });
+
+    bot.command("saved", async (ctx) => {
+        const chatId = ctx.chat?.id;
+        if (!chatId) return;
+        const profile = await getSeekerProfile(chatId);
+        if (!profile || profile.role !== "seeker") {
+            await ctx.reply("Сначала завершите регистрацию соискателя через /start.");
+            return;
+        }
+
+        const { data: savedRows } = await admin
+            .from("telegram_job_feedback")
+            .select("job_id")
+            .eq("seeker_id", profile.id)
+            .eq("action", "saved")
+            .order("updated_at", { ascending: false })
+            .limit(10);
+        const savedIds = ((savedRows as Array<{ job_id: string }> | null) ?? []).map((row) => row.job_id);
+        if (savedIds.length === 0) {
+            await ctx.reply("У вас пока нет сохраненных вакансий. Нажимайте «Сохранить ⭐» в подборке.");
+            return;
+        }
+
+        const { data: jobs } = await admin
+            .from("jobs")
+            .select("id, title, district, salary_from, salary_to, employment")
+            .in("id", savedIds);
+        const savedJobs = (jobs as VacancySlim[] | null) ?? [];
+        for (const job of savedJobs) {
+            await ctx.reply(
+                [
+                    `<b>${job.title}</b>`,
+                    job.district ? `📍 ${job.district} мкр.` : null,
+                    `💰 ${formatSalary(job.salary_from, job.salary_to)}`,
+                    job.employment ? `⏱ ${labelForEmployment(job.employment)}` : null,
+                ].filter(Boolean).join("\n"),
+                {
+                    parse_mode: "HTML",
+                    reply_markup: { inline_keyboard: getJobActionsKeyboard(job.id) },
+                }
+            );
         }
     });
 
@@ -467,6 +571,29 @@ if (bot) {
             flushNotifications().catch((err) => console.error("flush notifications failed", err));
 
             await ctx.answerCallbackQuery({ text: "Отклик отправлен ✅" });
+            return;
+        }
+
+        if (data.startsWith("save_") || data.startsWith("dislike_")) {
+            const isSave = data.startsWith("save_");
+            const jobId = data.slice(isSave ? 5 : 8);
+            const action: TelegramJobFeedback["action"] = isSave ? "saved" : "disliked";
+
+            const { error } = await admin
+                .from("telegram_job_feedback")
+                .upsert(
+                    {
+                        seeker_id: profile.id,
+                        job_id: jobId,
+                        action,
+                    },
+                    { onConflict: "seeker_id,job_id" }
+                );
+            if (error) {
+                await ctx.answerCallbackQuery({ text: "Не удалось сохранить выбор" });
+                return;
+            }
+            await ctx.answerCallbackQuery({ text: isSave ? "Сохранено в избранное ⭐" : "Учту, больше такого не показываю 🙈" });
             return;
         }
 

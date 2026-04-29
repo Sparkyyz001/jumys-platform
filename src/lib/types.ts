@@ -65,6 +65,15 @@ export interface Application {
   created_at: string
 }
 
+export interface TelegramJobFeedback {
+  id: string
+  seeker_id: string
+  job_id: string
+  action: 'saved' | 'disliked'
+  created_at: string
+  updated_at: string
+}
+
 export interface MatchedJob {
   id: string
   title: string
@@ -187,6 +196,19 @@ export type Database = {
           sent_at: string | null
           created_at: string
         }>
+        Relationships: []
+      }
+      telegram_job_feedback: {
+        Row: TelegramJobFeedback
+        Insert: {
+          id?: string
+          seeker_id: string
+          job_id: string
+          action: 'saved' | 'disliked'
+          created_at?: string
+          updated_at?: string
+        }
+        Update: Partial<TelegramJobFeedback>
         Relationships: []
       }
     }
