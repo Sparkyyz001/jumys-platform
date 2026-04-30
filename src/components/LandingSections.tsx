@@ -3,6 +3,7 @@
 import Link from "next/link";
 import NumberFlow from "@number-flow/react";
 import { ArrowRight, Users, ShieldCheck, TrendingUp } from "lucide-react";
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useI18n } from "@/lib/i18n";
@@ -74,25 +75,37 @@ export function LandingFinalCTA() {
     const { t } = useI18n();
 
     return (
-        <section className="py-20 px-4 relative overflow-hidden">
+        <motion.section
+            initial={false}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            className="relative overflow-hidden px-4 py-24"
+        >
             <div
                 aria-hidden
-                className="absolute inset-0 bg-gradient-to-br from-blue-600/20 via-indigo-600/15 to-purple-600/10"
+                className="absolute inset-0 bg-gradient-to-br from-sky-400/12 via-sky-400/6 to-transparent"
             />
             <div className="max-w-4xl mx-auto text-center relative z-10">
-                <h2 className="text-3xl md:text-4xl font-bold text-white">{t("ctaReady")}</h2>
-                <p className="mt-3 text-gray-300">{t("ctaReadyDesc")}</p>
+                <h2 className="text-4xl font-semibold tracking-tighter text-zinc-100 md:text-5xl">{t("ctaReady")}</h2>
+                <p className="mt-4 text-zinc-400">{t("ctaReadyDesc")}</p>
                 <Link href="/auth/register" className="inline-block mt-8">
-                    <Button
-                        size="lg"
-                        className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white shadow-lg shadow-blue-500/30 border-0"
+                    <motion.div
+                        animate={{ boxShadow: ["0 0 0px rgba(56,189,248,0.15)", "0 0 28px rgba(56,189,248,0.28)", "0 0 0px rgba(56,189,248,0.15)"] }}
+                        transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut" }}
+                        className="rounded-xl"
                     >
-                        {t("createAccount")}
-                        <ArrowRight className="h-5 w-5" />
-                    </Button>
+                        <Button
+                            size="lg"
+                            className="rounded-xl border border-white/[0.08] bg-white/[0.03] text-zinc-100 hover:bg-sky-400/10"
+                        >
+                            {t("createAccount")}
+                            <ArrowRight className="h-5 w-5" />
+                        </Button>
+                    </motion.div>
                 </Link>
             </div>
-        </section>
+        </motion.section>
     );
 }
 
@@ -100,8 +113,8 @@ export function FreshJobsHeading() {
     const { t } = useI18n();
     return (
         <div>
-            <h2 className="text-2xl md:text-3xl font-bold text-white">{t("freshJobs")}</h2>
-            <p className="text-sm text-gray-400 mt-1">{t("freshJobsSubtitle")}</p>
+            <h2 className="text-3xl font-semibold tracking-tighter text-zinc-100 md:text-4xl">{t("freshJobs")}</h2>
+            <p className="mt-1 text-sm text-zinc-400">{t("freshJobsSubtitle")}</p>
         </div>
     );
 }
@@ -113,7 +126,7 @@ export function AllJobsButton({ href }: { href: string }) {
             <Button
                 variant="outline"
                 size="sm"
-                className="bg-white/5 border-white/15 text-white hover:bg-white/10 hover:text-white"
+                className="rounded-xl border-white/[0.08] bg-white/[0.03] text-zinc-100 hover:bg-sky-400/10 hover:text-zinc-100 hover:shadow-[0_0_24px_rgba(56,189,248,0.22)]"
             >
                 {t("allJobs")}
                 <ArrowRight className="h-4 w-4" />

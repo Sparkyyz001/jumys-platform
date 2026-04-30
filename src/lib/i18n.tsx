@@ -87,7 +87,61 @@ type I18nKey =
     | "caseStudyRole"
     | "caseStudyQuote"
     | "caseStudyTime"
-    | "caseStudyLink";
+    | "caseStudyLink"
+    | "landingBadge"
+    | "landingHeroTitle"
+    | "landingHeroSub"
+    | "landingFeaturesHeading"
+    | "landingFeatureAiTitle"
+    | "landingFeatureAiText"
+    | "landingFeatureLocalTitle"
+    | "landingFeatureLocalText"
+    | "landingFeatureVerifyTitle"
+    | "landingFeatureVerifyText"
+    | "landingPricingHeading"
+    | "landingPricingSub"
+    | "landingPopular"
+    | "landingPlanFreeName"
+    | "landingPlanFreePrice"
+    | "landingPlanFreePoint1"
+    | "landingPlanFreePoint2"
+    | "landingPlanFreePoint3"
+    | "landingPlanBoostName"
+    | "landingPlanBoostPrice"
+    | "landingPlanBoostPoint1"
+    | "landingPlanBoostPoint2"
+    | "landingPlanBoostPoint3"
+    | "landingPlanProName"
+    | "landingPlanProPrice"
+    | "landingPlanProPoint1"
+    | "landingPlanProPoint2"
+    | "landingPlanProPoint3"
+    | "landingChoosePlan"
+    | "landingTestimonialsHeading"
+    | "landingTestimonial1Quote"
+    | "landingTestimonial1Name"
+    | "landingTestimonial1Role"
+    | "landingTestimonial2Quote"
+    | "landingTestimonial2Name"
+    | "landingTestimonial2Role"
+    | "landingTestimonial3Quote"
+    | "landingTestimonial3Name"
+    | "landingTestimonial3Role"
+    | "landingFaqHeading"
+    | "landingFaq1Q"
+    | "landingFaq1A"
+    | "landingFaq2Q"
+    | "landingFaq2A"
+    | "landingFaq3Q"
+    | "landingFaq3A"
+    | "landingFaq4Q"
+    | "landingFaq4A"
+    | "landingLearnMore"
+    | "footerPlatform"
+    | "footerDocs"
+    | "footerSupport"
+    | "footerAbout"
+    | "footerBackToTop";
 
 const translations: Record<Lang, Record<I18nKey, string>> = {
     kk: {
@@ -176,6 +230,60 @@ const translations: Record<Lang, Record<I18nKey, string>> = {
         caseStudyQuote: "4 күнде екі кеңесші таптық. AI-іріктеу рекрутердің бір апта жұмысын үнемдеді.",
         caseStudyTime: "жалдау уақыты",
         caseStudyLink: "Кейс қосқыңыз келе ме? @jumys_support-қа жазыңыз",
+        landingBadge: "shadcn/ui стиліндегі заманауи лендинг",
+        landingHeroTitle: "Ақтауда жұмыс пен қызметкер іздеудің жаңа тәсілі",
+        landingHeroSub: "Jumys AI көмегімен сәйкес вакансиялар мен үміткерлерді табады, ал сіз нәтижені бір экраннан басқарасыз.",
+        landingFeaturesHeading: "Неліктен Jumys",
+        landingFeatureAiTitle: "Ақылды AI-матчинг",
+        landingFeatureAiText: "Үміткер мен вакансия релеванттылығы автоматты түрде есептеледі.",
+        landingFeatureLocalTitle: "Тек Ақтау нарығы",
+        landingFeatureLocalText: "39 шағын аудан бойынша локалды сүзгілер және нақты ұсыныстар.",
+        landingFeatureVerifyTitle: "Сенімді компаниялар",
+        landingFeatureVerifyText: "Verified Business тексерісі арқылы сапалы өтінім көбірек аласыз.",
+        landingPricingHeading: "Айқын тарифтер",
+        landingPricingSub: "Жеке іздеушілер мен бизнеске арналған икемді жоспарлар.",
+        landingPopular: "Танымал",
+        landingPlanFreeName: "Free",
+        landingPlanFreePrice: "0 ₸",
+        landingPlanFreePoint1: "3 белсенді вакансияға дейін",
+        landingPlanFreePoint2: "Негізгі AI-ұсыныстар",
+        landingPlanFreePoint3: "Telegram хабарламалары",
+        landingPlanBoostName: "Boost",
+        landingPlanBoostPrice: "4 990 ₸",
+        landingPlanBoostPoint1: "7 күнге ТОП-қа шығару",
+        landingPlanBoostPoint2: "Жоғары көріну",
+        landingPlanBoostPoint3: "Көбірек өтінім",
+        landingPlanProName: "Pro",
+        landingPlanProPrice: "14 990 ₸",
+        landingPlanProPoint1: "Шексіз вакансия",
+        landingPlanProPoint2: "Verified Business",
+        landingPlanProPoint3: "Кеңейтілген аналитика",
+        landingChoosePlan: "Таңдау",
+        landingTestimonialsHeading: "Пайдаланушылар пікірі",
+        landingTestimonial1Quote: "Екі күнде лайықты кандидат таптық, процесстер әлдеқайда жылдам болды.",
+        landingTestimonial1Name: "Dana K.",
+        landingTestimonial1Role: "HR Manager",
+        landingTestimonial2Quote: "Студенттерге арналған жартылай жұмыс орындарын табу оңай болды.",
+        landingTestimonial2Name: "Aruzhan S.",
+        landingTestimonial2Role: "Student",
+        landingTestimonial3Quote: "ТОП-қа шыққан соң өтінім саны айтарлықтай өсті.",
+        landingTestimonial3Name: "Caspian Retail",
+        landingTestimonial3Role: "Employer",
+        landingFaqHeading: "Жиі қойылатын сұрақтар",
+        landingFaq1Q: "Jumys кімдерге арналған?",
+        landingFaq1A: "Жұмыс іздеушілерге, студенттерге және Ақтаудағы жұмыс берушілерге.",
+        landingFaq2Q: "AI-матчинг қалай жұмыс істейді?",
+        landingFaq2A: "Профиль, дағды және тәжірибе негізінде ең релевантты жұптарды шығарады.",
+        landingFaq3Q: "Telegram міндетті ме?",
+        landingFaq3A: "Жоқ, бірақ Telegram арқылы хабарлама алу ыңғайлырақ.",
+        landingFaq4Q: "Тарифті кейін өзгертуге бола ма?",
+        landingFaq4A: "Иә, кабинеттен қалаған кезде Boost немесе Pro-ға ауыса аласыз.",
+        landingLearnMore: "Толығырақ тарифтер",
+        footerPlatform: "Платформа",
+        footerDocs: "Құжаттар",
+        footerSupport: "Қолдау",
+        footerAbout: "Ақтауда AI арқылы жұмыс және кадр іздеу. Telegram хабарламалары, компания верификациясы.",
+        footerBackToTop: "Жоғары",
     },
     ru: {
         findJob: "Найти работу",
@@ -263,6 +371,60 @@ const translations: Record<Lang, Record<I18nKey, string>> = {
         caseStudyQuote: "Нашли двух консультантов за 4 дня. AI-подбор сэкономил неделю работы рекрутера.",
         caseStudyTime: "время найма",
         caseStudyLink: "Хотите добавить ваш кейс? Напишите в @jumys_support",
+        landingBadge: "Современный лендинг в стиле shadcn/ui",
+        landingHeroTitle: "Новый подход к поиску работы и сотрудников в Актау",
+        landingHeroSub: "Jumys с помощью AI находит лучшие совпадения вакансий и кандидатов, а вы управляете всем в одном интерфейсе.",
+        landingFeaturesHeading: "Почему Jumys",
+        landingFeatureAiTitle: "Умный AI-матчинг",
+        landingFeatureAiText: "Релевантность кандидата и вакансии рассчитывается автоматически.",
+        landingFeatureLocalTitle: "Только рынок Актау",
+        landingFeatureLocalText: "Локальные фильтры по 39 микрорайонам и реальные предложения.",
+        landingFeatureVerifyTitle: "Проверенные компании",
+        landingFeatureVerifyText: "С бейджем Verified Business вы получаете более качественные отклики.",
+        landingPricingHeading: "Прозрачные тарифы",
+        landingPricingSub: "Гибкие планы для соискателей и бизнеса.",
+        landingPopular: "Популярный",
+        landingPlanFreeName: "Free",
+        landingPlanFreePrice: "0 ₸",
+        landingPlanFreePoint1: "До 3 активных вакансий",
+        landingPlanFreePoint2: "Базовые AI-рекомендации",
+        landingPlanFreePoint3: "Telegram-уведомления",
+        landingPlanBoostName: "Boost",
+        landingPlanBoostPrice: "4 990 ₸",
+        landingPlanBoostPoint1: "Выход в ТОП на 7 дней",
+        landingPlanBoostPoint2: "Повышенная видимость",
+        landingPlanBoostPoint3: "Больше откликов",
+        landingPlanProName: "Pro",
+        landingPlanProPrice: "14 990 ₸",
+        landingPlanProPoint1: "Безлимит вакансий",
+        landingPlanProPoint2: "Verified Business",
+        landingPlanProPoint3: "Расширенная аналитика",
+        landingChoosePlan: "Выбрать",
+        landingTestimonialsHeading: "Отзывы пользователей",
+        landingTestimonial1Quote: "Нашли подходящего кандидата за два дня, процесс стал заметно быстрее.",
+        landingTestimonial1Name: "Dana K.",
+        landingTestimonial1Role: "HR Manager",
+        landingTestimonial2Quote: "Стало проще находить подработку и стажировки рядом с домом.",
+        landingTestimonial2Name: "Aruzhan S.",
+        landingTestimonial2Role: "Student",
+        landingTestimonial3Quote: "После Boost количество откликов выросло уже в первую неделю.",
+        landingTestimonial3Name: "Caspian Retail",
+        landingTestimonial3Role: "Employer",
+        landingFaqHeading: "Частые вопросы",
+        landingFaq1Q: "Для кого подходит Jumys?",
+        landingFaq1A: "Для соискателей, студентов и работодателей в Актау.",
+        landingFaq2Q: "Как работает AI-матчинг?",
+        landingFaq2A: "Система анализирует профиль, навыки и опыт и предлагает самые релевантные совпадения.",
+        landingFaq3Q: "Telegram обязателен?",
+        landingFaq3A: "Нет, но через Telegram удобнее получать моментальные уведомления.",
+        landingFaq4Q: "Можно сменить тариф позже?",
+        landingFaq4A: "Да, вы можете перейти на Boost или Pro в любой момент из кабинета.",
+        landingLearnMore: "Подробнее о тарифах",
+        footerPlatform: "Платформа",
+        footerDocs: "Документы",
+        footerSupport: "Поддержка",
+        footerAbout: "AI-поиск работы и кандидатов в Актау. Уведомления в Telegram, верификация компаний.",
+        footerBackToTop: "Наверх",
     },
     en: {
         findJob: "Find Job",
@@ -350,6 +512,60 @@ const translations: Record<Lang, Record<I18nKey, string>> = {
         caseStudyQuote: "We hired two consultants in 4 days. AI matching saved a week of recruiter effort.",
         caseStudyTime: "time-to-hire",
         caseStudyLink: "Want your case featured? Message @jumys_support",
+        landingBadge: "Modern shadcn/ui styled landing",
+        landingHeroTitle: "A better way to find jobs and talent in Aktau",
+        landingHeroSub: "Jumys uses AI to match the right jobs and candidates while keeping everything in one clean interface.",
+        landingFeaturesHeading: "Why Jumys",
+        landingFeatureAiTitle: "Smart AI matching",
+        landingFeatureAiText: "Candidate-job relevance is ranked automatically.",
+        landingFeatureLocalTitle: "Aktau-first marketplace",
+        landingFeatureLocalText: "Local filters across 39 microdistricts with real opportunities.",
+        landingFeatureVerifyTitle: "Trusted companies",
+        landingFeatureVerifyText: "Verified Business badges help attract higher-quality applications.",
+        landingPricingHeading: "Simple pricing",
+        landingPricingSub: "Flexible plans for job seekers and businesses.",
+        landingPopular: "Popular",
+        landingPlanFreeName: "Free",
+        landingPlanFreePrice: "0 ₸",
+        landingPlanFreePoint1: "Up to 3 active vacancies",
+        landingPlanFreePoint2: "Basic AI recommendations",
+        landingPlanFreePoint3: "Telegram notifications",
+        landingPlanBoostName: "Boost",
+        landingPlanBoostPrice: "4,990 ₸",
+        landingPlanBoostPoint1: "Top placement for 7 days",
+        landingPlanBoostPoint2: "Higher visibility",
+        landingPlanBoostPoint3: "More applications",
+        landingPlanProName: "Pro",
+        landingPlanProPrice: "14,990 ₸",
+        landingPlanProPoint1: "Unlimited vacancies",
+        landingPlanProPoint2: "Verified Business",
+        landingPlanProPoint3: "Advanced analytics",
+        landingChoosePlan: "Choose plan",
+        landingTestimonialsHeading: "What users say",
+        landingTestimonial1Quote: "We found a strong candidate in two days, and hiring got much faster.",
+        landingTestimonial1Name: "Dana K.",
+        landingTestimonial1Role: "HR Manager",
+        landingTestimonial2Quote: "It became easier to find part-time jobs and internships nearby.",
+        landingTestimonial2Name: "Aruzhan S.",
+        landingTestimonial2Role: "Student",
+        landingTestimonial3Quote: "After Boost, application volume increased in the first week.",
+        landingTestimonial3Name: "Caspian Retail",
+        landingTestimonial3Role: "Employer",
+        landingFaqHeading: "FAQ",
+        landingFaq1Q: "Who is Jumys for?",
+        landingFaq1A: "For job seekers, students, and employers in Aktau.",
+        landingFaq2Q: "How does AI matching work?",
+        landingFaq2A: "It analyzes profile, skills, and experience to rank the most relevant matches.",
+        landingFaq3Q: "Is Telegram required?",
+        landingFaq3A: "No, but Telegram makes instant notifications more convenient.",
+        landingFaq4Q: "Can I change plans later?",
+        landingFaq4A: "Yes, you can upgrade to Boost or Pro anytime from your dashboard.",
+        landingLearnMore: "Learn more about pricing",
+        footerPlatform: "Platform",
+        footerDocs: "Documents",
+        footerSupport: "Support",
+        footerAbout: "AI job and talent matching in Aktau. Telegram notifications and company verification.",
+        footerBackToTop: "Back to top",
     },
 };
 

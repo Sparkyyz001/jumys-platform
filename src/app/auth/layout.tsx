@@ -2,13 +2,15 @@ import Link from "next/link";
 import { ArrowLeft, ArrowRight, Briefcase } from "lucide-react";
 import { DotMapBackground } from "@/components/ui/dot-map-background";
 import { MeshGridBackground } from "@/components/ui/mesh-grid-bg";
+import { ParallaxLightSpots } from "@/components/ui/cinematic-effects";
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
     return (
-        <div className="min-h-screen w-full relative flex items-center justify-center p-4 overflow-hidden">
+        <div className="relative flex min-h-screen w-full items-center justify-center overflow-hidden bg-[#050505] p-4">
             <MeshGridBackground intensity="default" />
-            <div className="relative z-0 w-full max-w-5xl rounded-2xl overflow-hidden flex bg-[#090b13] text-white shadow-2xl ring-1 ring-white/10">
-                <div className="hidden md:block md:w-1/2 relative overflow-hidden border-r border-[#1f2130] min-h-[640px]">
+            <ParallaxLightSpots />
+            <div className="relative z-0 flex w-full max-w-5xl overflow-hidden rounded-2xl bg-[#090b13]/90 text-white shadow-2xl ring-1 ring-white/[0.08] backdrop-blur-3xl">
+                <div className="relative hidden min-h-[640px] overflow-hidden border-r border-white/[0.06] md:block md:w-1/2">
                     <div className="absolute inset-0 bg-gradient-to-br from-[#0f1120] to-[#151929]">
                         <DotMapBackground />
                         <div className="absolute inset-0 flex flex-col items-center justify-center p-8 z-10">

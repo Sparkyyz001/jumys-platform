@@ -58,7 +58,7 @@ export default async function JobsMapPage() {
     }));
 
     return (
-        <div className="dark min-h-screen relative text-white">
+        <div className="dark min-h-screen relative bg-[#050505] text-white">
             <div className="max-w-7xl mx-auto px-4 py-6">
                 <div className="flex items-end justify-between flex-wrap gap-3 mb-4">
                     <div>
@@ -69,8 +69,8 @@ export default async function JobsMapPage() {
                             <ArrowLeft className="w-3.5 h-3.5 mr-1.5" />
                             К списку вакансий
                         </Link>
-                        <h1 className="text-2xl md:text-3xl font-bold">Вакансии на карте Актау</h1>
-                        <p className="text-sm text-gray-400 mt-1">
+                        <h1 className="text-2xl md:text-3xl font-bold tracking-tight">Вакансии на карте Актау</h1>
+                        <p className="text-sm text-zinc-400 mt-1">
                             Кликните по точке, чтобы посмотреть вакансию
                         </p>
                     </div>
@@ -83,7 +83,9 @@ export default async function JobsMapPage() {
                     </Link>
                 </div>
 
-                <JobsMapClient items={items} />
+                <div className="rounded-2xl border border-white/[0.08] bg-white/[0.02] p-2 backdrop-blur-3xl">
+                    <JobsMapClient items={items} />
+                </div>
             </div>
         </div>
     );

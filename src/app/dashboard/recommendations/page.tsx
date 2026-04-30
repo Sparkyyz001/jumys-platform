@@ -77,11 +77,11 @@ export default async function RecommendationsPage() {
     return (
         <div className="space-y-6">
             <div>
-                <h1 className="text-3xl font-bold flex items-center gap-2">
+                <h1 className="text-3xl font-bold tracking-tight flex items-center gap-2 text-zinc-100">
                     <Sparkles className="h-7 w-7 text-primary-700" />
                     Подборка для вас
                 </h1>
-                <p className="text-gray-600 mt-1">
+                <p className="text-zinc-400 mt-1">
                     {hasEmbedding
                         ? "Вакансии отсортированы по соответствию вашему профилю"
                         : "Профиль обрабатывается — скоро появятся персональные рекомендации"}

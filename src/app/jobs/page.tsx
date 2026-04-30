@@ -97,12 +97,12 @@ export default async function JobsListPage({
         <div className="max-w-7xl mx-auto px-4 py-8">
             <div className="mb-6 flex items-end justify-between flex-wrap gap-3">
                 <div>
-                    <h1 className="text-3xl font-bold">Вакансии в Актау</h1>
-                    <p className="text-gray-600 mt-1">Найдено: {total}</p>
+                    <h1 className="text-3xl font-bold text-foreground">Вакансии в Актау</h1>
+                    <p className="text-muted-foreground mt-1">Найдено: {total}</p>
                 </div>
                 <Link
                     href="/jobs/map"
-                    className="inline-flex items-center gap-2 rounded-md border border-primary-200 bg-primary-50 px-3 py-2 text-sm font-medium text-primary-700 hover:bg-primary-100 transition-colors"
+                    className="inline-flex items-center gap-2 rounded-md border border-border bg-card px-3 py-2 text-sm font-medium text-foreground hover:bg-muted transition-colors"
                 >
                     <MapIcon className="h-4 w-4" />
                     На карте
@@ -111,14 +111,14 @@ export default async function JobsListPage({
 
             {topRows.length > 0 && (
                 <div className="mb-6">
-                    <h2 className="text-lg font-semibold mb-3">ТОП вакансии</h2>
+                    <h2 className="text-lg font-semibold mb-3 text-foreground">ТОП вакансии</h2>
                     <div className="grid gap-4 md:grid-cols-3">
                         {topRows.map((j) => (
-                            <div key={`top-${j.id}`} className="rounded-xl border border-primary-200 bg-primary-50/60 p-4">
-                                <p className="text-xs font-medium text-primary-700">TOP</p>
-                                <p className="font-semibold mt-1 line-clamp-2">{j.title}</p>
-                                <p className="text-sm text-gray-600 mt-1">{j.employer_id ? companyMap.get(j.employer_id) ?? "Компания" : "Компания"}</p>
-                                <Link href={`/jobs/${j.id}`} className="inline-block mt-3 text-sm text-primary-700 hover:underline">
+                            <div key={`top-${j.id}`} className="rounded-xl border border-border bg-card p-4">
+                                <p className="text-xs font-medium text-primary">TOP</p>
+                                <p className="font-semibold mt-1 line-clamp-2 text-foreground">{j.title}</p>
+                                <p className="text-sm text-muted-foreground mt-1">{j.employer_id ? companyMap.get(j.employer_id) ?? "Компания" : "Компания"}</p>
+                                <Link href={`/jobs/${j.id}`} className="inline-block mt-3 text-sm text-primary hover:underline">
                                     Открыть вакансию →
                                 </Link>
                             </div>
@@ -129,35 +129,39 @@ export default async function JobsListPage({
 
             <div className="grid gap-6 lg:grid-cols-[300px_1fr]">
                 <aside>
-                    <Card>
+                    <Card className="border-border/70">
                         <CardContent className="p-4 space-y-5">
                             <form action="/jobs" className="space-y-4">
+                                <div className="rounded-xl border border-border bg-muted/40 p-3">
+                                    <p className="text-xs font-medium text-muted-foreground">Быстрый подбор</p>
+                                    <p className="text-sm font-semibold text-foreground mt-1">Заполните фильтры и получите релевантные вакансии</p>
+                                </div>
                                 <div>
-                                    <h3 className="font-semibold text-sm mb-2">Поиск по названию</h3>
+                                    <h3 className="font-semibold text-sm mb-2 text-foreground">Поиск по названию</h3>
                                     <input
                                         name="q"
                                         defaultValue={q}
                                         placeholder="Например, Frontend-разработчик"
-                                        className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
+                                        className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring"
                                     />
                                 </div>
                                 <div>
-                                    <h3 className="font-semibold text-sm mb-2">Район (1-39 мкр)</h3>
+                                    <h3 className="font-semibold text-sm mb-2 text-foreground">Район (1-39 мкр)</h3>
                                     <select
                                         name="district"
                                         defaultValue={district ?? ""}
-                                        className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm bg-white"
+                                        className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring"
                                     >
                                         <option value="">Все районы</option>
                                         {districts.map(d => <option key={d} value={d}>{d}</option>)}
                                     </select>
                                 </div>
                                 <div>
-                                    <h3 className="font-semibold text-sm mb-2">Кто вы?</h3>
+                                    <h3 className="font-semibold text-sm mb-2 text-foreground">Кто вы?</h3>
                                     <select
                                         name="who"
                                         defaultValue={who ?? ""}
-                                        className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm bg-white"
+                                        className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring"
                                     >
                                         <option value="">Любой формат</option>
                                         <option value="student">Student</option>
@@ -166,18 +170,18 @@ export default async function JobsListPage({
                                     </select>
                                 </div>
                                 <div>
-                                    <h3 className="font-semibold text-sm mb-2">Возраст</h3>
+                                    <h3 className="font-semibold text-sm mb-2 text-foreground">Возраст</h3>
                                     <select
                                         name="age"
                                         defaultValue={age ?? ""}
-                                        className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm bg-white"
+                                        className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring"
                                     >
                                         <option value="">Любой</option>
                                         <option value="16-29">16-29 (youth)</option>
                                     </select>
                                 </div>
                                 <div>
-                                    <h3 className="font-semibold text-sm mb-2">Минимальная зарплата</h3>
+                                    <h3 className="font-semibold text-sm mb-2 text-foreground">Минимальная зарплата</h3>
                                     <input
                                         name="minSalary"
                                         defaultValue={minSalary > 0 ? String(minSalary) : ""}
@@ -185,32 +189,32 @@ export default async function JobsListPage({
                                         min={0}
                                         step={10000}
                                         placeholder="150000"
-                                        className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
+                                        className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring"
                                     />
                                 </div>
                                 <div>
-                                    <h3 className="font-semibold text-sm mb-2">Занятость</h3>
+                                    <h3 className="font-semibold text-sm mb-2 text-foreground">Занятость</h3>
                                     <select
                                         name="employment"
                                         defaultValue={employment ?? ""}
-                                        className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm bg-white"
+                                        className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring"
                                     >
                                         <option value="">Любая</option>
                                         {EMPLOYMENT_TYPES.map(e => <option key={e.value} value={e.value}>{e.label}</option>)}
                                     </select>
                                 </div>
                                 <div>
-                                    <h3 className="font-semibold text-sm mb-2">Категория</h3>
+                                    <h3 className="font-semibold text-sm mb-2 text-foreground">Категория</h3>
                                     <select
                                         name="category"
                                         defaultValue={category ?? ""}
-                                        className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm bg-white"
+                                        className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring"
                                     >
                                         <option value="">Все категории</option>
                                         {JOB_CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
                                     </select>
                                 </div>
-                                <button type="submit" className="w-full rounded-md bg-primary-600 px-3 py-2 text-sm font-medium text-white">
+                                <button type="submit" className="w-full rounded-md bg-primary px-3 py-2 text-sm font-medium text-primary-foreground hover:opacity-90 transition-opacity">
                                     Применить фильтры
                                 </button>
                             </form>
@@ -218,7 +222,7 @@ export default async function JobsListPage({
                             {hasActiveFilters && (
                                 <Link
                                     href="/jobs"
-                                    className="block text-sm text-center text-primary-700 hover:underline pt-2 border-t"
+                                    className="block text-sm text-center text-primary hover:underline pt-2 border-t border-border"
                                 >
                                     Сбросить фильтры
                                 </Link>
@@ -231,9 +235,9 @@ export default async function JobsListPage({
                     {jobRows.length === 0 ? (
                         <Card>
                             <CardContent className="p-12 text-center">
-                                <Briefcase className="h-12 w-12 text-gray-300 mx-auto mb-3" />
-                                <p className="text-lg font-medium text-gray-900 mb-1">Нет вакансий</p>
-                                <p className="text-sm text-gray-500">
+                                <Briefcase className="h-12 w-12 text-muted-foreground mx-auto mb-3" />
+                                <p className="text-lg font-medium text-foreground mb-1">Нет вакансий</p>
+                                <p className="text-sm text-muted-foreground">
                                     Попробуйте сбросить фильтры или вернуться позже
                                 </p>
                             </CardContent>
@@ -268,8 +272,8 @@ export default async function JobsListPage({
                                                 href={makeUrl({ page: String(n) })}
                                                 className={`min-w-9 h-9 flex items-center justify-center rounded-md text-sm ${
                                                     isActive
-                                                        ? "bg-primary-600 text-white"
-                                                        : "bg-white border hover:bg-gray-50"
+                                                        ? "bg-primary text-primary-foreground"
+                                                        : "bg-card border border-border hover:bg-muted text-foreground"
                                                 }`}
                                             >
                                                 {n}
