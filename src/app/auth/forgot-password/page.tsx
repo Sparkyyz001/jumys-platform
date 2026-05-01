@@ -45,7 +45,7 @@ export default function ForgotPasswordPage() {
                 </p>
                 <Link
                     href="/auth/login"
-                    className="text-sm text-blue-400 hover:text-blue-300 font-medium transition-colors"
+                    className="text-sm text-amber-400 hover:text-amber-300 font-medium transition-colors"
                 >
                     Вернуться ко входу
                 </Link>
@@ -71,7 +71,7 @@ export default function ForgotPasswordPage() {
             <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
                     <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-1">
-                        Email <span className="text-blue-500">*</span>
+                        Email <span className="text-amber-400">*</span>
                     </label>
                     <input
                         id="email"
@@ -80,7 +80,7 @@ export default function ForgotPasswordPage() {
                         value={email}
                         onChange={e => setEmail(e.target.value)}
                         placeholder="you@example.com"
-                        className="flex h-10 w-full rounded-md border border-[#2a2d3a] bg-[#13151f] px-3 py-2 text-sm text-gray-200 placeholder:text-gray-500 focus:border-blue-500 focus:outline-none transition-colors"
+                        className="flex h-10 w-full rounded-md border border-[#2a2d3a] bg-[#13151f] px-3 py-2 text-sm text-gray-200 placeholder:text-gray-500 focus:border-amber-500 focus:outline-none transition-colors"
                     />
                 </div>
 
@@ -89,7 +89,7 @@ export default function ForgotPasswordPage() {
                     whileTap={{ scale: 0.98 }}
                     type="submit"
                     disabled={loading}
-                    className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white py-2.5 text-sm font-medium transition-all duration-300 shadow-lg shadow-blue-500/20 disabled:opacity-60"
+                    className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-white py-2.5 text-sm font-medium transition-all duration-300 shadow-lg shadow-amber-500/20 disabled:opacity-60"
                 >
                     {loading ? "Отправка..." : "Отправить ссылку"}
                     {!loading && <ArrowRight className="h-4 w-4" />}
@@ -97,7 +97,7 @@ export default function ForgotPasswordPage() {
             </form>
 
             <p className="mt-6 text-center text-sm text-gray-400">
-                <Link href="/auth/login" className="text-blue-400 hover:text-blue-300 font-medium transition-colors">
+                <Link href="/auth/login" className="text-amber-400 hover:text-amber-300 font-medium transition-colors">
                     Вернуться ко входу
                 </Link>
             </p>

@@ -63,9 +63,12 @@ export async function updateSession(request: NextRequest) {
         }
 
         if (userData?.user && isAuthPage) {
-            const url = request.nextUrl.clone()
-            url.pathname = '/dashboard'
-            return NextResponse.redirect(url)
+            const requestedNext = request.nextUrl.searchParams.get("next");
+            const target =
+                requestedNext?.startsWith("/") && !requestedNext.startsWith("//")
+                    ? requestedNext
+                    : "/dashboard";
+            return NextResponse.redirect(new URL(target, request.url));
         }
 
         if (userData?.user && (pathname.startsWith('/dashboard') || pathname.startsWith('/jobs'))) {

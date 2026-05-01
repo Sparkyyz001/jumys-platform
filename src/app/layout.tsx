@@ -22,7 +22,7 @@ export default function RootLayout({
     children,
 }: Readonly<{ children: React.ReactNode }>) {
     return (
-        <html lang="ru" suppressHydrationWarning className={`${inter.variable} dark`}>
+        <html lang="ru" suppressHydrationWarning className={`${inter.variable} dark scroll-smooth`}>
             <body className="theme-sass3 font-sans antialiased overflow-x-hidden dark-mesh-root">
                 <ThemeProvider>
                     <I18nProvider>

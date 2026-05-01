@@ -76,7 +76,7 @@ export default function ResetPasswordPage() {
             <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
                     <label htmlFor="new-password" className="block text-sm font-medium text-gray-300 mb-1">
-                        Новый пароль <span className="text-blue-500">*</span>
+                        Новый пароль <span className="text-amber-400">*</span>
                     </label>
                     <input
                         id="new-password"
@@ -85,13 +85,13 @@ export default function ResetPasswordPage() {
                         minLength={6}
                         value={newPassword}
                         onChange={e => setNewPassword(e.target.value)}
-                        className="flex h-10 w-full rounded-md border border-[#2a2d3a] bg-[#13151f] px-3 py-2 text-sm text-gray-200 placeholder:text-gray-500 focus:border-blue-500 focus:outline-none transition-colors"
+                        className="flex h-10 w-full rounded-md border border-[#2a2d3a] bg-[#13151f] px-3 py-2 text-sm text-gray-200 placeholder:text-gray-500 focus:border-amber-500 focus:outline-none transition-colors"
                     />
                 </div>
 
                 <div>
                     <label htmlFor="confirm-password" className="block text-sm font-medium text-gray-300 mb-1">
-                        Повторите пароль <span className="text-blue-500">*</span>
+                        Повторите пароль <span className="text-amber-400">*</span>
                     </label>
                     <input
                         id="confirm-password"
@@ -100,7 +100,7 @@ export default function ResetPasswordPage() {
                         minLength={6}
                         value={confirmPassword}
                         onChange={e => setConfirmPassword(e.target.value)}
-                        className="flex h-10 w-full rounded-md border border-[#2a2d3a] bg-[#13151f] px-3 py-2 text-sm text-gray-200 placeholder:text-gray-500 focus:border-blue-500 focus:outline-none transition-colors"
+                        className="flex h-10 w-full rounded-md border border-[#2a2d3a] bg-[#13151f] px-3 py-2 text-sm text-gray-200 placeholder:text-gray-500 focus:border-amber-500 focus:outline-none transition-colors"
                     />
                 </div>
 
@@ -109,7 +109,7 @@ export default function ResetPasswordPage() {
                     whileTap={{ scale: 0.98 }}
                     type="submit"
                     disabled={loading}
-                    className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white py-2.5 text-sm font-medium transition-all duration-300 shadow-lg shadow-blue-500/20 disabled:opacity-60"
+                    className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-white py-2.5 text-sm font-medium transition-all duration-300 shadow-lg shadow-amber-500/20 disabled:opacity-60"
                 >
                     {loading ? "Сохранение..." : "Сохранить пароль"}
                     {!loading && <ArrowRight className="h-4 w-4" />}

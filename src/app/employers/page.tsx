@@ -4,8 +4,6 @@ import Link from "next/link";
 import NumberFlow from "@number-flow/react";
 import { Check, ShieldCheck, Sparkles, TrendingDown, TrendingUp, X } from "lucide-react";
 import { useI18n } from "@/lib/i18n";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 
 const BENEFITS = [
     { icon: Sparkles, iconWrap: "bg-gradient-to-br from-violet-500/10 to-violet-500/0", iconColor: "text-violet-500", titleKey: "employersFeatureAiTitle", textKey: "employersFeatureAiText" },
@@ -25,82 +23,83 @@ export default function EmployersPage() {
     const { t } = useI18n();
 
     const renderCell = (value: string) => {
-        if (value === "check") return <Check className="size-4 text-emerald-500 mx-auto" />;
-        if (value === "x") return <X className="size-4 text-muted-foreground mx-auto" />;
-        if (value === "partial") return <span className="text-sm text-muted-foreground">{t("employersPartial")}</span>;
-        return <span className="text-sm text-foreground">{value}</span>;
+        if (value === "check") return <Check className="size-4 text-emerald-400 mx-auto" />;
+        if (value === "x") return <X className="size-4 text-zinc-600 mx-auto" />;
+        if (value === "partial") return <span className="text-sm text-zinc-500">{t("employersPartial")}</span>;
+        return <span className="text-sm text-zinc-300">{value}</span>;
     };
 
     return (
-        <div className="min-h-screen bg-background text-foreground">
-            <section className="py-16 lg:py-24">
-                <div className="max-w-7xl mx-auto px-4 grid gap-8 lg:grid-cols-2 items-center">
+        <div className="min-h-screen bg-[#050505] text-zinc-100">
+            <div className="pointer-events-none fixed inset-0 -z-10" style={{ background: "radial-gradient(ellipse 70% 50% at 15% 10%, rgba(251,146,60,0.07), transparent 60%), radial-gradient(ellipse 60% 50% at 85% 80%, rgba(56,189,248,0.06), transparent 60%)" }} />
+
+            {/* Hero */}
+            <section className="py-16 lg:py-24 px-4">
+                <div className="max-w-7xl mx-auto grid gap-8 lg:grid-cols-2 items-center">
                     <div>
-                        <span className="inline-flex items-center gap-2 rounded-full bg-muted text-xs px-3 py-1 text-muted-foreground">
+                        <span className="inline-flex items-center gap-2 rounded-full border border-white/[0.10] bg-white/[0.04] px-3 py-1 text-xs text-zinc-400">
                             {t("employersBadge")}
                         </span>
-                        <h1 className="mt-4 text-4xl lg:text-6xl font-bold tracking-tight leading-[1.1]">{t("employersTitle")}</h1>
-                        <p className="mt-4 text-lg text-muted-foreground max-w-xl">{t("employersSub")}</p>
+                        <h1 className="mt-4 text-4xl lg:text-6xl font-bold tracking-tight leading-[1.1] text-zinc-100">{t("employersTitle")}</h1>
+                        <p className="mt-4 text-lg text-zinc-400 max-w-xl">{t("employersSub")}</p>
                         <Link href="/auth/register?role=employer" className="inline-block mt-8">
-                            <Button size="lg" className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white border-0">
+                            <button className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-amber-500/20 transition-all">
                                 {t("employersCta")}
-                            </Button>
+                            </button>
                         </Link>
                     </div>
-                    <Card className="border-border/60 bg-card">
-                        <CardContent className="p-6">
-                            <p className="text-5xl font-bold text-foreground leading-none">
-                                <NumberFlow value={3.2} /> <span className="text-2xl">{t("heroMockupDays")}</span>
-                            </p>
-                            <p className="mt-2 text-sm text-muted-foreground">{t("employersAvgHire")}</p>
-                            <p className="mt-2 inline-flex items-center gap-1 text-emerald-500 text-sm font-medium">
-                                <TrendingDown className="size-4" />
-                                {t("employersVs")}
-                            </p>
-                        </CardContent>
-                    </Card>
+                    <div className="rounded-2xl border border-white/[0.07] bg-white/[0.03] backdrop-blur-3xl p-6">
+                        <p className="text-5xl font-bold text-zinc-100 leading-none">
+                            <NumberFlow value={3.2} /> <span className="text-2xl text-zinc-400">{t("heroMockupDays")}</span>
+                        </p>
+                        <p className="mt-2 text-sm text-zinc-500">{t("employersAvgHire")}</p>
+                        <p className="mt-2 inline-flex items-center gap-1 text-emerald-400 text-sm font-medium">
+                            <TrendingDown className="size-4" />
+                            {t("employersVs")}
+                        </p>
+                    </div>
                 </div>
             </section>
 
+            {/* Benefits */}
             <section className="pb-12 px-4">
                 <div className="max-w-7xl mx-auto">
-                    <h2 className="text-2xl md:text-3xl font-bold text-center mb-6">{t("employersWhy")}</h2>
+                    <h2 className="text-2xl md:text-3xl font-bold text-center text-zinc-100 mb-8">{t("employersWhy")}</h2>
                     <div className="grid gap-4 md:grid-cols-3">
                         {BENEFITS.map((item) => {
                             const Icon = item.icon;
                             return (
-                                <Card key={item.titleKey} className="rounded-2xl border border-border/40 bg-card p-6 hover:border-primary/40 hover:-translate-y-0.5 transition-all duration-200">
-                                    <CardContent className="p-0">
-                                        <div className={`size-14 rounded-2xl ${item.iconWrap} flex items-center justify-center`}>
-                                            <Icon size={28} strokeWidth={1.5} className={item.iconColor} />
-                                        </div>
-                                        <h3 className="mt-4 font-semibold text-foreground">{t(item.titleKey)}</h3>
-                                        <p className="mt-2 text-sm text-muted-foreground">{t(item.textKey)}</p>
-                                    </CardContent>
-                                </Card>
+                                <div key={item.titleKey} className="rounded-2xl border border-white/[0.07] bg-white/[0.03] backdrop-blur-3xl p-6 hover:-translate-y-0.5 transition-transform duration-200">
+                                    <div className={`size-12 rounded-xl ${item.iconWrap} flex items-center justify-center`}>
+                                        <Icon size={24} strokeWidth={1.5} className={item.iconColor} />
+                                    </div>
+                                    <h3 className="mt-4 font-semibold text-zinc-100">{t(item.titleKey)}</h3>
+                                    <p className="mt-2 text-sm text-zinc-400">{t(item.textKey)}</p>
+                                </div>
                             );
                         })}
                     </div>
                 </div>
             </section>
 
+            {/* Compare table */}
             <section className="pb-12 px-4">
-                <div className="max-w-6xl mx-auto rounded-2xl border border-border overflow-hidden">
+                <div className="max-w-6xl mx-auto rounded-2xl border border-white/[0.07] bg-white/[0.03] backdrop-blur-3xl overflow-hidden">
                     <div className="overflow-x-auto">
                         <table className="w-full text-sm">
-                            <thead className="bg-muted/50">
+                            <thead className="border-b border-white/[0.07] bg-white/[0.03]">
                                 <tr>
-                                    <th className="text-left px-4 py-3 font-medium text-foreground">{t("employersTableFeature")}</th>
-                                    <th className="px-4 py-3 font-medium text-foreground bg-primary/5">{t("employersTableJumys")}</th>
-                                    <th className="px-4 py-3 font-medium text-foreground">{t("employersTableHH")}</th>
-                                    <th className="px-4 py-3 font-medium text-foreground">{t("employersTableOlx")}</th>
+                                    <th className="text-left px-4 py-3 font-medium text-zinc-400">{t("employersTableFeature")}</th>
+                                    <th className="px-4 py-3 font-medium text-amber-300 bg-amber-500/5">{t("employersTableJumys")}</th>
+                                    <th className="px-4 py-3 font-medium text-zinc-400">{t("employersTableHH")}</th>
+                                    <th className="px-4 py-3 font-medium text-zinc-400">{t("employersTableOlx")}</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {COMPARE_ROWS.map((row) => (
-                                    <tr key={row.featureKey} className="border-t border-border">
-                                        <td className="px-4 py-3 text-muted-foreground">{t(row.featureKey)}</td>
-                                        <td className="px-4 py-3 text-center bg-primary/5">{renderCell(row.jumys)}</td>
+                                    <tr key={row.featureKey} className="border-t border-white/[0.06]">
+                                        <td className="px-4 py-3 text-zinc-400">{t(row.featureKey)}</td>
+                                        <td className="px-4 py-3 text-center bg-amber-500/5">{renderCell(row.jumys)}</td>
                                         <td className="px-4 py-3 text-center">{renderCell(row.hh)}</td>
                                         <td className="px-4 py-3 text-center">{renderCell(row.olx)}</td>
                                     </tr>
@@ -111,17 +110,20 @@ export default function EmployersPage() {
                 </div>
             </section>
 
+            {/* CTA */}
             <section className="px-4 pb-16">
-                <div className="max-w-6xl mx-auto rounded-3xl bg-gradient-to-br from-violet-500/5 to-indigo-500/5 py-16 px-6 text-center border border-border/50">
-                    <h2 className="text-3xl font-bold text-foreground">{t("employersCtaTitle")}</h2>
+                <div className="max-w-6xl mx-auto rounded-3xl border border-white/[0.07] bg-gradient-to-br from-amber-500/5 to-orange-500/5 py-16 px-6 text-center">
+                    <h2 className="text-3xl font-bold text-zinc-100">{t("employersCtaTitle")}</h2>
                     <div className="mt-6 flex items-center justify-center gap-3 flex-wrap">
                         <Link href="/auth/register?role=employer">
-                            <Button className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white border-0">
+                            <button className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-amber-500/20 transition-all">
                                 {t("employersCtaPrimary")}
-                            </Button>
+                            </button>
                         </Link>
                         <Link href="/pricing">
-                            <Button variant="outline">{t("employersCtaSecondary")}</Button>
+                            <button className="inline-flex items-center rounded-xl border border-white/[0.08] bg-white/[0.03] px-6 py-3 text-sm font-medium text-zinc-200 transition-colors hover:bg-white/[0.07]">
+                                {t("employersCtaSecondary")}
+                            </button>
                         </Link>
                     </div>
                 </div>

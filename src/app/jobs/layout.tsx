@@ -16,31 +16,51 @@ export default async function JobsLayout({ children }: { children: React.ReactNo
     const profileRow = profile as { role: "employer" | "seeker"; full_name: string | null } | null;
 
     return (
-        <div className="min-h-screen bg-background w-full overflow-x-hidden">
-            <header className="border-b bg-background/95 sticky top-0 z-40 backdrop-blur">
-                <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-                    <Link href="/" className="flex items-center gap-2 text-primary-700 font-bold text-xl">
-                        <Briefcase className="h-6 w-6" />
+        <div className="min-h-screen w-full bg-[#050505] text-zinc-100">
+            <header className="sticky top-0 z-40 border-b border-white/10 bg-[#050505]/90 backdrop-blur-xl">
+                <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4">
+                    <Link
+                        href="/"
+                        className="flex items-center gap-2 text-lg font-bold tracking-tight text-white"
+                    >
+                        <Briefcase className="h-6 w-6 text-amber-400" />
                         Jumys
                     </Link>
-                    <nav className="flex items-center gap-4">
+                    <nav className="flex items-center gap-3 sm:gap-4">
                         <LanguageSwitcher />
                         {user ? (
                             <>
-                                <Link href="/dashboard" className="text-sm text-muted-foreground hover:text-foreground hidden sm:inline-block">
+                                <Link
+                                    href="/dashboard"
+                                    className="hidden text-sm text-zinc-400 transition-colors hover:text-white sm:inline-block"
+                                >
                                     Кабинет
                                 </Link>
                                 <Link href="/dashboard">
-                                    <Button size="sm">Открыть кабинет</Button>
+                                    <Button
+                                        size="sm"
+                                        className="border-0 bg-white text-black hover:bg-zinc-200"
+                                    >
+                                        Открыть кабинет
+                                    </Button>
                                 </Link>
                             </>
                         ) : (
                             <>
-                                <Link href="/auth/login" className="text-sm text-muted-foreground hover:text-foreground">
+                                <Link
+                                    href="/auth/login"
+                                    className="text-sm text-zinc-400 transition-colors hover:text-white"
+                                >
                                     Войти
                                 </Link>
                                 <Link href="/auth/register">
-                                    <Button size="sm">Регистрация</Button>
+                                    <Button
+                                        size="sm"
+                                        variant="outline"
+                                        className="border-white/15 bg-white/5 text-zinc-100 hover:bg-white/10"
+                                    >
+                                        Регистрация
+                                    </Button>
                                 </Link>
                             </>
                         )}
@@ -50,12 +70,10 @@ export default async function JobsLayout({ children }: { children: React.ReactNo
             {user && profileRow?.role ? (
                 <div className="flex">
                     <DashboardNav role={profileRow.role} email={user.email ?? null} name={profileRow.full_name ?? null} />
-                    <main className="flex-1 min-w-0">
-                        <div className="max-w-7xl mx-auto px-4 py-6">{children}</div>
-                    </main>
+                    <main className="min-w-0 flex-1 bg-[#050505]">{children}</main>
                 </div>
             ) : (
-                <main>{children}</main>
+                <main className="bg-[#050505]">{children}</main>
             )}
         </div>
     );

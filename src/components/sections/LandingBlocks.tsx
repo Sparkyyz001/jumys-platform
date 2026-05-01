@@ -3,10 +3,113 @@
 import Link from "next/link";
 import NumberFlow from "@number-flow/react";
 import { Briefcase, Building2, Check, ChevronDown, ShieldCheck, Sparkles, TrendingUp } from "lucide-react";
-import { motion } from "framer-motion";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useI18n } from "@/lib/i18n";
+
+/* ── Letter-by-letter reveal ─────────────────────────────────────────── */
+function LetterReveal({ text, className }: { text: string; className?: string }) {
+    return (
+        <span aria-label={text} className={className}>
+            {text.split("").map((char, i) => (
+                <motion.span
+                    key={i}
+                    initial={{ opacity: 0, y: 10, filter: "blur(5px)" }}
+                    whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.38, delay: i * 0.028, ease: "easeOut" }}
+                    style={{ display: char === " " ? "inline" : "inline-block" }}
+                >
+                    {char === " " ? "\u00a0" : char}
+                </motion.span>
+            ))}
+        </span>
+    );
+}
+
+/* ── Liquid-glass feature card with 3-D tilt + warm cursor glow ──────── */
+function LiquidFeatureCard({
+    icon: Icon,
+    title,
+    text,
+    delay = 0,
+}: {
+    icon: React.ElementType;
+    title: string;
+    text: string;
+    delay?: number;
+}) {
+    const ref = useRef<HTMLDivElement>(null);
+    const [glowPos, setGlowPos] = useState({ x: 50, y: 50 });
+
+    const rawX = useMotionValue(0);
+    const rawY = useMotionValue(0);
+    const rotateX = useSpring(useTransform(rawY, [-0.5, 0.5], [14, -14]), { stiffness: 260, damping: 28 });
+    const rotateY = useSpring(useTransform(rawX, [-0.5, 0.5], [-14, 14]), { stiffness: 260, damping: 28 });
+
+    function handleMouseMove(e: React.MouseEvent<HTMLDivElement>) {
+        if (!ref.current) return;
+        const r = ref.current.getBoundingClientRect();
+        rawX.set((e.clientX - r.left) / r.width - 0.5);
+        rawY.set((e.clientY - r.top) / r.height - 0.5);
+        setGlowPos({
+            x: ((e.clientX - r.left) / r.width) * 100,
+            y: ((e.clientY - r.top) / r.height) * 100,
+        });
+    }
+
+    function handleMouseLeave() {
+        rawX.set(0);
+        rawY.set(0);
+    }
+
+    return (
+        <motion.div
+            ref={ref}
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+            style={{ rotateX, rotateY, transformStyle: "preserve-3d", perspective: 1000 }}
+            initial={{ opacity: 0, scale: 0.92, y: 22 }}
+            whileInView={{ opacity: 1, scale: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.58, delay, ease: [0.23, 1, 0.32, 1] }}
+            className="group relative cursor-default"
+        >
+            {/* Outer warm halo */}
+            <div
+                className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                style={{
+                    background: `radial-gradient(240px circle at ${glowPos.x}% ${glowPos.y}%, rgba(251,146,60,0.20), transparent 70%)`,
+                }}
+            />
+
+            {/* Card body */}
+            <div className="relative overflow-hidden rounded-2xl border border-white/[0.07] bg-white/[0.03] backdrop-blur-3xl">
+                {/* Static inner sheen */}
+                <div className="pointer-events-none absolute inset-0 rounded-2xl bg-gradient-to-br from-white/[0.07] via-transparent to-transparent" />
+
+                {/* Cursor-tracked inner warm glow */}
+                <div
+                    className="pointer-events-none absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                    style={{
+                        background: `radial-gradient(180px circle at ${glowPos.x}% ${glowPos.y}%, rgba(251,146,60,0.12), transparent 70%)`,
+                    }}
+                />
+
+                {/* Content lifted in Z */}
+                <div className="relative p-7" style={{ transform: "translateZ(24px)", transformStyle: "preserve-3d" }}>
+                    <div className="flex size-11 items-center justify-center rounded-xl border border-orange-300/20 bg-orange-400/[0.08] text-orange-300 shadow-[0_0_22px_rgba(251,146,60,0.18)] transition-shadow duration-300 group-hover:shadow-[0_0_36px_rgba(251,146,60,0.32)]">
+                        <Icon className="size-5" />
+                    </div>
+                    <h3 className="mt-5 text-lg font-medium tracking-tight text-zinc-100">{title}</h3>
+                    <p className="mt-2 text-sm leading-relaxed text-zinc-400">{text}</p>
+                </div>
+            </div>
+        </motion.div>
+    );
+}
 
 interface LandingBlocksProps {
     signedIn: boolean;
@@ -15,12 +118,8 @@ interface LandingBlocksProps {
     applicationsLastWeek: number;
 }
 
-export function LandingBlocks({
-    signedIn,
-    activeJobsCount,
-    seekersCount,
-    applicationsLastWeek,
-}: LandingBlocksProps) {
+export function LandingBlocks(props: LandingBlocksProps) {
+    const { activeJobsCount, seekersCount, applicationsLastWeek } = props;
     const { t } = useI18n();
 
     const features = [
@@ -70,118 +169,122 @@ export function LandingBlocks({
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.2 }}
                 transition={{ duration: 0.8 }}
-                className="relative px-4 py-20 lg:py-28"
+                className="relative px-4 pb-12 pt-10 lg:pb-20 lg:pt-14"
             >
                 <div className="mx-auto max-w-7xl text-center">
-                    <motion.span
+                    <div className="mt-0 grid gap-3 sm:grid-cols-3">
+                        {[
+                            { value: activeJobsCount, label: t("statsActive"), suffix: null },
+                            { value: seekersCount, label: t("statsSeekers"), suffix: null },
+                            { value: applicationsLastWeek, label: t("statsApplications"), suffix: <TrendingUp className="size-4 text-emerald-400" /> },
+                        ].map((stat, i) => (
+                            <motion.div
+                                key={stat.label}
+                                initial={{ opacity: 0, scale: 0.86, y: 18 }}
+                                whileInView={{ opacity: 1, scale: 1, y: 0 }}
+                                viewport={{ once: true, amount: 0.5 }}
+                                transition={{ duration: 0.52, delay: i * 0.1, ease: [0.23, 1, 0.32, 1] }}
+                            >
+                                <Card className="border-white/[0.08] bg-white/[0.03] backdrop-blur-3xl">
+                                    <CardContent className="p-6">
+                                        <p className="inline-flex items-center gap-2 text-4xl font-semibold tracking-tight text-zinc-100">
+                                            <NumberFlow value={stat.value} />
+                                            {stat.suffix}
+                                        </p>
+                                        <p className="mt-1 text-sm text-zinc-400">{stat.label}</p>
+                                    </CardContent>
+                                </Card>
+                            </motion.div>
+                        ))}
+                    </div>
+                </div>
+            </motion.section>
+
+            <motion.section
+                id="employers"
+                initial={false}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.8 }}
+                className="relative scroll-mt-24 px-4 py-16 lg:py-20"
+            >
+                <div className="mx-auto max-w-3xl text-center">
+                    <span className="inline-flex rounded-full border border-white/[0.12] bg-white/[0.03] px-3 py-1 text-xs text-zinc-400 backdrop-blur-3xl">
+                        {t("employersBadge")}
+                    </span>
+                    <motion.h2
                         initial={false}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true, amount: 0.2 }}
                         transition={{ duration: 0.7 }}
-                        className="inline-flex items-center gap-2 rounded-full border border-white/[0.12] bg-white/[0.03] px-3 py-1 text-xs text-zinc-400 backdrop-blur-3xl"
+                        className="mt-6 text-3xl font-semibold tracking-tighter text-zinc-100 md:text-4xl"
                     >
-                        <Sparkles className="size-3.5 text-sky-300" />
-                        {t("landingBadge")}
-                    </motion.span>
-                    <motion.h1
-                        initial={false}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true, amount: 0.2 }}
-                        transition={{ duration: 0.7, delay: 0.05 }}
-                        className="mx-auto mt-6 max-w-5xl text-5xl font-semibold tracking-tighter text-zinc-100 sm:text-6xl lg:text-8xl"
-                    >
-                        {t("landingHeroTitle")}
-                    </motion.h1>
+                        {t("employersTitle")}
+                    </motion.h2>
                     <motion.p
                         initial={false}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true, amount: 0.2 }}
-                        transition={{ duration: 0.7, delay: 0.1 }}
-                        className="mx-auto mt-6 max-w-2xl text-base text-zinc-400 lg:text-lg"
+                        transition={{ duration: 0.7, delay: 0.05 }}
+                        className="mt-4 text-base text-zinc-400 lg:text-lg"
                     >
-                        {t("landingHeroSub")}
+                        {t("employersSub")}
                     </motion.p>
                     <motion.div
                         initial={false}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true, amount: 0.2 }}
-                        transition={{ duration: 0.7, delay: 0.15 }}
-                        className="mt-10 flex flex-wrap items-center justify-center gap-3"
+                        transition={{ duration: 0.7, delay: 0.1 }}
+                        className="mt-8 flex flex-wrap items-center justify-center gap-3"
                     >
                         <Link href="/auth/register">
-                            <motion.div
-                animate={{ boxShadow: ["0 0 0px rgba(56,189,248,0.15)", "0 0 28px rgba(56,189,248,0.28)", "0 0 0px rgba(56,189,248,0.15)"] }}
-                                transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut" }}
-                                className="rounded-xl"
-                            >
-                                <Button size="lg" className="rounded-xl bg-zinc-100 text-black hover:bg-white">
-                                    {t("ctaStart")}
-                                </Button>
-                            </motion.div>
-                        </Link>
-                        <Link href={signedIn ? "/jobs" : "/auth/login?next=/jobs"}>
-                            <Button size="lg" variant="outline" className="rounded-xl border-white/[0.14] bg-white/[0.02] text-zinc-100 hover:bg-sky-400/10 hover:shadow-[0_0_24px_rgba(56,189,248,0.22)]">
-                                {t("ctaBrowseJobs")}
+                            <Button size="lg" className="rounded-xl bg-zinc-100 text-black hover:bg-white">
+                                {t("employersCta")}
                             </Button>
                         </Link>
-                    </motion.div>
-                    <motion.div
-                        initial={false}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true, amount: 0.2 }}
-                        transition={{ duration: 0.7, delay: 0.2 }}
-                        className="mt-16 grid gap-3 sm:grid-cols-3"
-                    >
-                        <Card className="border-white/[0.08] bg-white/[0.03] backdrop-blur-3xl">
-                            <CardContent className="p-6">
-                                <p className="text-4xl font-semibold tracking-tight text-zinc-100"><NumberFlow value={activeJobsCount} /></p>
-                                <p className="mt-1 text-sm text-zinc-400">{t("statsActive")}</p>
-                            </CardContent>
-                        </Card>
-                        <Card className="border-white/[0.08] bg-white/[0.03] backdrop-blur-3xl">
-                            <CardContent className="p-6">
-                                <p className="text-4xl font-semibold tracking-tight text-zinc-100"><NumberFlow value={seekersCount} /></p>
-                                <p className="mt-1 text-sm text-zinc-400">{t("statsSeekers")}</p>
-                            </CardContent>
-                        </Card>
-                        <Card className="border-white/[0.08] bg-white/[0.03] backdrop-blur-3xl">
-                            <CardContent className="p-6">
-                                <p className="inline-flex items-center gap-2 text-4xl font-semibold tracking-tight text-zinc-100">
-                                    <NumberFlow value={applicationsLastWeek} />
-                                    <TrendingUp className="size-4 text-emerald-400" />
-                                </p>
-                                <p className="mt-1 text-sm text-zinc-400">{t("statsApplications")}</p>
-                            </CardContent>
-                        </Card>
+                        <a href="#pricing">
+                            <Button
+                                size="lg"
+                                variant="outline"
+                                className="rounded-xl border-white/[0.14] bg-white/[0.02] text-zinc-100 hover:bg-sky-400/10 hover:shadow-[0_0_24px_rgba(56,189,248,0.22)]"
+                            >
+                                {t("pricing")}
+                            </Button>
+                        </a>
                     </motion.div>
                 </div>
             </motion.section>
 
-            <motion.section initial={false} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: 0.8 }} className="relative px-4 py-20">
+            <section
+                id="features"
+                className="relative scroll-mt-24 px-4 py-20"
+            >
                 <div className="mx-auto max-w-7xl">
-                    <motion.h2 className="text-center text-4xl font-semibold tracking-tighter text-zinc-100">
-                        {t("landingFeaturesHeading")}
-                    </motion.h2>
-                    <motion.div className="mt-10 grid gap-4 md:grid-cols-3">
-                        {features.map((feature) => {
-                            const Icon = feature.icon;
-                            return (
-                                <Card key={feature.title} className="border-white/[0.06] bg-white/[0.02] backdrop-blur-3xl">
-                                    <CardContent className="p-7">
-                                        <div className="flex size-11 items-center justify-center rounded-xl border border-white/[0.08] bg-white/[0.03] text-sky-300">
-                                            <Icon className="size-5" />
-                                        </div>
-                                        <h3 className="mt-5 text-lg font-medium tracking-tight text-zinc-100">{feature.title}</h3>
-                                        <p className="mt-2 text-sm text-zinc-400">{feature.text}</p>
-                                    </CardContent>
-                                </Card>
-                            );
-                        })}
-                    </motion.div>
+                    <h2 className="text-center text-4xl font-semibold tracking-tighter text-zinc-100">
+                        <LetterReveal text={t("landingFeaturesHeading")} />
+                    </h2>
+                    <div className="mt-10 grid gap-4 md:grid-cols-3">
+                        {features.map((feature, i) => (
+                            <LiquidFeatureCard
+                                key={feature.title}
+                                icon={feature.icon}
+                                title={feature.title}
+                                text={feature.text}
+                                delay={i * 0.12}
+                            />
+                        ))}
+                    </div>
                 </div>
-            </motion.section>
+            </section>
 
-            <motion.section initial={false} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: 0.8 }} className="relative px-4 py-20">
+            <motion.section
+                id="pricing"
+                initial={false}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.8 }}
+                className="relative scroll-mt-24 px-4 py-20"
+            >
                 <div className="mx-auto max-w-7xl">
                     <motion.h2 className="text-center text-4xl font-semibold tracking-tighter text-zinc-100">
                         {t("landingPricingHeading")}
@@ -254,12 +357,12 @@ export function LandingBlocks({
                         ))}
                     </motion.div>
                     <motion.div className="mt-10 text-center">
-                        <Link href="/pricing">
+                        <a href="#pricing">
                             <Button variant="outline" className="rounded-xl border-white/[0.08] bg-white/[0.03] text-zinc-100 hover:bg-sky-400/10 hover:shadow-[0_0_24px_rgba(56,189,248,0.22)]">
                                 <Briefcase className="size-4" />
                                 {t("landingLearnMore")}
                             </Button>
-                        </Link>
+                        </a>
                     </motion.div>
                 </div>
             </motion.section>

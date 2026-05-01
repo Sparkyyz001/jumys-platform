@@ -104,7 +104,14 @@ export function PricingPageClient({ signedIn }: { signedIn: boolean }) {
     };
 
     return (
-        <div className="dark min-h-screen relative text-white">
+        <div className="dark min-h-screen relative text-white bg-[#050505]">
+            <div
+                className="pointer-events-none fixed inset-0 -z-10"
+                style={{
+                    background:
+                        "radial-gradient(ellipse 70% 50% at 20% 10%, rgba(251,146,60,0.07), transparent 60%), radial-gradient(ellipse 60% 50% at 80% 80%, rgba(56,189,248,0.06), transparent 60%)",
+                }}
+            />
             <div className="max-w-6xl mx-auto px-4 py-10">
                 <Link
                     href="/"
@@ -126,7 +133,7 @@ export function PricingPageClient({ signedIn }: { signedIn: boolean }) {
                     </div>
                     <h1 className="text-3xl md:text-5xl font-bold tracking-tight">
                         Поднимите вакансию в{" "}
-                        <span className="bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent">
+                        <span className="bg-gradient-to-r from-amber-300 to-orange-400 bg-clip-text text-transparent">
                             ТОП Актау
                         </span>
                     </h1>
@@ -139,10 +146,10 @@ export function PricingPageClient({ signedIn }: { signedIn: boolean }) {
                 <div className="grid lg:grid-cols-[minmax(0,1fr)_420px] gap-8 items-start">
                     {/* Features explainer */}
                     <div className="space-y-4">
-                        <Card className="border-white/10 bg-white/5 backdrop-blur-xl text-white">
+                        <Card className="border-white/[0.07] bg-white/[0.03] backdrop-blur-3xl text-white">
                             <CardContent className="p-5">
                                 <div className="flex items-center gap-2 mb-2">
-                                    <Sparkles className="h-5 w-5 text-blue-400" />
+                                    <Sparkles className="h-5 w-5 text-amber-400" />
                                     <h3 className="font-semibold">Boost — выход в ТОП</h3>
                                 </div>
                                 <p className="text-sm text-gray-400">
@@ -153,7 +160,7 @@ export function PricingPageClient({ signedIn }: { signedIn: boolean }) {
                             </CardContent>
                         </Card>
 
-                        <Card className="border-white/10 bg-white/5 backdrop-blur-xl text-white">
+                        <Card className="border-white/[0.07] bg-white/[0.03] backdrop-blur-3xl text-white">
                             <CardContent className="p-5">
                                 <div className="flex items-center gap-2 mb-2">
                                     <ShieldCheck className="h-5 w-5 text-emerald-400" />
@@ -167,10 +174,10 @@ export function PricingPageClient({ signedIn }: { signedIn: boolean }) {
                             </CardContent>
                         </Card>
 
-                        <Card className="border-white/10 bg-white/5 backdrop-blur-xl text-white">
+                        <Card className="border-white/[0.07] bg-white/[0.03] backdrop-blur-3xl text-white">
                             <CardContent className="p-5 text-sm text-gray-400">
                                 <div className="font-semibold text-white mb-1">Что делает «выход в топ»</div>
-                                <ul className="space-y-1.5 list-disc list-inside marker:text-blue-400">
+                                <ul className="space-y-1.5 list-disc list-inside marker:text-amber-400">
                                     <li>Ваша вакансия — первая в списке `/jobs`.</li>
                                     <li>В AI-рекомендациях получает повышенный score.</li>
                                     <li>Бейдж ⚡ повышает CTR в среднем в 1.8×.</li>
@@ -199,24 +206,24 @@ export function PricingPageClient({ signedIn }: { signedIn: boolean }) {
                     <Link href="/privacy" className="underline hover:text-white">политике конфиденциальности</Link>.
                 </p>
 
-                <section className="max-w-4xl mx-auto rounded-2xl border border-border/60 overflow-hidden mt-16">
+                <section className="max-w-4xl mx-auto rounded-2xl border border-white/[0.07] bg-white/[0.03] backdrop-blur-3xl overflow-hidden mt-16">
                     <div className="overflow-x-auto">
                         <table className="w-full text-sm">
-                            <thead className="bg-muted/40">
+                            <thead className="border-b border-white/[0.07] bg-white/[0.03]">
                                 <tr>
-                                    <th className="px-4 py-3 text-left font-medium">Функция</th>
-                                    <th className="px-4 py-3 text-center font-medium">Free</th>
-                                    <th className="px-4 py-3 text-center font-medium">Boost</th>
-                                    <th className="px-4 py-3 text-center font-medium bg-violet-500/5">Pro</th>
+                                    <th className="px-4 py-3 text-left font-medium text-zinc-300">Функция</th>
+                                    <th className="px-4 py-3 text-center font-medium text-zinc-300">Free</th>
+                                    <th className="px-4 py-3 text-center font-medium text-zinc-300">Boost</th>
+                                    <th className="px-4 py-3 text-center font-medium text-amber-300 bg-amber-500/5">Pro</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {compareRows.map((row) => (
-                                    <tr key={row[0]} className="border-t border-border/50">
-                                        <td className="px-4 py-3 text-muted-foreground">{row[0]}</td>
-                                        <td className="px-4 py-3 text-center">{row[1] === "✓" ? <Check className="size-4 mx-auto text-emerald-500" /> : row[1]}</td>
-                                        <td className="px-4 py-3 text-center">{row[2] === "✓" ? <Check className="size-4 mx-auto text-emerald-500" /> : row[2]}</td>
-                                        <td className="px-4 py-3 text-center bg-violet-500/5">{row[3] === "✓" ? <Check className="size-4 mx-auto text-emerald-500" /> : row[3]}</td>
+                                    <tr key={row[0]} className="border-t border-white/[0.06]">
+                                        <td className="px-4 py-3 text-zinc-400">{row[0]}</td>
+                                        <td className="px-4 py-3 text-center text-zinc-300">{row[1] === "✓" ? <Check className="size-4 mx-auto text-emerald-500" /> : row[1]}</td>
+                                        <td className="px-4 py-3 text-center text-zinc-300">{row[2] === "✓" ? <Check className="size-4 mx-auto text-emerald-500" /> : row[2]}</td>
+                                        <td className="px-4 py-3 text-center text-zinc-300 bg-amber-500/5">{row[3] === "✓" ? <Check className="size-4 mx-auto text-emerald-500" /> : row[3]}</td>
                                     </tr>
                                 ))}
                             </tbody>
@@ -229,13 +236,13 @@ export function PricingPageClient({ signedIn }: { signedIn: boolean }) {
                     {faq.map((item) => (
                         <details
                             key={item.q}
-                            className="group rounded-lg border border-border bg-card p-4 [&_summary::-webkit-details-marker]:hidden"
+                            className="group rounded-xl border border-white/[0.07] bg-white/[0.03] backdrop-blur-3xl p-4 text-zinc-100 [&_summary::-webkit-details-marker]:hidden"
                         >
                             <summary className="flex cursor-pointer items-center justify-between font-medium">
                                 <span>{item.q}</span>
                                 <ChevronDown className="size-4 transition-transform group-open:rotate-180" />
                             </summary>
-                            <p className="mt-3 text-sm text-muted-foreground">{item.a}</p>
+                            <p className="mt-3 text-sm text-zinc-400">{item.a}</p>
                         </details>
                     ))}
                 </section>

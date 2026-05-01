@@ -22,6 +22,15 @@ type I18nKey =
     | "heroMockupDays"
     | "heroMockupAvgHire"
     | "heroMockupVs"
+    | "heroCinematicTitle"
+    | "heroJobSearchPlaceholder"
+    | "heroJobSearchTooShort"
+    | "heroJobSearchNoResults"
+    | "heroJobSearchError"
+    | "heroJobSearchSubmitAria"
+    | "heroJobSearchLoading"
+    | "heroJobSearchFound"
+    | "heroJobDistrictPrefix"
     | "ctaStart"
     | "ctaBrowseJobs"
     | "freshJobs"
@@ -164,6 +173,15 @@ const translations: Record<Lang, Record<I18nKey, string>> = {
         heroMockupDays: "күн",
         heroMockupAvgHire: "Jumys арқылы орташа жалдау уақыты",
         heroMockupVs: "−68% кәдімгі жалдаумен салыстырғанда",
+        heroCinematicTitle: "Қызыға білгендер үшін жасалған",
+        heroJobSearchPlaceholder: "Вакансия, дағды немесе шағын аудан…",
+        heroJobSearchTooShort: "Іздеу үшін кемінде 2 таңба енгізіңіз",
+        heroJobSearchNoResults: "Ештеңе табылмады",
+        heroJobSearchError: "Іздеуді орындау мүмкін болмады",
+        heroJobSearchSubmitAria: "Іздеу",
+        heroJobSearchLoading: "Ізделуде…",
+        heroJobSearchFound: "Табылды",
+        heroJobDistrictPrefix: "ҚА",
         ctaStart: "Жұмыс іздеуді бастау",
         ctaBrowseJobs: "Вакансияларды көру",
         freshJobs: "Ақтаудағы жаңа вакансиялар",
@@ -305,6 +323,15 @@ const translations: Record<Lang, Record<I18nKey, string>> = {
         heroMockupDays: "дня",
         heroMockupAvgHire: "среднее время найма через Jumys",
         heroMockupVs: "−68% vs обычный найм",
+        heroCinematicTitle: "Создан для любопытных",
+        heroJobSearchPlaceholder: "Вакансия, навык или микрорайон…",
+        heroJobSearchTooShort: "Введите минимум 2 символа для поиска",
+        heroJobSearchNoResults: "Ничего не найдено",
+        heroJobSearchError: "Не удалось выполнить поиск",
+        heroJobSearchSubmitAria: "Поиск",
+        heroJobSearchLoading: "Ищем…",
+        heroJobSearchFound: "Найдено",
+        heroJobDistrictPrefix: "мкр.",
         ctaStart: "Начать искать работу",
         ctaBrowseJobs: "Смотреть вакансии",
         freshJobs: "Свежие вакансии в Актау",
@@ -446,6 +473,15 @@ const translations: Record<Lang, Record<I18nKey, string>> = {
         heroMockupDays: "days",
         heroMockupAvgHire: "average time-to-hire with Jumys",
         heroMockupVs: "−68% vs traditional hiring",
+        heroCinematicTitle: "Built for the curious",
+        heroJobSearchPlaceholder: "Job title, skill, or microdistrict…",
+        heroJobSearchTooShort: "Type at least 2 characters to search",
+        heroJobSearchNoResults: "No matching jobs",
+        heroJobSearchError: "Something went wrong. Try again.",
+        heroJobSearchSubmitAria: "Search",
+        heroJobSearchLoading: "Searching…",
+        heroJobSearchFound: "Found",
+        heroJobDistrictPrefix: "dist.",
         ctaStart: "Start job hunt",
         ctaBrowseJobs: "Browse jobs",
         freshJobs: "Fresh jobs in Aktau",

@@ -1,11 +1,9 @@
 import { createSSRClient } from "@/lib/supabase/server";
 import { JobCard } from "@/components/JobCard";
-import { LandingNav } from "@/components/LandingNav";
 import { LandingFooter } from "@/components/LandingFooter";
 import { CaseStudy } from "@/components/sections/CaseStudy";
 import { LandingBlocks } from "@/components/sections/LandingBlocks";
-import { MeshGridBackground } from "@/components/ui/mesh-grid-bg";
-import { CursorLight, ParallaxLightSpots } from "@/components/ui/cinematic-effects";
+import { CinematicHero } from "@/components/sections/CinematicHero";
 import {
     LandingFinalCTA,
     FreshJobsHeading,
@@ -47,7 +45,9 @@ export default async function Home() {
     if (isSupabaseBrowserConfigured()) {
         try {
             const supabase = await createSSRClient();
-            const { data: { user: u } } = await supabase.auth.getUser();
+            const {
+                data: { user: u },
+            } = await supabase.auth.getUser();
             user = u;
 
             const [jobsCountRes, seekersCountRes, appsCountRes, latestRes] = await Promise.all([
@@ -70,7 +70,7 @@ export default async function Home() {
             latestJobs = ((latestRes.data ?? []) as LatestJob[]).slice(0, 6);
 
             const employerIds = Array.from(
-                new Set(latestJobs.map(j => j.employer_id).filter((v): v is string => Boolean(v)))
+                new Set(latestJobs.map(j => j.employer_id).filter((v): v is string => Boolean(v))),
             );
             if (employerIds.length > 0) {
                 const { data: emps } = await supabase
@@ -87,18 +87,8 @@ export default async function Home() {
     const signedIn = Boolean(user);
 
     return (
-        <div className="dark relative min-h-screen overflow-x-hidden bg-[#050505] text-white">
-            <CursorLight />
-            <div
-                className="pointer-events-none absolute inset-0 opacity-[0.07]"
-                style={{
-                    backgroundImage:
-                        "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220' viewBox='0 0 220 220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E\")",
-                }}
-            />
-            <MeshGridBackground intensity="default" />
-            <ParallaxLightSpots />
-            <LandingNav signedIn={signedIn} />
+        <main className="dark relative min-h-screen overflow-x-hidden bg-[#050505] text-white">
+            <CinematicHero signedIn={signedIn} />
 
             <LandingBlocks
                 signedIn={signedIn}
@@ -108,9 +98,9 @@ export default async function Home() {
             />
 
             {latestJobs.length > 0 && (
-                <section className="px-4 py-20">
-                    <div className="max-w-6xl mx-auto">
-                        <div className="flex items-end justify-between flex-wrap gap-3 mb-6">
+                <section id="jobs" className="px-4 py-20">
+                    <div className="mx-auto max-w-6xl">
+                        <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
                             <FreshJobsHeading />
                             <AllJobsButton href={signedIn ? "/jobs" : "/auth/login?next=/jobs"} />
                         </div>
@@ -139,9 +129,11 @@ export default async function Home() {
                 </section>
             )}
 
-            <CaseStudy />
-            <LandingFinalCTA />
+            <section id="about">
+                <CaseStudy />
+                <LandingFinalCTA />
+            </section>
             <LandingFooter />
-        </div>
+        </main>
     );
 }

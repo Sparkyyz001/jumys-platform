@@ -2,7 +2,7 @@
 
 import { createSPASassClient } from "@/lib/supabase/client";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { ArrowRight, Eye, EyeOff } from "lucide-react";
 import { motion } from "framer-motion";
@@ -15,6 +15,7 @@ export default function LoginPage() {
     const [loading, setLoading] = useState(false);
     const [isPwdVisible, setIsPwdVisible] = useState(false);
     const router = useRouter();
+    const searchParams = useSearchParams();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -24,6 +25,7 @@ export default function LoginPage() {
             typeof window !== "undefined"
                 ? new URLSearchParams(window.location.search).get("next") ?? "/dashboard"
                 : "/dashboard";
+        const nextPath = next.startsWith("/") && !next.startsWith("//") ? next : "/dashboard";
         try {
             const client = await createSPASassClient();
             const { data, error: signInError } = await client.loginEmail(email, password);
@@ -33,7 +35,7 @@ export default function LoginPage() {
                 router.push(`/auth/verify-email?email=${encodeURIComponent(email)}`);
                 return;
             }
-            router.push(next);
+            router.push(nextPath);
             router.refresh();
         } catch (err) {
             setError(err instanceof Error ? err.message : "Неизвестная ошибка");
@@ -71,7 +73,7 @@ export default function LoginPage() {
             <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
                     <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-1">
-                        Email <span className="text-blue-500">*</span>
+                        Email <span className="text-amber-400">*</span>
                     </label>
                     <input
                         id="email"
@@ -80,18 +82,18 @@ export default function LoginPage() {
                         value={email}
                         onChange={e => setEmail(e.target.value)}
                         placeholder="you@example.com"
-                        className="flex h-10 w-full rounded-md border border-[#2a2d3a] bg-[#13151f] px-3 py-2 text-sm text-gray-200 placeholder:text-gray-500 focus:border-blue-500 focus:outline-none transition-colors"
+                        className="flex h-10 w-full rounded-md border border-[#2a2d3a] bg-[#13151f] px-3 py-2 text-sm text-gray-200 placeholder:text-gray-500 focus:border-amber-500 focus:outline-none transition-colors"
                     />
                 </div>
 
                 <div>
                     <div className="flex items-center justify-between mb-1">
                         <label htmlFor="password" className="block text-sm font-medium text-gray-300">
-                            Пароль <span className="text-blue-500">*</span>
+                            Пароль <span className="text-amber-400">*</span>
                         </label>
                         <Link
                             href="/auth/forgot-password"
-                            className="text-xs text-blue-400 hover:text-blue-300 transition-colors"
+                            className="text-xs text-amber-400 hover:text-amber-300 transition-colors"
                         >
                             Забыли пароль?
                         </Link>
@@ -104,7 +106,7 @@ export default function LoginPage() {
                             value={password}
                             onChange={e => setPassword(e.target.value)}
                             placeholder="Введите пароль"
-                            className="flex h-10 w-full rounded-md border border-[#2a2d3a] bg-[#13151f] px-3 py-2 pr-10 text-sm text-gray-200 placeholder:text-gray-500 focus:border-blue-500 focus:outline-none transition-colors"
+                            className="flex h-10 w-full rounded-md border border-[#2a2d3a] bg-[#13151f] px-3 py-2 pr-10 text-sm text-gray-200 placeholder:text-gray-500 focus:border-amber-500 focus:outline-none transition-colors"
                         />
                         <button
                             type="button"
@@ -122,7 +124,7 @@ export default function LoginPage() {
                     whileTap={{ scale: 0.98 }}
                     type="submit"
                     disabled={loading}
-                    className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white py-2.5 text-sm font-medium transition-all duration-300 shadow-lg shadow-blue-500/20 disabled:opacity-60"
+                    className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-white py-2.5 text-sm font-medium transition-all duration-300 shadow-lg shadow-amber-500/20 disabled:opacity-60"
                 >
                     {loading ? "Вход..." : "Войти"}
                     {!loading && <ArrowRight className="h-4 w-4" />}
@@ -131,7 +133,14 @@ export default function LoginPage() {
 
             <p className="mt-6 text-center text-sm text-gray-400">
                 Нет аккаунта?{" "}
-                <Link href="/auth/register" className="text-blue-400 hover:text-blue-300 font-medium transition-colors">
+                <Link
+                    href={
+                        searchParams.get("next")
+                            ? `/auth/register?next=${encodeURIComponent(searchParams.get("next")!)}`
+                            : "/auth/register"
+                    }
+                    className="text-amber-400 hover:text-amber-300 font-medium transition-colors"
+                >
                     Зарегистрироваться
                 </Link>
             </p>

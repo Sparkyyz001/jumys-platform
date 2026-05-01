@@ -21,10 +21,10 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
                                 <ArrowLeft className="w-3.5 h-3.5 mr-1.5" />
                                 На главную
                             </Link>
-                            <div className="mb-6 h-12 w-12 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/30">
+                            <div className="mb-6 h-12 w-12 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center shadow-lg shadow-amber-500/30">
                                 <Briefcase className="text-white h-6 w-6" />
                             </div>
-                            <h2 className="text-3xl font-bold mb-2 text-center text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-500">
+                            <h2 className="text-3xl font-bold mb-2 text-center text-transparent bg-clip-text bg-gradient-to-r from-amber-300 to-orange-400">
                                 Jumys Platform
                             </h2>
                             <p className="text-sm text-center text-gray-400 max-w-xs mb-8">
@@ -32,15 +32,15 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
                             </p>
                             <ul className="space-y-2 text-sm text-gray-300">
                                 <li className="flex items-center gap-2">
-                                    <ArrowRight className="h-3.5 w-3.5 text-blue-400" />
+                                    <ArrowRight className="h-3.5 w-3.5 text-amber-400" />
                                     Умная подборка по навыкам и району
                                 </li>
                                 <li className="flex items-center gap-2">
-                                    <ArrowRight className="h-3.5 w-3.5 text-blue-400" />
+                                    <ArrowRight className="h-3.5 w-3.5 text-amber-400" />
                                     Telegram-бот с откликом в один клик
                                 </li>
                                 <li className="flex items-center gap-2">
-                                    <ArrowRight className="h-3.5 w-3.5 text-blue-400" />
+                                    <ArrowRight className="h-3.5 w-3.5 text-amber-400" />
                                     Verified Business для работодателей
                                 </li>
                             </ul>

@@ -78,6 +78,15 @@ const config: Config = {
   		},
   		fontFamily: {
   			sans: ['var(--font-sans)', 'system-ui', 'sans-serif']
+  		},
+  		keyframes: {
+  			shimmer: {
+  				'0%': { backgroundPosition: '0% 50%' },
+  				'100%': { backgroundPosition: '200% 50%' }
+  			}
+  		},
+  		animation: {
+  			shimmer: 'shimmer 6s linear infinite'
   		}
   	}
   },

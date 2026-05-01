@@ -8,7 +8,7 @@ export const metadata = {
 const Section = ({ title, children }: { title: string; children: React.ReactNode }) => (
     <section className="mb-8">
         <h2 className="text-xl font-semibold text-white mb-3">{title}</h2>
-        <div className="text-sm text-gray-300 leading-relaxed space-y-2 [&_a]:text-blue-400 [&_a:hover]:underline [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-1.5">
+        <div className="text-sm text-gray-300 leading-relaxed space-y-2 [&_a]:text-amber-400 [&_a:hover]:underline [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-1.5">
             {children}
         </div>
     </section>
@@ -16,7 +16,14 @@ const Section = ({ title, children }: { title: string; children: React.ReactNode
 
 export default function PrivacyPage() {
     return (
-        <div className="dark min-h-screen relative text-white">
+        <div className="dark min-h-screen relative text-white bg-[#050505]">
+            <div
+                className="pointer-events-none fixed inset-0 -z-10"
+                style={{
+                    background:
+                        "radial-gradient(ellipse 80% 60% at 10% 10%, rgba(251,146,60,0.06), transparent 60%), radial-gradient(ellipse 60% 50% at 90% 80%, rgba(56,189,248,0.06), transparent 60%)",
+                }}
+            />
             <div className="max-w-3xl mx-auto px-4 py-12">
                 <Link
                     href="/"

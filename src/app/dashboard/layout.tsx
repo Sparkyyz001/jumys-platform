@@ -26,8 +26,9 @@ export default async function DashboardLayout({ children }: { children: React.Re
     }
 
     return (
-        <div className="dark min-h-screen relative text-white flex w-full overflow-x-hidden">
+        <div className="dark min-h-screen relative text-white flex w-full bg-[#050505]">
             <MeshGridBackground intensity="soft" />
+            <div className="pointer-events-none fixed inset-0 -z-10" style={{ background: "radial-gradient(ellipse 60% 40% at 80% 10%, rgba(251,146,60,0.06), transparent 60%), radial-gradient(ellipse 50% 40% at 10% 90%, rgba(56,189,248,0.05), transparent 60%)" }} />
             <DashboardNav
                 role={data.profile.role}
                 email={data.user.email}

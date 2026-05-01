@@ -2,9 +2,6 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { MapPin, Building2, Clock, Calendar, Briefcase, ShieldCheck } from "lucide-react";
 import { createSSRClient } from "@/lib/supabase/server";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import {
     formatSalary, labelForEmployment, labelForExperience
 } from "@/lib/constants";
@@ -77,132 +74,125 @@ export default async function JobDetailPage({
     return (
         <div className="max-w-4xl mx-auto px-4 py-8">
             <div className="mb-4">
-                <Link href="/jobs" className="text-sm text-primary-700 hover:underline">
+                <Link href="/jobs" className="inline-flex items-center text-sm text-zinc-400 transition-colors hover:text-white">
                     ← Все вакансии
                 </Link>
             </div>
 
-            <Card>
-                <CardHeader>
+            <div className="rounded-2xl border border-white/[0.07] bg-white/[0.03] backdrop-blur-3xl overflow-hidden">
+                {/* Header */}
+                <div className="p-6 md:p-8 border-b border-white/[0.07]">
                     <div className="flex items-start justify-between gap-4 flex-wrap">
                         <div className="min-w-0 flex-1">
-                            <CardTitle className="text-2xl">{jobRow.title}</CardTitle>
+                            <h1 className="text-2xl font-semibold tracking-tight text-zinc-100">{jobRow.title}</h1>
                             {company && (
-                                <p className="text-gray-700 flex items-center gap-1.5 mt-2">
-                                    <Building2 className="h-4 w-4" />
+                                <p className="text-zinc-400 flex items-center gap-1.5 mt-2 text-sm">
+                                    <Building2 className="h-4 w-4 shrink-0" />
                                     {company.company_name}
                                     {isVerifiedCompany && (
-                                        <span className="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-semibold text-emerald-700">
+                                        <span className="inline-flex items-center gap-1 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-semibold text-emerald-400">
                                             <ShieldCheck className="h-3 w-3" />
-                                            Verified Business
+                                            Verified
                                         </span>
                                     )}
-                                    {company.company_type && ` · ${company.company_type}`}
                                 </p>
                             )}
                         </div>
                         {!jobRow.is_active && (
-                            <Badge variant="destructive">В архиве</Badge>
+                            <span className="rounded-full border border-red-500/30 bg-red-500/10 px-3 py-1 text-xs font-medium text-red-400">В архиве</span>
                         )}
                     </div>
-                </CardHeader>
-                <CardContent className="space-y-5">
-                    <div className="text-2xl font-bold">
+
+                    <div className="mt-4 text-2xl font-bold text-zinc-100">
                         {formatSalary(jobRow.salary_from, jobRow.salary_to)}
                     </div>
 
-                    <div className="flex flex-wrap gap-2">
+                    <div className="mt-4 flex flex-wrap gap-2">
                         {jobRow.district && (
-                            <Badge variant="secondary" className="gap-1">
-                                <MapPin className="h-3.5 w-3.5" />
-                                {jobRow.district} мкр.
-                            </Badge>
+                            <span className="inline-flex items-center gap-1 rounded-full border border-white/[0.08] bg-white/[0.04] px-2.5 py-1 text-xs text-zinc-300">
+                                <MapPin className="h-3.5 w-3.5 text-amber-400" />{jobRow.district} мкр.
+                            </span>
                         )}
                         {jobRow.employment && (
-                            <Badge variant="secondary" className="gap-1">
-                                <Clock className="h-3.5 w-3.5" />
-                                {labelForEmployment(jobRow.employment)}
-                            </Badge>
+                            <span className="inline-flex items-center gap-1 rounded-full border border-white/[0.08] bg-white/[0.04] px-2.5 py-1 text-xs text-zinc-300">
+                                <Clock className="h-3.5 w-3.5 text-amber-400" />{labelForEmployment(jobRow.employment)}
+                            </span>
                         )}
-                        <Badge variant="secondary" className="gap-1">
-                            <Briefcase className="h-3.5 w-3.5" />
-                            {labelForExperience(jobRow.experience_required)}
-                        </Badge>
-                        {jobRow.category && <Badge variant="outline">{jobRow.category}</Badge>}
-                        <Badge variant="outline" className="gap-1">
-                            <Calendar className="h-3.5 w-3.5" />
-                            {new Date(jobRow.created_at).toLocaleDateString("ru-RU")}
-                        </Badge>
+                        <span className="inline-flex items-center gap-1 rounded-full border border-white/[0.08] bg-white/[0.04] px-2.5 py-1 text-xs text-zinc-300">
+                            <Briefcase className="h-3.5 w-3.5 text-amber-400" />{labelForExperience(jobRow.experience_required)}
+                        </span>
+                        {jobRow.category && (
+                            <span className="inline-flex items-center rounded-full border border-white/[0.08] bg-white/[0.04] px-2.5 py-1 text-xs text-zinc-300">
+                                {jobRow.category}
+                            </span>
+                        )}
+                        <span className="inline-flex items-center gap-1 rounded-full border border-white/[0.08] bg-white/[0.04] px-2.5 py-1 text-xs text-zinc-400">
+                            <Calendar className="h-3.5 w-3.5" />{new Date(jobRow.created_at).toLocaleDateString("ru-RU")}
+                        </span>
                     </div>
+                </div>
 
+                {/* Body */}
+                <div className="p-6 md:p-8 space-y-6">
                     <div>
-                        <h3 className="font-semibold mb-2">Описание</h3>
-                        <p className="text-gray-700 whitespace-pre-wrap">{jobRow.description}</p>
+                        <h3 className="text-sm font-semibold uppercase tracking-wide text-zinc-500 mb-3">Описание</h3>
+                        <p className="text-zinc-300 whitespace-pre-wrap leading-relaxed text-sm">{jobRow.description}</p>
                     </div>
 
                     {jobRow.skills_required.length > 0 && (
                         <div>
-                            <h3 className="font-semibold mb-2">Требуемые навыки</h3>
+                            <h3 className="text-sm font-semibold uppercase tracking-wide text-zinc-500 mb-3">Навыки</h3>
                             <div className="flex flex-wrap gap-2">
                                 {jobRow.skills_required.map(s => (
-                                    <Badge key={s} variant="secondary">{s}</Badge>
+                                    <span key={s} className="rounded-lg border border-amber-400/20 bg-amber-400/[0.07] px-2.5 py-1 text-xs text-amber-300">{s}</span>
                                 ))}
                             </div>
                         </div>
                     )}
 
-                    <div className="pt-4 border-t">
+                    <div className="pt-4 border-t border-white/[0.07]">
                         <div className="mb-4 flex flex-wrap gap-2">
-                            <a
-                                href={`https://wa.me/?text=${whatsappText}`}
-                                target="_blank"
-                                rel="noreferrer"
-                            >
-                                <Button variant="outline" size="sm">WhatsApp Contact</Button>
+                            <a href={`https://wa.me/?text=${whatsappText}`} target="_blank" rel="noreferrer">
+                                <button className="inline-flex items-center rounded-lg border border-white/[0.08] bg-white/[0.03] px-3 py-2 text-xs font-medium text-zinc-300 transition-colors hover:bg-white/[0.07]">WhatsApp</button>
                             </a>
-                            <a
-                                href={`https://t.me/share/url?url=${encodeURIComponent(`https://jumys.kz/jobs/${id}`)}&text=${encodeURIComponent(`Интересует вакансия: ${jobRow.title}`)}`}
-                                target="_blank"
-                                rel="noreferrer"
-                            >
-                                <Button variant="outline" size="sm">Telegram</Button>
+                            <a href={`https://t.me/share/url?url=${encodeURIComponent(`https://jumys.kz/jobs/${id}`)}&text=${encodeURIComponent(`Интересует вакансия: ${jobRow.title}`)}`} target="_blank" rel="noreferrer">
+                                <button className="inline-flex items-center rounded-lg border border-white/[0.08] bg-white/[0.03] px-3 py-2 text-xs font-medium text-zinc-300 transition-colors hover:bg-white/[0.07]">Telegram</button>
                             </a>
                             <a href="https://t.me/jumys_support" target="_blank" rel="noreferrer">
-                                <Button variant="outline" size="sm">Support</Button>
+                                <button className="inline-flex items-center rounded-lg border border-white/[0.08] bg-white/[0.03] px-3 py-2 text-xs font-medium text-zinc-300 transition-colors hover:bg-white/[0.07]">Support</button>
                             </a>
                         </div>
+
                         {!userId ? (
                             <Link href={`/auth/login?next=/jobs/${id}`}>
-                                <Button size="lg" className="w-full sm:w-auto">
+                                <button className="w-full sm:w-auto inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-amber-500/20 transition-all">
                                     Войти и откликнуться
-                                </Button>
+                                </button>
                             </Link>
                         ) : isOwner ? (
-                            <div className="flex gap-2">
+                            <div className="flex gap-2 flex-wrap">
                                 <Link href={`/dashboard/jobs/${id}/candidates`}>
-                                    <Button>Посмотреть кандидатов</Button>
+                                    <button className="inline-flex items-center rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-amber-500/20 transition-all hover:from-amber-400 hover:to-orange-400">Посмотреть кандидатов</button>
                                 </Link>
                                 <Link href="/dashboard/jobs">
-                                    <Button variant="outline">Все мои вакансии</Button>
+                                    <button className="inline-flex items-center rounded-xl border border-white/[0.08] bg-white/[0.03] px-5 py-2.5 text-sm font-medium text-zinc-200 transition-colors hover:bg-white/[0.07]">Все вакансии</button>
                                 </Link>
                             </div>
                         ) : role === "employer" ? (
-                            <p className="text-sm text-gray-600">
-                                Откликаться могут только соискатели
-                            </p>
+                            <p className="text-sm text-zinc-500">Откликаться могут только соискатели</p>
                         ) : alreadyApplied ? (
-                            <div className="flex items-center gap-2">
-                                <Badge variant="success">Вы уже откликнулись</Badge>
+                            <div className="flex items-center gap-3 flex-wrap">
+                                <span className="inline-flex items-center rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-400">Вы уже откликнулись</span>
                                 <Link href="/dashboard/applications">
-                                    <Button variant="outline" size="sm">Мои отклики</Button>
+                                    <button className="inline-flex items-center rounded-lg border border-white/[0.08] bg-white/[0.03] px-3 py-2 text-xs font-medium text-zinc-300 transition-colors hover:bg-white/[0.07]">Мои отклики</button>
                                 </Link>
                             </div>
                         ) : (
                             <ApplyDialog jobId={id} jobTitle={jobRow.title} />
                         )}
                     </div>
-                </CardContent>
-            </Card>
+                </div>
+            </div>
         </div>
     );
 }

@@ -2,7 +2,7 @@
 
 import { createSPASassClient } from "@/lib/supabase/client";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { ArrowRight, Eye, EyeOff } from "lucide-react";
 import { motion } from "framer-motion";
@@ -18,6 +18,7 @@ export default function RegisterPage() {
     const [isPwdVisible, setIsPwdVisible] = useState(false);
     const [isConfirmVisible, setIsConfirmVisible] = useState(false);
     const router = useRouter();
+    const searchParams = useSearchParams();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -35,15 +36,29 @@ export default function RegisterPage() {
         setLoading(true);
         try {
             const client = await createSPASassClient();
-            const redirectTo = `${window.location.origin}/api/auth/callback?next=/dashboard`;
-            const { error: signUpError } = await client.registerEmail(
+            const nextParam =
+                typeof window !== "undefined"
+                    ? new URLSearchParams(window.location.search).get("next") ?? "/dashboard"
+                    : "/dashboard";
+            const nextPath = nextParam.startsWith("/") && !nextParam.startsWith("//") ? nextParam : "/dashboard";
+
+            const redirectTo = `${window.location.origin}/api/auth/callback?next=${encodeURIComponent(nextPath)}`;
+            const { data, error: signUpError } = await client.registerEmail(
                 email,
                 password,
                 { telegram_username: telegramHandle.trim() || undefined },
                 redirectTo
             );
             if (signUpError) throw signUpError;
+
+            if (data.session?.access_token && data.session.user) {
+                router.push(nextPath);
+                router.refresh();
+                return;
+            }
+
             router.push(`/auth/verify-email?email=${encodeURIComponent(email)}`);
+            router.refresh();
         } catch (err) {
             setError(err instanceof Error ? err.message : "Неизвестная ошибка");
         } finally {
@@ -80,7 +95,7 @@ export default function RegisterPage() {
             <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
                     <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-1">
-                        Email <span className="text-blue-500">*</span>
+                        Email <span className="text-amber-400">*</span>
                     </label>
                     <input
                         id="email"
@@ -89,13 +104,13 @@ export default function RegisterPage() {
                         value={email}
                         onChange={e => setEmail(e.target.value)}
                         placeholder="you@example.com"
-                        className="flex h-10 w-full rounded-md border border-[#2a2d3a] bg-[#13151f] px-3 py-2 text-sm text-gray-200 placeholder:text-gray-500 focus:border-blue-500 focus:outline-none transition-colors"
+                        className="flex h-10 w-full rounded-md border border-[#2a2d3a] bg-[#13151f] px-3 py-2 text-sm text-gray-200 placeholder:text-gray-500 focus:border-amber-500 focus:outline-none transition-colors"
                     />
                 </div>
 
                 <div>
                     <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-1">
-                        Пароль <span className="text-blue-500">*</span>
+                        Пароль <span className="text-amber-400">*</span>
                     </label>
                     <div className="relative">
                         <input
@@ -106,7 +121,7 @@ export default function RegisterPage() {
                             value={password}
                             onChange={e => setPassword(e.target.value)}
                             placeholder="Минимум 6 символов"
-                            className="flex h-10 w-full rounded-md border border-[#2a2d3a] bg-[#13151f] px-3 py-2 pr-10 text-sm text-gray-200 placeholder:text-gray-500 focus:border-blue-500 focus:outline-none transition-colors"
+                            className="flex h-10 w-full rounded-md border border-[#2a2d3a] bg-[#13151f] px-3 py-2 pr-10 text-sm text-gray-200 placeholder:text-gray-500 focus:border-amber-500 focus:outline-none transition-colors"
                         />
                         <button
                             type="button"
@@ -121,7 +136,7 @@ export default function RegisterPage() {
 
                 <div>
                     <label htmlFor="confirm-password" className="block text-sm font-medium text-gray-300 mb-1">
-                        Повторите пароль <span className="text-blue-500">*</span>
+                        Повторите пароль <span className="text-amber-400">*</span>
                     </label>
                     <div className="relative">
                         <input
@@ -132,7 +147,7 @@ export default function RegisterPage() {
                             value={confirmPassword}
                             onChange={e => setConfirmPassword(e.target.value)}
                             placeholder="Ещё раз пароль"
-                            className="flex h-10 w-full rounded-md border border-[#2a2d3a] bg-[#13151f] px-3 py-2 pr-10 text-sm text-gray-200 placeholder:text-gray-500 focus:border-blue-500 focus:outline-none transition-colors"
+                            className="flex h-10 w-full rounded-md border border-[#2a2d3a] bg-[#13151f] px-3 py-2 pr-10 text-sm text-gray-200 placeholder:text-gray-500 focus:border-amber-500 focus:outline-none transition-colors"
                         />
                         <button
                             type="button"
@@ -154,7 +169,7 @@ export default function RegisterPage() {
                         value={telegramHandle}
                         onChange={e => setTelegramHandle(e.target.value)}
                         placeholder="@your_username"
-                        className="flex h-10 w-full rounded-md border border-[#2a2d3a] bg-[#13151f] px-3 py-2 text-sm text-gray-200 placeholder:text-gray-500 focus:border-blue-500 focus:outline-none transition-colors"
+                        className="flex h-10 w-full rounded-md border border-[#2a2d3a] bg-[#13151f] px-3 py-2 text-sm text-gray-200 placeholder:text-gray-500 focus:border-amber-500 focus:outline-none transition-colors"
                     />
                 </div>
 
@@ -163,7 +178,7 @@ export default function RegisterPage() {
                     whileTap={{ scale: 0.98 }}
                     type="submit"
                     disabled={loading}
-                    className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white py-2.5 text-sm font-medium transition-all duration-300 shadow-lg shadow-blue-500/20 disabled:opacity-60"
+                    className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-white py-2.5 text-sm font-medium transition-all duration-300 shadow-lg shadow-amber-500/20 disabled:opacity-60"
                 >
                     {loading ? "Создание..." : "Создать аккаунт"}
                     {!loading && <ArrowRight className="h-4 w-4" />}
@@ -172,7 +187,14 @@ export default function RegisterPage() {
 
             <p className="mt-6 text-center text-sm text-gray-400">
                 Уже есть аккаунт?{" "}
-                <Link href="/auth/login" className="text-blue-400 hover:text-blue-300 font-medium transition-colors">
+                <Link
+                    href={
+                        searchParams.get("next")
+                            ? `/auth/login?next=${encodeURIComponent(searchParams.get("next")!)}`
+                            : "/auth/login"
+                    }
+                    className="text-amber-400 hover:text-amber-300 font-medium transition-colors"
+                >
                     Войти
                 </Link>
             </p>

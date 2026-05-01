@@ -102,7 +102,7 @@ export default function VerifyEmailPage() {
                 type="button"
                 onClick={handleManualCheck}
                 disabled={checking}
-                className="w-full inline-flex h-10 items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-sm font-medium transition-all shadow-lg shadow-blue-500/20 disabled:opacity-60"
+                className="w-full inline-flex h-10 items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-white text-sm font-medium transition-all shadow-lg shadow-amber-500/20 disabled:opacity-60"
             >
                 <RefreshCw className={`h-4 w-4 ${checking ? "animate-spin" : ""}`} />
                 {checking ? "Проверяю..." : "Я подтвердил, проверить сейчас"}
@@ -127,7 +127,7 @@ export default function VerifyEmailPage() {
                     value={email}
                     onChange={e => setEmail(e.target.value)}
                     placeholder="Ваш email"
-                    className="flex h-10 w-full rounded-md border border-[#2a2d3a] bg-[#13151f] px-3 py-2 text-sm text-gray-200 placeholder:text-gray-500 focus:border-blue-500 focus:outline-none transition-colors"
+                    className="flex h-10 w-full rounded-md border border-[#2a2d3a] bg-[#13151f] px-3 py-2 text-sm text-gray-200 placeholder:text-gray-500 focus:border-amber-500 focus:outline-none transition-colors"
                 />
                 <button
                     type="button"
@@ -140,7 +140,7 @@ export default function VerifyEmailPage() {
             </div>
 
             <div className="mt-6 pt-4 border-t border-[#2a2d3a]">
-                <Link href="/auth/login" className="text-sm text-blue-400 hover:text-blue-300 font-medium transition-colors">
+                <Link href="/auth/login" className="text-sm text-amber-400 hover:text-amber-300 font-medium transition-colors">
                     Вернуться ко входу
                 </Link>
             </div>

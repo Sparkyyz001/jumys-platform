@@ -3,13 +3,16 @@ import { redirect } from "next/navigation";
 import { createSSRClient } from "@/lib/supabase/server";
 import { JOB_CATEGORIES, EMPLOYMENT_TYPES } from "@/lib/constants";
 import { JobCard } from "@/components/JobCard";
-import { Card, CardContent } from "@/components/ui/card";
-import { Briefcase, Map as MapIcon } from "lucide-react";
+import { Briefcase, ChevronLeft, ChevronRight, Map as MapIcon } from "lucide-react";
 
 export const metadata = { title: "Вакансии в Актау — Jumys" };
 export const dynamic = "force-dynamic";
 
 const PAGE_SIZE = 12;
+
+function sanitizeJobSearchQ(raw: string): string {
+    return raw.replace(/\\/g, "").replace(/%/g, "").replace(/,/g, "").replace(/[()]/g, "").trim();
+}
 
 export default async function JobsListPage({
     searchParams,
@@ -20,7 +23,7 @@ export default async function JobsListPage({
     const district = params.district;
     const category = params.category;
     const employment = params.employment;
-    const q = (params.q ?? "").trim();
+    const q = sanitizeJobSearchQ((params.q ?? "").trim()).slice(0, 120);
     const minSalary = Number(params.minSalary ?? "0");
     const who = params.who;
     const age = params.age;
@@ -94,15 +97,19 @@ export default async function JobsListPage({
     };
 
     return (
-        <div className="max-w-7xl mx-auto px-4 py-8">
-            <div className="mb-6 flex items-end justify-between flex-wrap gap-3">
+        <div className="mx-auto max-w-7xl px-4 py-8 lg:py-10">
+            <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
                 <div>
-                    <h1 className="text-3xl font-bold text-foreground">Вакансии в Актау</h1>
-                    <p className="text-muted-foreground mt-1">Найдено: {total}</p>
+                    <h1 className="text-3xl font-semibold tracking-tight text-white md:text-4xl">
+                        Вакансии в Актау
+                    </h1>
+                    <p className="mt-2 text-sm text-zinc-400">
+                        Найдено: <span className="font-medium text-zinc-200">{total}</span>
+                    </p>
                 </div>
                 <Link
                     href="/jobs/map"
-                    className="inline-flex items-center gap-2 rounded-md border border-border bg-card px-3 py-2 text-sm font-medium text-foreground hover:bg-muted transition-colors"
+                    className="liquid-glass inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-white/5"
                 >
                     <MapIcon className="h-4 w-4" />
                     На карте
@@ -110,16 +117,25 @@ export default async function JobsListPage({
             </div>
 
             {topRows.length > 0 && (
-                <div className="mb-6">
-                    <h2 className="text-lg font-semibold mb-3 text-foreground">ТОП вакансии</h2>
+                <div className="mb-8">
+                    <h2 className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">
+                        ТОП вакансии
+                    </h2>
                     <div className="grid gap-4 md:grid-cols-3">
-                        {topRows.map((j) => (
-                            <div key={`top-${j.id}`} className="rounded-xl border border-border bg-card p-4">
-                                <p className="text-xs font-medium text-primary">TOP</p>
-                                <p className="font-semibold mt-1 line-clamp-2 text-foreground">{j.title}</p>
-                                <p className="text-sm text-muted-foreground mt-1">{j.employer_id ? companyMap.get(j.employer_id) ?? "Компания" : "Компания"}</p>
-                                <Link href={`/jobs/${j.id}`} className="inline-block mt-3 text-sm text-primary hover:underline">
-                                    Открыть вакансию →
+                        {topRows.map(j => (
+                            <div key={`top-${j.id}`} className="liquid-glass rounded-2xl p-5">
+                                <p className="text-xs font-semibold uppercase tracking-wide text-amber-400/90">
+                                    TOP
+                                </p>
+                                <p className="mt-2 line-clamp-2 font-semibold text-white">{j.title}</p>
+                                <p className="mt-2 text-sm text-zinc-400">
+                                    {j.employer_id ? companyMap.get(j.employer_id) ?? "Компания" : "Компания"}
+                                </p>
+                                <Link
+                                    href={`/jobs/${j.id}`}
+                                    className="mt-4 inline-flex text-sm font-medium text-white/90 underline-offset-4 hover:text-amber-300 hover:underline"
+                                >
+                                    Открыть →
                                 </Link>
                             </div>
                         ))}
@@ -127,41 +143,55 @@ export default async function JobsListPage({
                 </div>
             )}
 
-            <div className="grid gap-6 lg:grid-cols-[300px_1fr]">
-                <aside>
-                    <Card className="border-border/70">
-                        <CardContent className="p-4 space-y-5">
-                            <form action="/jobs" className="space-y-4">
-                                <div className="rounded-xl border border-border bg-muted/40 p-3">
-                                    <p className="text-xs font-medium text-muted-foreground">Быстрый подбор</p>
-                                    <p className="text-sm font-semibold text-foreground mt-1">Заполните фильтры и получите релевантные вакансии</p>
+            <div className="grid gap-8 lg:grid-cols-[minmax(0,300px)_1fr]">
+                <aside className="lg:sticky lg:top-24 lg:self-start">
+                    <div className="liquid-glass rounded-2xl p-1">
+                        <div className="rounded-[0.875rem] p-4 sm:p-5">
+                            <form action="/jobs" className="space-y-5">
+                                <div className="rounded-xl border border-white/[0.08] bg-white/[0.03] p-4">
+                                    <p className="text-xs font-medium uppercase tracking-wide text-zinc-500">
+                                        Быстрый подбор
+                                    </p>
+                                    <p className="mt-2 text-sm leading-snug text-zinc-300">
+                                        Фильтры и поиск по всем активным вакансиям
+                                    </p>
                                 </div>
                                 <div>
-                                    <h3 className="font-semibold text-sm mb-2 text-foreground">Поиск по названию</h3>
+                                    <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-zinc-500">
+                                        Поиск по названию
+                                    </h3>
                                     <input
                                         name="q"
-                                        defaultValue={q}
+                                        defaultValue={(params.q ?? "").trim()}
                                         placeholder="Например, Frontend-разработчик"
-                                        className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                                        className="w-full rounded-xl border border-white/15 bg-white/5 px-3 py-2.5 text-sm text-white outline-none placeholder:text-zinc-500 focus-visible:border-amber-500/40 focus-visible:ring-2 focus-visible:ring-amber-500/20"
                                     />
                                 </div>
                                 <div>
-                                    <h3 className="font-semibold text-sm mb-2 text-foreground">Район (1-39 мкр)</h3>
+                                    <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-zinc-500">
+                                        Район (1–39 мкр)
+                                    </h3>
                                     <select
                                         name="district"
                                         defaultValue={district ?? ""}
-                                        className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                                        className="w-full rounded-xl border border-white/15 bg-white/5 px-3 py-2.5 text-sm text-white outline-none focus-visible:border-amber-500/40 focus-visible:ring-2 focus-visible:ring-amber-500/20 [&>option]:bg-zinc-900"
                                     >
                                         <option value="">Все районы</option>
-                                        {districts.map(d => <option key={d} value={d}>{d}</option>)}
+                                        {districts.map(d => (
+                                            <option key={d} value={d}>
+                                                {d}
+                                            </option>
+                                        ))}
                                     </select>
                                 </div>
                                 <div>
-                                    <h3 className="font-semibold text-sm mb-2 text-foreground">Кто вы?</h3>
+                                    <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-zinc-500">
+                                        Кто вы?
+                                    </h3>
                                     <select
                                         name="who"
                                         defaultValue={who ?? ""}
-                                        className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                                        className="w-full rounded-xl border border-white/15 bg-white/5 px-3 py-2.5 text-sm text-white outline-none focus-visible:border-amber-500/40 focus-visible:ring-2 focus-visible:ring-amber-500/20 [&>option]:bg-zinc-900"
                                     >
                                         <option value="">Любой формат</option>
                                         <option value="student">Student</option>
@@ -170,18 +200,22 @@ export default async function JobsListPage({
                                     </select>
                                 </div>
                                 <div>
-                                    <h3 className="font-semibold text-sm mb-2 text-foreground">Возраст</h3>
+                                    <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-zinc-500">
+                                        Возраст
+                                    </h3>
                                     <select
                                         name="age"
                                         defaultValue={age ?? ""}
-                                        className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                                        className="w-full rounded-xl border border-white/15 bg-white/5 px-3 py-2.5 text-sm text-white outline-none focus-visible:border-amber-500/40 focus-visible:ring-2 focus-visible:ring-amber-500/20 [&>option]:bg-zinc-900"
                                     >
                                         <option value="">Любой</option>
-                                        <option value="16-29">16-29 (youth)</option>
+                                        <option value="16-29">16–29 (youth)</option>
                                     </select>
                                 </div>
                                 <div>
-                                    <h3 className="font-semibold text-sm mb-2 text-foreground">Минимальная зарплата</h3>
+                                    <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-zinc-500">
+                                        Мин. зарплата ₸
+                                    </h3>
                                     <input
                                         name="minSalary"
                                         defaultValue={minSalary > 0 ? String(minSalary) : ""}
@@ -189,32 +223,48 @@ export default async function JobsListPage({
                                         min={0}
                                         step={10000}
                                         placeholder="150000"
-                                        className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                                        className="w-full rounded-xl border border-white/15 bg-white/5 px-3 py-2.5 text-sm text-white outline-none placeholder:text-zinc-500 focus-visible:border-amber-500/40 focus-visible:ring-2 focus-visible:ring-amber-500/20"
                                     />
                                 </div>
                                 <div>
-                                    <h3 className="font-semibold text-sm mb-2 text-foreground">Занятость</h3>
+                                    <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-zinc-500">
+                                        Занятость
+                                    </h3>
                                     <select
                                         name="employment"
                                         defaultValue={employment ?? ""}
-                                        className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                                        className="w-full rounded-xl border border-white/15 bg-white/5 px-3 py-2.5 text-sm text-white outline-none focus-visible:border-amber-500/40 focus-visible:ring-2 focus-visible:ring-amber-500/20 [&>option]:bg-zinc-900"
                                     >
                                         <option value="">Любая</option>
-                                        {EMPLOYMENT_TYPES.map(e => <option key={e.value} value={e.value}>{e.label}</option>)}
+                                        {EMPLOYMENT_TYPES.map(e => (
+                                            <option key={e.value} value={e.value}>
+                                                {e.label}
+                                            </option>
+                                        ))}
                                     </select>
                                 </div>
                                 <div>
-                                    <h3 className="font-semibold text-sm mb-2 text-foreground">Категория</h3>
+                                    <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-zinc-500">
+                                        Категория
+                                    </h3>
                                     <select
                                         name="category"
                                         defaultValue={category ?? ""}
-                                        className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                                        className="w-full rounded-xl border border-white/15 bg-white/5 px-3 py-2.5 text-sm text-white outline-none focus-visible:border-amber-500/40 focus-visible:ring-2 focus-visible:ring-amber-500/20 [&>option]:bg-zinc-900"
                                     >
                                         <option value="">Все категории</option>
-                                        {JOB_CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
+                                        {JOB_CATEGORIES.map(c => (
+                                            <option key={c} value={c}>
+                                                {c}
+                                            </option>
+                                        ))}
                                     </select>
                                 </div>
-                                <button type="submit" className="w-full rounded-md bg-primary px-3 py-2 text-sm font-medium text-primary-foreground hover:opacity-90 transition-opacity">
+                                <input type="hidden" name="page" value="1" />
+                                <button
+                                    type="submit"
+                                    className="w-full rounded-xl bg-white py-3 text-sm font-semibold text-black transition-colors hover:bg-zinc-200"
+                                >
                                     Применить фильтры
                                 </button>
                             </form>
@@ -222,29 +272,35 @@ export default async function JobsListPage({
                             {hasActiveFilters && (
                                 <Link
                                     href="/jobs"
-                                    className="block text-sm text-center text-primary hover:underline pt-2 border-t border-border"
+                                    className="mt-4 block border-t border-white/10 pt-4 text-center text-sm text-zinc-400 hover:text-white"
                                 >
                                     Сбросить фильтры
                                 </Link>
                             )}
-                        </CardContent>
-                    </Card>
+                        </div>
+                    </div>
                 </aside>
 
-                <div>
+                <div className="min-w-0">
                     {jobRows.length === 0 ? (
-                        <Card>
-                            <CardContent className="p-12 text-center">
-                                <Briefcase className="h-12 w-12 text-muted-foreground mx-auto mb-3" />
-                                <p className="text-lg font-medium text-foreground mb-1">Нет вакансий</p>
-                                <p className="text-sm text-muted-foreground">
-                                    Попробуйте сбросить фильтры или вернуться позже
-                                </p>
-                            </CardContent>
-                        </Card>
+                        <div className="liquid-glass rounded-2xl p-12 text-center">
+                            <Briefcase className="mx-auto mb-4 h-12 w-12 text-zinc-600" />
+                            <p className="text-lg font-medium text-white">Нет вакансий</p>
+                            <p className="mx-auto mt-2 max-w-sm text-sm text-zinc-400">
+                                Попробуйте сбросить фильтры или зайти позже
+                            </p>
+                            {hasActiveFilters && (
+                                <Link
+                                    href="/jobs"
+                                    className="mt-6 inline-flex rounded-full border border-white/15 bg-white/5 px-5 py-2 text-sm font-medium text-white hover:bg-white/10"
+                                >
+                                    Показать все
+                                </Link>
+                            )}
+                        </div>
                     ) : (
                         <>
-                            <div className="grid sm:grid-cols-2 gap-4">
+                            <div className="grid gap-4 sm:grid-cols-2">
                                 {jobRows.map(j => (
                                     <JobCard
                                         key={j.id}
@@ -257,31 +313,79 @@ export default async function JobsListPage({
                                         salary_from={j.salary_from}
                                         salary_to={j.salary_to}
                                         verified={j.employer_id ? verifiedMap.get(j.employer_id) ?? false : false}
+                                        variant="dark"
                                     />
                                 ))}
                             </div>
 
-                            {totalPages > 1 && (
-                                <div className="flex justify-center gap-2 mt-8">
-                                    {Array.from({ length: totalPages }).map((_, i) => {
-                                        const n = i + 1;
-                                        const isActive = n === page;
-                                        return (
+                            {totalPages > 1 && (() => {
+                                const delta = 2;
+                                const start = Math.max(1, page - delta);
+                                const end = Math.min(totalPages, page + delta);
+                                const pages = Array.from({ length: end - start + 1 }, (_, i) => start + i);
+                                return (
+                                    <div className="mt-10 flex items-center justify-center gap-1">
+                                        {/* Prev */}
+                                        {page > 1 ? (
+                                            <Link
+                                                href={makeUrl({ page: String(page - 1) })}
+                                                className="flex h-9 w-9 items-center justify-center rounded-lg liquid-glass text-zinc-200 transition-colors hover:bg-white/10"
+                                            >
+                                                <ChevronLeft className="h-4 w-4" />
+                                            </Link>
+                                        ) : (
+                                            <span className="flex h-9 w-9 items-center justify-center rounded-lg text-zinc-600 cursor-not-allowed">
+                                                <ChevronLeft className="h-4 w-4" />
+                                            </span>
+                                        )}
+
+                                        {/* First page + ellipsis */}
+                                        {start > 1 && (
+                                            <>
+                                                <Link href={makeUrl({ page: "1" })} className="flex h-9 min-w-9 items-center justify-center rounded-lg px-2 text-sm font-medium liquid-glass text-zinc-200 hover:bg-white/10 transition-colors">1</Link>
+                                                {start > 2 && <span className="flex h-9 items-center px-1 text-zinc-500 text-sm">…</span>}
+                                            </>
+                                        )}
+
+                                        {/* Page window */}
+                                        {pages.map(n => (
                                             <Link
                                                 key={n}
                                                 href={makeUrl({ page: String(n) })}
-                                                className={`min-w-9 h-9 flex items-center justify-center rounded-md text-sm ${
-                                                    isActive
-                                                        ? "bg-primary text-primary-foreground"
-                                                        : "bg-card border border-border hover:bg-muted text-foreground"
+                                                className={`flex h-9 min-w-9 items-center justify-center rounded-lg px-2 text-sm font-medium transition-colors ${
+                                                    n === page
+                                                        ? "bg-white text-black"
+                                                        : "liquid-glass text-zinc-200 hover:bg-white/10"
                                                 }`}
                                             >
                                                 {n}
                                             </Link>
-                                        );
-                                    })}
-                                </div>
-                            )}
+                                        ))}
+
+                                        {/* Last page + ellipsis */}
+                                        {end < totalPages && (
+                                            <>
+                                                {end < totalPages - 1 && <span className="flex h-9 items-center px-1 text-zinc-500 text-sm">…</span>}
+                                                <Link href={makeUrl({ page: String(totalPages) })} className="flex h-9 min-w-9 items-center justify-center rounded-lg px-2 text-sm font-medium liquid-glass text-zinc-200 hover:bg-white/10 transition-colors">{totalPages}</Link>
+                                            </>
+                                        )}
+
+                                        {/* Next */}
+                                        {page < totalPages ? (
+                                            <Link
+                                                href={makeUrl({ page: String(page + 1) })}
+                                                className="flex h-9 w-9 items-center justify-center rounded-lg liquid-glass text-zinc-200 transition-colors hover:bg-white/10"
+                                            >
+                                                <ChevronRight className="h-4 w-4" />
+                                            </Link>
+                                        ) : (
+                                            <span className="flex h-9 w-9 items-center justify-center rounded-lg text-zinc-600 cursor-not-allowed">
+                                                <ChevronRight className="h-4 w-4" />
+                                            </span>
+                                        )}
+                                    </div>
+                                );
+                            })()}
                         </>
                     )}
                 </div>
