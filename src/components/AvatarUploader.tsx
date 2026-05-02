@@ -63,7 +63,7 @@ export function AvatarUploader({ initialUrl, fullName }: AvatarUploaderProps) {
 
     return (
         <div className="flex items-center gap-4">
-            <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-full border-2 border-white shadow-md ring-1 ring-black/5 bg-gradient-to-br from-primary-100 to-primary-50">
+            <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-full border-2 border-amber-500/30 shadow-md ring-1 ring-amber-500/10 bg-gradient-to-br from-amber-500/15 to-orange-500/10">
                 {display ? (
                     /* eslint-disable-next-line @next/next/no-img-element */
                     <img
@@ -72,7 +72,7 @@ export function AvatarUploader({ initialUrl, fullName }: AvatarUploaderProps) {
                         className="h-full w-full object-cover"
                     />
                 ) : (
-                    <div className="flex h-full w-full items-center justify-center font-semibold text-primary-700">
+                    <div className="flex h-full w-full items-center justify-center font-semibold text-amber-400">
                         {initials || <User className="h-8 w-8" />}
                     </div>
                 )}

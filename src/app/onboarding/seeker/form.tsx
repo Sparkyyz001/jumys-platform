@@ -3,7 +3,6 @@
 import { useForm, Controller } from "react-hook-form";
 import { useTransition } from "react";
 import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -116,7 +115,7 @@ export function SeekerOnboardingForm() {
                             {EMPLOYMENT_TYPES.map(opt => (
                                 <label
                                     key={opt.value}
-                                    className="flex items-center gap-2 p-3 border rounded-md cursor-pointer hover:bg-gray-50"
+                                    className="flex items-center gap-2 p-3 border border-white/[0.10] rounded-xl cursor-pointer hover:bg-amber-500/10 hover:border-amber-500/30 transition-colors"
                                 >
                                     <RadioGroupItem value={opt.value} />
                                     <span className="text-sm">{opt.label}</span>
@@ -137,9 +136,13 @@ export function SeekerOnboardingForm() {
                 />
             </div>
 
-            <Button type="submit" disabled={pending} className="w-full">
+            <button
+                type="submit"
+                disabled={pending}
+                className="w-full inline-flex h-11 items-center justify-center rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-white text-sm font-semibold shadow-lg shadow-amber-500/25 transition-all disabled:opacity-60"
+            >
                 {pending ? "Сохранение..." : "Сохранить и продолжить"}
-            </Button>
+            </button>
         </form>
     );
 }

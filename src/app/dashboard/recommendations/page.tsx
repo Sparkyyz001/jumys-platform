@@ -78,7 +78,7 @@ export default async function RecommendationsPage() {
         <div className="space-y-6">
             <div>
                 <h1 className="text-3xl font-bold tracking-tight flex items-center gap-2 text-zinc-100">
-                    <Sparkles className="h-7 w-7 text-primary-700" />
+                    <Sparkles className="h-7 w-7 text-amber-400" />
                     Подборка для вас
                 </h1>
                 <p className="text-zinc-400 mt-1">
@@ -92,7 +92,7 @@ export default async function RecommendationsPage() {
                 <Card>
                     <CardContent className="p-12 text-center">
                         <p className="text-lg font-medium">Пока нет подходящих вакансий</p>
-                        <p className="text-sm text-gray-500 mt-1">
+                        <p className="text-sm text-zinc-500 mt-1">
                             Попробуйте зайти позже — мы добавляем новые каждый день
                         </p>
                         <Link href="/jobs" className="inline-block mt-4">

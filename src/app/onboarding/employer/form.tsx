@@ -3,7 +3,6 @@
 import { useForm, Controller } from "react-hook-form";
 import { useTransition } from "react";
 import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -82,9 +81,13 @@ export function EmployerOnboardingForm() {
                 />
             </div>
 
-            <Button type="submit" disabled={pending} className="w-full">
+            <button
+                type="submit"
+                disabled={pending}
+                className="w-full inline-flex h-11 items-center justify-center rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-white text-sm font-semibold shadow-lg shadow-amber-500/25 transition-all disabled:opacity-60"
+            >
                 {pending ? "Сохранение..." : "Сохранить и продолжить"}
-            </Button>
+            </button>
         </form>
     );
 }

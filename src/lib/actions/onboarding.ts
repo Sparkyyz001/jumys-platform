@@ -89,7 +89,7 @@ export async function submitSeekerAction(input: SeekerInput) {
         .catch((err) => console.error("seeker embedding failed", err));
 
     revalidatePath("/dashboard");
-    redirect("/dashboard");
+    redirect("/onboarding/telegram");
 }
 
 const employerSchema = z.object({
@@ -127,5 +127,5 @@ export async function submitEmployerAction(input: EmployerInput) {
     if (empError) throw new Error(empError.message);
 
     revalidatePath("/dashboard");
-    redirect("/dashboard");
+    redirect("/onboarding/telegram");
 }

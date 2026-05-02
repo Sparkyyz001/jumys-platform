@@ -63,7 +63,7 @@ export default async function ApplicationsPage() {
             <div className="space-y-6">
                 <div>
                     <h1 className="text-3xl font-bold">Отклики</h1>
-                    <p className="text-gray-600 mt-1">Всего: {applications.length}</p>
+                    <p className="text-zinc-400 mt-1">Всего: {applications.length}</p>
                 </div>
 
                 {applications.length === 0 ? (
@@ -80,12 +80,12 @@ export default async function ApplicationsPage() {
                                     return (
                                         <div key={`mobile-${a.id}`} className="p-4 space-y-2">
                                             <div className="font-medium">{seeker?.full_name ?? "Без имени"}</div>
-                                            <Link href={`/jobs/${a.job_id}`} className="text-sm text-primary-700 hover:underline">
+                                            <Link href={`/jobs/${a.job_id}`} className="text-sm text-amber-400 hover:underline">
                                                 {jobTitleById.get(a.job_id) ?? "—"}
                                             </Link>
                                             <div className="flex items-center gap-2">
-                                                {typeof a.match_score === "number" ? <MatchScoreBadge score={Number(a.match_score)} /> : <span className="text-gray-400">—</span>}
-                                                <span className="text-xs text-gray-600">{new Date(a.created_at).toLocaleDateString("ru-RU")}</span>
+                                                {typeof a.match_score === "number" ? <MatchScoreBadge score={Number(a.match_score)} /> : <span className="text-zinc-500">—</span>}
+                                                <span className="text-xs text-zinc-400">{new Date(a.created_at).toLocaleDateString("ru-RU")}</span>
                                             </div>
                                             <div className="flex items-center gap-2">
                                                 <ApplicationStatusControl applicationId={a.id} status={a.status} />
@@ -97,7 +97,7 @@ export default async function ApplicationsPage() {
                                                         currentStatus={a.status}
                                                     />
                                                 ) : (
-                                                    <span className="text-xs text-gray-400">Нет телефона</span>
+                                                    <span className="text-xs text-zinc-500">Нет телефона</span>
                                                 )}
                                             </div>
                                         </div>
@@ -106,7 +106,7 @@ export default async function ApplicationsPage() {
                             </div>
                             <div className="hidden md:block overflow-x-auto">
                                 <table className="w-full text-sm">
-                                <thead className="border-b border-border bg-muted/50 text-muted-foreground">
+                                <thead className="border-b border-border bg-white/[0.03] text-muted-foreground">
                                     <tr>
                                         <th className="text-left px-4 py-3 font-medium">Кандидат</th>
                                         <th className="text-left px-4 py-3 font-medium">Вакансия</th>
@@ -126,7 +126,7 @@ export default async function ApplicationsPage() {
                                                         {seeker?.full_name ?? "Без имени"}
                                                     </div>
                                                     {a.message && (
-                                                        <div className="text-xs text-gray-500 mt-0.5 max-w-xs truncate">
+                                                        <div className="text-xs text-zinc-500 mt-0.5 max-w-xs truncate">
                                                             {a.message}
                                                         </div>
                                                     )}
@@ -134,7 +134,7 @@ export default async function ApplicationsPage() {
                                                 <td className="px-4 py-3">
                                                     <Link
                                                         href={`/jobs/${a.job_id}`}
-                                                        className="text-primary-700 hover:underline"
+                                                        className="text-amber-400 hover:underline"
                                                     >
                                                         {jobTitleById.get(a.job_id) ?? "—"}
                                                     </Link>
@@ -143,10 +143,10 @@ export default async function ApplicationsPage() {
                                                     {typeof a.match_score === "number" ? (
                                                         <MatchScoreBadge score={Number(a.match_score)} />
                                                     ) : (
-                                                        <span className="text-gray-400">—</span>
+                                                        <span className="text-zinc-500">—</span>
                                                     )}
                                                 </td>
-                                                <td className="px-4 py-3 text-gray-600">
+                                                <td className="px-4 py-3 text-zinc-400">
                                                     {new Date(a.created_at).toLocaleDateString("ru-RU")}
                                                 </td>
                                                 <td className="px-4 py-3">
@@ -164,7 +164,7 @@ export default async function ApplicationsPage() {
                                                             currentStatus={a.status}
                                                         />
                                                     ) : (
-                                                        <span className="text-xs text-gray-400">Нет телефона</span>
+                                                        <span className="text-xs text-zinc-500">Нет телефона</span>
                                                     )}
                                                 </td>
                                             </tr>
@@ -222,7 +222,7 @@ export default async function ApplicationsPage() {
         <div className="space-y-6">
             <div>
                 <h1 className="text-3xl font-bold">Мои отклики</h1>
-                <p className="text-gray-600 mt-1">Всего: {applications.length}</p>
+                <p className="text-zinc-400 mt-1">Всего: {applications.length}</p>
             </div>
 
             {applications.length === 0 ? (
@@ -244,15 +244,15 @@ export default async function ApplicationsPage() {
                                     <div className="flex-1 min-w-0">
                                         <Link
                                             href={`/jobs/${a.job_id}`}
-                                            className="font-semibold hover:text-primary-700"
+                                            className="font-semibold hover:text-amber-400"
                                         >
                                             {job?.title ?? "Вакансия удалена"}
                                         </Link>
-                                        <p className="text-sm text-gray-600">
+                                        <p className="text-sm text-zinc-400">
                                             {company ?? "—"}
                                             {job?.district && ` · ${job.district} мкр.`}
                                         </p>
-                                        <p className="text-xs text-gray-500 mt-1">
+                                        <p className="text-xs text-zinc-500 mt-1">
                                             Откликнулись: {new Date(a.created_at).toLocaleDateString("ru-RU")}
                                         </p>
                                     </div>
@@ -285,9 +285,9 @@ function EmptyState({
     return (
         <Card>
             <CardContent className="p-12 text-center">
-                <FileText className="h-12 w-12 text-gray-300 mx-auto mb-3" />
+                <FileText className="h-12 w-12 text-zinc-600 mx-auto mb-3" />
                 <p className="text-lg font-medium">{title}</p>
-                <p className="text-sm text-gray-500 mt-1">{description}</p>
+                <p className="text-sm text-zinc-500 mt-1">{description}</p>
                 {ctaHref && ctaLabel && (
                     <Link href={ctaHref} className="inline-block mt-4">
                         <Button>{ctaLabel}</Button>

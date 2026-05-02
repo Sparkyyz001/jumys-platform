@@ -55,7 +55,7 @@ export default async function EmployerJobsPage() {
             <div className="flex items-center justify-between flex-wrap gap-2">
                 <div>
                     <h1 className="text-3xl font-bold">Мои вакансии</h1>
-                    <p className="text-gray-600 mt-1">Всего: {jobRows.length}</p>
+                    <p className="text-zinc-400 mt-1">Всего: {jobRows.length}</p>
                 </div>
                 <Link href="/jobs/new">
                     <Button>
@@ -68,9 +68,9 @@ export default async function EmployerJobsPage() {
             {jobRows.length === 0 ? (
                 <Card>
                     <CardContent className="p-12 text-center">
-                        <Briefcase className="h-12 w-12 text-gray-300 mx-auto mb-3" />
+                        <Briefcase className="h-12 w-12 text-zinc-600 mx-auto mb-3" />
                         <p className="text-lg font-medium">Пока нет вакансий</p>
-                        <p className="text-sm text-gray-500 mt-1 mb-4">
+                        <p className="text-sm text-zinc-500 mt-1 mb-4">
                             Создайте первую — мы автоматически подберём кандидатов
                         </p>
                         <Link href="/jobs/new">
@@ -92,18 +92,18 @@ export default async function EmployerJobsPage() {
                                         <div className="flex items-start gap-2 flex-wrap">
                                             <Link
                                                 href={`/jobs/${j.id}`}
-                                                className="font-semibold text-lg hover:text-primary-700"
+                                                className="font-semibold text-lg hover:text-amber-400"
                                             >
                                                 {j.title}
                                             </Link>
                                             {!j.is_active && <Badge variant="destructive">В архиве</Badge>}
                                         </div>
-                                        <p className="text-sm text-gray-600 mt-1">
+                                        <p className="text-sm text-zinc-400 mt-1">
                                             {formatSalary(j.salary_from, j.salary_to)}
                                             {j.district && ` · ${j.district} мкр.`}
                                             {j.employment && ` · ${labelForEmployment(j.employment)}`}
                                         </p>
-                                        <p className="text-xs text-gray-500 mt-1">
+                                        <p className="text-xs text-zinc-500 mt-1">
                                             Создано: {new Date(j.created_at).toLocaleDateString("ru-RU")}
                                         </p>
                                     </div>

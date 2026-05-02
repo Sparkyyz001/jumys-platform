@@ -55,11 +55,11 @@ export default async function CandidatesPage({
     return (
         <div className="space-y-6">
             <div>
-                <Link href="/dashboard/jobs" className="text-sm text-primary-700 hover:underline">
+                <Link href="/dashboard/jobs" className="text-sm text-amber-400 hover:underline">
                     ← Мои вакансии
                 </Link>
                 <h1 className="text-3xl font-bold mt-2">Кандидаты</h1>
-                <p className="text-gray-600 mt-1">Вакансия: <span className="font-medium">{jobRow.title}</span></p>
+                <p className="text-zinc-400 mt-1">Вакансия: <span className="font-medium">{jobRow.title}</span></p>
             </div>
 
             {error ? (
@@ -71,9 +71,9 @@ export default async function CandidatesPage({
             ) : candidateRows.length === 0 ? (
                 <Card>
                     <CardContent className="p-12 text-center">
-                        <Users className="h-12 w-12 text-gray-300 mx-auto mb-3" />
+                        <Users className="h-12 w-12 text-zinc-600 mx-auto mb-3" />
                         <p className="text-lg font-medium">Пока нет кандидатов</p>
-                        <p className="text-sm text-gray-500 mt-1">
+                        <p className="text-sm text-zinc-500 mt-1">
                             Как только в базе появятся подходящие соискатели — они появятся здесь
                         </p>
                     </CardContent>
@@ -112,7 +112,7 @@ export default async function CandidatesPage({
                                 </div>
 
                                 {c.about && (
-                                    <p className="text-sm text-gray-700 line-clamp-3">{c.about}</p>
+                                    <p className="text-sm text-zinc-300 line-clamp-3">{c.about}</p>
                                 )}
 
                                 {c.skills.length > 0 && (
@@ -134,7 +134,7 @@ export default async function CandidatesPage({
 
                                 {c.phone && (
                                     <div className="flex items-center gap-2 pt-2 border-t">
-                                        <Phone className="h-4 w-4 text-gray-500" />
+                                        <Phone className="h-4 w-4 text-zinc-500" />
                                         <a
                                             href={`tel:${c.phone}`}
                                             className="text-sm font-medium hover:underline"
