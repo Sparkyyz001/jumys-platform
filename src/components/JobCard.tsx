@@ -64,7 +64,7 @@ export function JobCard({
             href={`/jobs/${id}`}
             onMouseMove={onPointerMove}
             onMouseLeave={onPointerLeave}
-            className="group block rounded-xl border border-white/[0.06] bg-[#0a0a0a] p-4 backdrop-blur-3xl hover:border-sky-300/30 transition-all duration-300"
+            className="group block rounded-xl border border-white/[0.06] bg-[#0a0a0a] p-4 backdrop-blur-3xl hover:border-amber-500/35 hover:shadow-md hover:shadow-amber-500/[0.09] transition-all duration-300"
         >
             <div className="flex items-start justify-between gap-2">
                 <h3 className="line-clamp-1 font-semibold text-base text-zinc-100">{title}</h3>
@@ -84,7 +84,7 @@ export function JobCard({
                     )}
                 </p>
             )}
-            <p className="mt-2 text-base font-medium text-zinc-100">
+            <p className="mt-2 text-base font-semibold text-amber-400">
                 {formatSalary(salary_from ?? null, salary_to ?? null)}
             </p>
             <div className="mt-3 flex flex-wrap gap-1.5">
@@ -110,7 +110,7 @@ export function JobCard({
                 <Button
                     variant="ghost"
                     size="icon"
-                    className="size-8 text-zinc-300 hover:bg-sky-400/10 hover:text-sky-200 hover:shadow-[0_0_22px_rgba(56,189,248,0.28)]"
+                    className="size-8 text-zinc-400 hover:bg-amber-500/10 hover:text-amber-300 hover:shadow-[0_0_18px_rgba(251,146,60,0.2)] transition-all"
                     title="Связаться через WhatsApp"
                     onClick={(event) => openExternal(event, whatsappUrl)}
                 >
@@ -119,7 +119,7 @@ export function JobCard({
                 <Button
                     variant="ghost"
                     size="icon"
-                    className="size-8 text-zinc-300 hover:bg-sky-400/10 hover:text-sky-200 hover:shadow-[0_0_22px_rgba(56,189,248,0.28)]"
+                    className="size-8 text-zinc-400 hover:bg-amber-500/10 hover:text-amber-300 hover:shadow-[0_0_18px_rgba(251,146,60,0.2)] transition-all"
                     title="Поделиться в Telegram"
                     onClick={(event) => openExternal(event, telegramUrl)}
                 >

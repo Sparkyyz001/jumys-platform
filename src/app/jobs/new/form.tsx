@@ -124,7 +124,7 @@ export function JobForm() {
                             {EMPLOYMENT_TYPES.map(opt => (
                                 <label
                                     key={opt.value}
-                                    className="flex items-center gap-2 p-3 border rounded-md cursor-pointer hover:bg-gray-50"
+                                    className="flex items-center gap-2 p-3 border border-white/[0.08] rounded-xl cursor-pointer text-zinc-300 hover:bg-amber-500/[0.07] hover:border-amber-500/30 hover:text-amber-100 transition-all"
                                 >
                                     <RadioGroupItem value={opt.value} />
                                     <span className="text-sm">{opt.label}</span>
@@ -194,9 +194,13 @@ export function JobForm() {
                 />
             </div>
 
-            <Button type="submit" disabled={pending} className="w-full">
+            <button
+                type="submit"
+                disabled={pending}
+                className="w-full inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 py-3 text-sm font-semibold text-white shadow-lg shadow-amber-500/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            >
                 {pending ? "Публикация..." : "Опубликовать вакансию"}
-            </Button>
+            </button>
         </form>
     );
 }

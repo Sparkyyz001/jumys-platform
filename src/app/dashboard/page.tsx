@@ -54,7 +54,7 @@ export default async function DashboardHome() {
         applicationsCount = ac ?? 0;
     }
 
-    const glassCard = "rounded-2xl border border-white/[0.07] bg-white/[0.03] backdrop-blur-3xl p-6";
+    const glassCard = "rounded-2xl border border-white/[0.07] bg-white/[0.03] backdrop-blur-3xl p-6 hover:border-amber-500/20 hover:shadow-lg hover:shadow-amber-500/[0.07] transition-all duration-300";
     const btnAmber = "inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-amber-500/20 transition-all";
     const btnGhost = "inline-flex items-center rounded-xl border border-white/[0.08] bg-white/[0.03] px-4 py-2 text-sm font-medium text-zinc-200 transition-colors hover:bg-white/[0.07]";
 

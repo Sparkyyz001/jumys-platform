@@ -104,7 +104,7 @@ export default function RegisterPage() {
                         value={email}
                         onChange={e => setEmail(e.target.value)}
                         placeholder="you@example.com"
-                        className="flex h-10 w-full rounded-md border border-[#2a2d3a] bg-[#13151f] px-3 py-2 text-sm text-gray-200 placeholder:text-gray-500 focus:border-amber-500 focus:outline-none transition-colors"
+                        className="flex h-10 w-full rounded-xl border border-white/[0.10] bg-zinc-900/80 px-3 py-2 text-sm text-gray-200 placeholder:text-gray-500 focus:border-amber-500 focus:outline-none transition-colors"
                     />
                 </div>
 
@@ -121,7 +121,7 @@ export default function RegisterPage() {
                             value={password}
                             onChange={e => setPassword(e.target.value)}
                             placeholder="Минимум 6 символов"
-                            className="flex h-10 w-full rounded-md border border-[#2a2d3a] bg-[#13151f] px-3 py-2 pr-10 text-sm text-gray-200 placeholder:text-gray-500 focus:border-amber-500 focus:outline-none transition-colors"
+                            className="flex h-10 w-full rounded-xl border border-white/[0.10] bg-zinc-900/80 px-3 py-2 pr-10 text-sm text-gray-200 placeholder:text-gray-500 focus:border-amber-500 focus:outline-none transition-colors"
                         />
                         <button
                             type="button"
@@ -147,7 +147,7 @@ export default function RegisterPage() {
                             value={confirmPassword}
                             onChange={e => setConfirmPassword(e.target.value)}
                             placeholder="Ещё раз пароль"
-                            className="flex h-10 w-full rounded-md border border-[#2a2d3a] bg-[#13151f] px-3 py-2 pr-10 text-sm text-gray-200 placeholder:text-gray-500 focus:border-amber-500 focus:outline-none transition-colors"
+                            className="flex h-10 w-full rounded-xl border border-white/[0.10] bg-zinc-900/80 px-3 py-2 pr-10 text-sm text-gray-200 placeholder:text-gray-500 focus:border-amber-500 focus:outline-none transition-colors"
                         />
                         <button
                             type="button"
@@ -169,7 +169,7 @@ export default function RegisterPage() {
                         value={telegramHandle}
                         onChange={e => setTelegramHandle(e.target.value)}
                         placeholder="@your_username"
-                        className="flex h-10 w-full rounded-md border border-[#2a2d3a] bg-[#13151f] px-3 py-2 text-sm text-gray-200 placeholder:text-gray-500 focus:border-amber-500 focus:outline-none transition-colors"
+                        className="flex h-10 w-full rounded-xl border border-white/[0.10] bg-zinc-900/80 px-3 py-2 text-sm text-gray-200 placeholder:text-gray-500 focus:border-amber-500 focus:outline-none transition-colors"
                     />
                 </div>
 

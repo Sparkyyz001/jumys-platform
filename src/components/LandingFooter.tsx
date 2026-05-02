@@ -22,8 +22,12 @@ export function LandingFooter() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            className="border-t border-white/[0.06] bg-white/[0.02] py-14 text-sm text-zinc-400"
+            className="relative bg-white/[0.015] py-14 text-sm text-zinc-400 overflow-hidden"
         >
+            {/* Amber glow top line */}
+            <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-amber-500/40 to-transparent" />
+            {/* Subtle ambient glow */}
+            <div className="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 h-48 w-96 rounded-full bg-amber-500/[0.04] blur-3xl" />
             <div className="max-w-7xl mx-auto px-4">
                 <div className="grid gap-8 md:grid-cols-4">
                     <div className="md:col-span-1">
@@ -83,7 +87,7 @@ export function LandingFooter() {
                                     href="https://t.me/jumys_support"
                                     target="_blank"
                                     rel="noreferrer"
-                                    className="text-blue-400 hover:underline"
+                                    className="text-amber-400 hover:text-amber-300 transition-colors"
                                 >
                                     Telegram @jumys_support
                                 </a>
@@ -102,7 +106,7 @@ export function LandingFooter() {
                     </div>
                 </div>
 
-                <div className="mt-10 flex flex-col items-center justify-between gap-4 border-t border-white/[0.06] pt-6 text-xs text-zinc-500 sm:flex-row">
+                <div className="mt-10 flex flex-col items-center justify-between gap-4 pt-6 text-xs text-zinc-500 sm:flex-row" style={{ borderTop: "1px solid", borderImage: "linear-gradient(90deg, transparent, rgba(251,146,60,0.2), transparent) 1" }}>
                     <p>© {year} Jumys Platform. AI-поиск работы в Актау.</p>
                     <button
                         type="button"

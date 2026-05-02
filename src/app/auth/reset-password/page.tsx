@@ -85,7 +85,7 @@ export default function ResetPasswordPage() {
                         minLength={6}
                         value={newPassword}
                         onChange={e => setNewPassword(e.target.value)}
-                        className="flex h-10 w-full rounded-md border border-[#2a2d3a] bg-[#13151f] px-3 py-2 text-sm text-gray-200 placeholder:text-gray-500 focus:border-amber-500 focus:outline-none transition-colors"
+                        className="flex h-10 w-full rounded-xl border border-white/[0.10] bg-zinc-900/80 px-3 py-2 text-sm text-gray-200 placeholder:text-gray-500 focus:border-amber-500 focus:outline-none transition-colors"
                     />
                 </div>
 
@@ -100,7 +100,7 @@ export default function ResetPasswordPage() {
                         minLength={6}
                         value={confirmPassword}
                         onChange={e => setConfirmPassword(e.target.value)}
-                        className="flex h-10 w-full rounded-md border border-[#2a2d3a] bg-[#13151f] px-3 py-2 text-sm text-gray-200 placeholder:text-gray-500 focus:border-amber-500 focus:outline-none transition-colors"
+                        className="flex h-10 w-full rounded-xl border border-white/[0.10] bg-zinc-900/80 px-3 py-2 text-sm text-gray-200 placeholder:text-gray-500 focus:border-amber-500 focus:outline-none transition-colors"
                     />
                 </div>
 

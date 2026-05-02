@@ -108,7 +108,7 @@ export default function VerifyEmailPage() {
                 {checking ? "Проверяю..." : "Я подтвердил, проверить сейчас"}
             </button>
 
-            <div className="border-t border-[#2a2d3a] mt-6 pt-6 space-y-3 text-left">
+            <div className="border-t border-white/[0.07] mt-6 pt-6 space-y-3 text-left">
                 <p className="text-xs text-gray-400 text-center">
                     Не пришло письмо? Проверьте спам или отправьте повторно:
                 </p>
@@ -127,19 +127,19 @@ export default function VerifyEmailPage() {
                     value={email}
                     onChange={e => setEmail(e.target.value)}
                     placeholder="Ваш email"
-                    className="flex h-10 w-full rounded-md border border-[#2a2d3a] bg-[#13151f] px-3 py-2 text-sm text-gray-200 placeholder:text-gray-500 focus:border-amber-500 focus:outline-none transition-colors"
+                    className="flex h-10 w-full rounded-xl border border-white/[0.10] bg-zinc-900/80 px-3 py-2 text-sm text-zinc-200 placeholder:text-zinc-500 focus:border-amber-500/50 focus:outline-none transition-colors"
                 />
                 <button
                     type="button"
                     onClick={resend}
                     disabled={loading}
-                    className="w-full inline-flex h-10 items-center justify-center gap-2 rounded-lg border border-[#2a2d3a] bg-[#13151f] hover:bg-[#1a1d2b] text-sm font-medium text-gray-200 transition-all disabled:opacity-50"
+                    className="w-full inline-flex h-10 items-center justify-center gap-2 rounded-xl border border-white/[0.10] bg-white/[0.04] hover:bg-white/[0.08] text-sm font-medium text-zinc-200 transition-all disabled:opacity-50"
                 >
                     {loading ? "Отправка..." : "Отправить повторно"}
                 </button>
             </div>
 
-            <div className="mt-6 pt-4 border-t border-[#2a2d3a]">
+            <div className="mt-6 pt-4 border-t border-white/[0.07]">
                 <Link href="/auth/login" className="text-sm text-amber-400 hover:text-amber-300 font-medium transition-colors">
                     Вернуться ко входу
                 </Link>

@@ -37,7 +37,9 @@ export function ApplyDialog({ jobId, jobTitle }: ApplyDialogProps) {
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button size="lg">Откликнуться</Button>
+                <button className="inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-amber-500/25 transition-all cursor-pointer">
+                    Откликнуться
+                </button>
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>
@@ -56,10 +58,21 @@ export function ApplyDialog({ jobId, jobTitle }: ApplyDialogProps) {
                     />
                 </div>
                 <DialogFooter>
-                    <Button variant="outline" onClick={() => setOpen(false)}>Отмена</Button>
-                    <Button onClick={submit} disabled={pending}>
+                    <button
+                        type="button"
+                        onClick={() => setOpen(false)}
+                        className="inline-flex items-center justify-center rounded-xl border border-white/[0.10] bg-white/[0.04] px-4 py-2 text-sm font-medium text-zinc-300 hover:bg-white/[0.08] hover:text-zinc-100 transition-all cursor-pointer"
+                    >
+                        Отмена
+                    </button>
+                    <button
+                        type="button"
+                        onClick={submit}
+                        disabled={pending}
+                        className="inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 px-5 py-2 text-sm font-semibold text-white shadow-lg shadow-amber-500/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                    >
                         {pending ? "Отправка..." : "Отправить отклик"}
-                    </Button>
+                    </button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>

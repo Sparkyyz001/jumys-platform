@@ -28,10 +28,10 @@ export default async function TelegramOnboardingPage() {
                                 <ArrowLeft className="w-3.5 h-3.5 mr-1.5" />
                                 В кабинет
                             </Link>
-                            <div className="mb-6 h-12 w-12 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/30">
-                                <Send className="text-white h-6 w-6" />
+                            <div className="mb-6 h-12 w-12 rounded-2xl bg-gradient-to-br from-amber-500/25 to-orange-500/15 border border-amber-500/35 flex items-center justify-center shadow-lg shadow-amber-500/20">
+                                <Send className="text-amber-400 h-6 w-6" />
                             </div>
-                            <h2 className="text-3xl font-bold mb-2 text-center text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-500">
+                            <h2 className="text-3xl font-bold mb-2 text-center text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-400">
                                 Telegram бот
                             </h2>
                             <p className="text-sm text-center text-gray-400 max-w-xs mb-8">
@@ -39,15 +39,15 @@ export default async function TelegramOnboardingPage() {
                             </p>
                             <ul className="space-y-2 text-sm text-gray-300">
                                 <li className="flex items-center gap-2">
-                                    <ArrowRight className="h-3.5 w-3.5 text-blue-400" />
+                                    <ArrowRight className="h-3.5 w-3.5 text-amber-400" />
                                     Уведомления в реальном времени
                                 </li>
                                 <li className="flex items-center gap-2">
-                                    <ArrowRight className="h-3.5 w-3.5 text-blue-400" />
+                                    <ArrowRight className="h-3.5 w-3.5 text-amber-400" />
                                     Отклик на вакансии в один клик
                                 </li>
                                 <li className="flex items-center gap-2">
-                                    <ArrowRight className="h-3.5 w-3.5 text-blue-400" />
+                                    <ArrowRight className="h-3.5 w-3.5 text-amber-400" />
                                     Безопасный one-time link
                                 </li>
                             </ul>
@@ -56,7 +56,7 @@ export default async function TelegramOnboardingPage() {
                 </div>
 
                 <div className="w-full md:w-1/2 p-8 md:p-10 flex flex-col justify-center">
-                    <div className="md:hidden mb-4 inline-flex items-center gap-2 text-blue-400 font-bold">
+                    <div className="md:hidden mb-4 inline-flex items-center gap-2 text-amber-400 font-bold">
                         <Briefcase className="h-5 w-5" />
                         Jumys
                     </div>
@@ -69,19 +69,19 @@ export default async function TelegramOnboardingPage() {
 
                     <ol className="text-sm text-gray-300 space-y-3 mb-8 list-none">
                         <li className="flex gap-3">
-                            <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-blue-500/20 text-blue-300 text-xs font-semibold">
+                            <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-amber-500/20 text-amber-300 text-xs font-semibold">
                                 1
                             </span>
                             Нажмите кнопку ниже
                         </li>
                         <li className="flex gap-3">
-                            <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-blue-500/20 text-blue-300 text-xs font-semibold">
+                            <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-amber-500/20 text-amber-300 text-xs font-semibold">
                                 2
                             </span>
                             Откроется бот Jumys в Telegram
                         </li>
                         <li className="flex gap-3">
-                            <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-blue-500/20 text-blue-300 text-xs font-semibold">
+                            <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-amber-500/20 text-amber-300 text-xs font-semibold">
                                 3
                             </span>
                             Нажмите Start — подключение завершится автоматически
@@ -94,7 +94,7 @@ export default async function TelegramOnboardingPage() {
 
                     <p className="mt-6 text-center text-xs text-gray-500">
                         Можно подключить позже из{" "}
-                        <Link href="/dashboard/settings" className="text-blue-400 hover:text-blue-300 transition-colors">
+                        <Link href="/dashboard/settings" className="text-amber-400 hover:text-amber-300 transition-colors">
                             настроек профиля
                         </Link>
                     </p>
