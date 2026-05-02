@@ -238,15 +238,15 @@ export function LandingBlocks(props: LandingBlocksProps) {
                         className="mt-8 flex flex-wrap items-center justify-center gap-3"
                     >
                         <Link href="/auth/register">
-                            <Button size="lg" className="rounded-xl bg-zinc-100 text-black hover:bg-white">
+                            <button className="inline-flex h-11 items-center gap-2 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 px-6 text-sm font-semibold text-white shadow-lg shadow-amber-500/25 transition-all">
                                 {t("employersCta")}
-                            </Button>
+                            </button>
                         </Link>
                         <a href="#pricing">
                             <Button
                                 size="lg"
                                 variant="outline"
-                                className="rounded-xl border-white/[0.14] bg-white/[0.02] text-zinc-100 hover:bg-sky-400/10 hover:shadow-[0_0_24px_rgba(56,189,248,0.22)]"
+                                className="rounded-xl border-white/[0.14] bg-white/[0.02] text-zinc-100 hover:bg-amber-500/10 hover:shadow-[0_0_24px_rgba(245,158,11,0.20)]"
                             >
                                 {t("pricing")}
                             </Button>
@@ -255,14 +255,25 @@ export function LandingBlocks(props: LandingBlocksProps) {
                 </div>
             </motion.section>
 
+            {/* ── Amber section divider ── */}
+            <div className="pointer-events-none mx-auto max-w-4xl px-4">
+                <div className="h-px bg-gradient-to-r from-transparent via-amber-500/20 to-transparent" />
+            </div>
+
             <section
                 id="features"
                 className="relative scroll-mt-24 px-4 py-20"
             >
                 <div className="mx-auto max-w-7xl">
-                    <h2 className="text-center text-4xl font-semibold tracking-tighter text-zinc-100">
+                    <motion.h2
+                        initial={{ opacity: 0, filter: "blur(8px)", y: 12 }}
+                        whileInView={{ opacity: 1, filter: "blur(0px)", y: 0 }}
+                        viewport={{ once: true, amount: 0.4 }}
+                        transition={{ duration: 0.7, ease: "easeOut" }}
+                        className="text-center text-4xl font-semibold tracking-tighter text-zinc-100"
+                    >
                         <LetterReveal text={t("landingFeaturesHeading")} />
-                    </h2>
+                    </motion.h2>
                     <div className="mt-10 grid gap-4 md:grid-cols-3">
                         {features.map((feature, i) => (
                             <LiquidFeatureCard
@@ -276,6 +287,11 @@ export function LandingBlocks(props: LandingBlocksProps) {
                     </div>
                 </div>
             </section>
+
+            {/* ── Amber section divider ── */}
+            <div className="pointer-events-none mx-auto max-w-4xl px-4">
+                <div className="h-px bg-gradient-to-r from-transparent via-amber-500/20 to-transparent" />
+            </div>
 
             <motion.section
                 id="pricing"
@@ -292,10 +308,10 @@ export function LandingBlocks(props: LandingBlocksProps) {
                     <motion.p className="mt-2 text-center text-zinc-400">{t("landingPricingSub")}</motion.p>
                     <motion.div className="mt-10 grid gap-4 md:grid-cols-3">
                         {pricing.map((plan) => (
-                            <Card key={plan.name} className={`border-white/[0.06] bg-white/[0.02] backdrop-blur-3xl ${plan.popular ? "shadow-[0_0_40px_rgba(56,189,248,0.18)]" : ""}`}>
+                            <Card key={plan.name} className={`border-white/[0.06] bg-white/[0.02] backdrop-blur-3xl ${plan.popular ? "shadow-[0_0_40px_rgba(245,158,11,0.18)]" : ""}`}>
                                 <CardContent className="p-7">
                                     {plan.popular ? (
-                                        <span className="mb-3 inline-flex rounded-full border border-sky-300/30 bg-sky-300/10 px-2 py-0.5 text-xs text-sky-200">
+                                        <span className="mb-3 inline-flex rounded-full border border-amber-400/30 bg-amber-400/10 px-2 py-0.5 text-xs text-amber-200">
                                             {t("landingPopular")}
                                         </span>
                                     ) : null}
@@ -310,7 +326,7 @@ export function LandingBlocks(props: LandingBlocksProps) {
                                         ))}
                                     </ul>
                                     <Link href="/pricing" className="mt-6 block">
-                                        <Button className="w-full rounded-xl border border-white/[0.08] bg-white/[0.03] text-zinc-100 hover:bg-sky-400/10 hover:shadow-[0_0_24px_rgba(56,189,248,0.22)]" variant="outline">
+                                        <Button className="w-full rounded-xl border border-white/[0.08] bg-white/[0.03] text-zinc-100 hover:bg-amber-500/10 hover:shadow-[0_0_24px_rgba(245,158,11,0.20)]" variant="outline">
                                             {t("landingChoosePlan")}
                                         </Button>
                                     </Link>
@@ -358,7 +374,7 @@ export function LandingBlocks(props: LandingBlocksProps) {
                     </motion.div>
                     <motion.div className="mt-10 text-center">
                         <a href="#pricing">
-                            <Button variant="outline" className="rounded-xl border-white/[0.08] bg-white/[0.03] text-zinc-100 hover:bg-sky-400/10 hover:shadow-[0_0_24px_rgba(56,189,248,0.22)]">
+                            <Button variant="outline" className="rounded-xl border-white/[0.08] bg-white/[0.03] text-zinc-100 hover:bg-amber-500/10 hover:shadow-[0_0_24px_rgba(245,158,11,0.20)]">
                                 <Briefcase className="size-4" />
                                 {t("landingLearnMore")}
                             </Button>

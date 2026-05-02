@@ -58,7 +58,10 @@ export function JobCard({
     return (
         <motion.div
             style={{ rotateX, rotateY, transformPerspective: 1000 }}
-            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            initial={{ opacity: 0, y: 28 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.15 }}
+            transition={{ type: "spring", stiffness: 260, damping: 28 }}
         >
         <Link
             href={`/jobs/${id}`}

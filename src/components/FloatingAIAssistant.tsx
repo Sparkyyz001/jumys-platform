@@ -283,7 +283,7 @@ export function FloatingAIAssistant() {
                 aria-label="Открыть AI поиск"
                 whileHover={{ scale: 1.06 }}
                 whileTap={{ scale: 0.94 }}
-                className="fixed bottom-5 right-5 z-50 group inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r from-amber-500 to-orange-500 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-amber-500/30 transition-shadow hover:shadow-amber-500/50"
+                className="fixed bottom-5 right-5 z-50 h-14 w-14 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center shadow-lg shadow-amber-500/30 transition-shadow hover:shadow-amber-500/50"
             >
                 {/* Pulse ring */}
                 {!open && (
@@ -296,15 +296,14 @@ export function FloatingAIAssistant() {
                 <AnimatePresence mode="wait" initial={false}>
                     {open ? (
                         <motion.span key="x" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.18 }}>
-                            <X className="h-4 w-4" />
+                            <X className="h-5 w-5 text-white" />
                         </motion.span>
                     ) : (
                         <motion.span key="bot" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.18 }}>
-                            <Bot className="h-4 w-4" />
+                            <Bot className="h-5 w-5 text-white" />
                         </motion.span>
                     )}
                 </AnimatePresence>
-                <span>{open ? "Закрыть" : "AI Поиск"}</span>
             </motion.button>
         </>
     );
